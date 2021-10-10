@@ -1,5 +1,5 @@
+import enum
 import uuid
-from enum import Enum
 
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
@@ -23,7 +23,7 @@ class User(db.Model):
 
 
 class Upload(db.Model):
-    class Category(Enum):
+    class Category(enum.Enum):
         INTERVIEW = 0
         PRESENTATION = 1
 
@@ -36,7 +36,7 @@ class Upload(db.Model):
 
 
 class Feedback(db.Model):
-    class Type(Enum):
+    class Type(enum.Enum):
         PAUSE = 0
         SENTIMENT = 1
         # TODO complete
