@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+  postgres:
+    image: postgres
+    environment:
+      - POSTGRES_DB=prephouse
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - "5432:5432"
+  prephouse:
+    build: ./
+    ports: [ '5000:5000' ]
+    volumes: [ './:/app' ]
+    env_file:
+      - .env.development
