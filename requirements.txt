@@ -1,0 +1,5 @@
+Flask~=2.0.0
+SQLAlchemy~=1.4.0
+Flask-SQLAlchemy~=2.5.0
+requests~=2.26.0
+boto3~=1.18.0
