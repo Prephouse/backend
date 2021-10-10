@@ -4,7 +4,7 @@ from enum import Enum
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.dialects.postgresql import UUID, INT4RANGE
-from sqlalchemy.sql import func
+from sqlalchemy.sql import func as sql_func
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:postgres@localhost:5432/prephouse'
@@ -29,8 +29,8 @@ class Upload(db.Model):
 
     id = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     category = db.Column(db.Enum(Category), nullable=False)
-    date_uploaded = db.Column(db.DateTime, nullable=False, server_default=func.now())
-    date_modified = db.Column(db.DateTime, server_onupdate=func.now())
+    date_uploaded = db.Column(db.DateTime, nullable=False, server_default=sql_func.now())
+    date_modified = db.Column(db.DateTime, server_onupdate=sql_func.now())
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     feedbacks = db.relationship('Feedback', backref='upload', lazy=True)
 
