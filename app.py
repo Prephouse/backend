@@ -1,4 +1,5 @@
 import enum
+import os
 import uuid
 
 from flask import Flask
@@ -6,8 +7,9 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.dialects.postgresql import UUID, INT4RANGE
 from sqlalchemy.sql import func as sql_func
 
+
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:postgres@localhost:5432/prephouse'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['SQLALCHEMY_DATABASE_URI']
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
