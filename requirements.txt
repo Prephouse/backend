@@ -1,5 +1,5 @@
 Flask~=2.0.0
-SQLAlchemy~=1.4.0
+SQLAlchemy~=1.4.26
 Flask-SQLAlchemy~=2.5.0
 psycopg2~=2.9.0
 requests~=2.26.0
