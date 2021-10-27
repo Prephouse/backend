@@ -60,6 +60,7 @@ def hello_world():
     return "<p>Hello, World!</p>"
 
 
+# TODO integrate OAuth check
 @app.route("/feedback")
 def get_feedback():
     upload_ids = request.args.getlist('upload_ids')
