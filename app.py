@@ -2,11 +2,14 @@ import enum
 import os
 import uuid
 
-from flask import Flask
+from flask import Flask, abort, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
+from psycopg2.extras import NumericRange
 from sqlalchemy.dialects.postgresql import UUID, INT4RANGE
 from sqlalchemy.sql import func as sql_func
 
+import constants
+from utils import get_integral_numeric_range_bounds
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['SQLALCHEMY_DATABASE_URI']
@@ -55,6 +58,40 @@ class Feedback(db.Model):
 @app.route("/")
 def hello_world():
     return "<p>Hello, World!</p>"
+
+
+@app.route("/feedback")
+def get_feedback():
+    upload_ids = request.args.getlist('upload_ids')
+    time_start = request.args.get('time_start', type=int, default=0)
+    time_end = request.args.get('time_end', type=int, default=constants.PSQL_INT_MAX)
+    feedback_type = request.args.get('feedback_type', type=int)
+
+    query = Feedback.query
+    if upload_ids:
+        query = query.filter(Feedback.upload_id.in_(upload_ids))
+    if feedback_type is not None:
+        try:
+            feedback_type = Feedback.Type(feedback_type)
+        except ValueError:
+            abort(400)
+        query = query.filter_by(type=feedback_type)
+    query = query.filter(Feedback.time_range.contained_by(NumericRange(time_start, time_end)))
+
+    response = []
+    for feedback in (query.all() or []):
+        time_start, time_end = get_integral_numeric_range_bounds(feedback.time_range)
+        response.append({
+            'id': feedback.id,
+            'upload_id': feedback.upload_id,
+            'type': feedback.type.value,
+            'text': feedback.text,
+            'score': float(feedback.score),
+            'time_start': time_start,
+            'time_end': time_end,
+        })
+
+    return jsonify(response)
 
 
 if __name__ == '__main__':
