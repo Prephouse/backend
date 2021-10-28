@@ -11,7 +11,8 @@ services:
       - "5432:5432"
   prephouse:
     build: ./
-    ports: [ '5000:5000' ]
+    ports: [ '3001:5000' ]
     volumes: [ './:/app' ]
     env_file:
       - .env.development
+      - .env

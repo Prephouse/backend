@@ -1,0 +1,7 @@
+version: '3'
+
+services:
+  prephouse:
+    env_file:
+      - .env.production
+      - .env
