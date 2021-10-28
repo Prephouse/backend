@@ -7,7 +7,6 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.dialects.postgresql import UUID, INT4RANGE
 from sqlalchemy.sql import func as sql_func
 
-
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['SQLALCHEMY_DATABASE_URI']
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -52,10 +51,8 @@ class Feedback(db.Model):
     upload_id = db.Column(UUID(as_uuid=True), db.ForeignKey('upload.id'), nullable=False)
 
 
-@app.route("/")
-def hello_world():
-    return "<p>Hello, World!</p>"
-
+from api.feedback import feedback_api   # noqa: E402
+app.register_blueprint(feedback_api)
 
 if __name__ == '__main__':
     app.run()

@@ -15,8 +15,8 @@ if success:
 
     if args.requested_mock_data:
         def add_commit_rows(*rows):
-            for _ in rows:
-                db.session.add(_)
+            for row in rows:
+                db.session.add(row)
             db.session.commit()
 
         from app import User, Upload, Feedback
