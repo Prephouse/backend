@@ -4,7 +4,7 @@ import uuid
 from dotenv import load_dotenv
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--mock', dest='requested_mock_data', action='store_true')
+parser.add_argument('-m', '--mock', dest='requested_mock_data', action='store_true')
 args = parser.parse_args()
 
 success = load_dotenv('.env.development')
