@@ -15,10 +15,10 @@ repos:
       - id: trailing-whitespace
         args: [--markdown-linebreak-ext=md]
   - repo: https://github.com/ambv/black
-    rev: stable
+    rev: 21.10b0
     hooks:
       - id: black
   - repo: https://github.com/pycqa/flake8
-    rev: stable
+    rev: 4.0.1
     hooks:
       - id: flake8
