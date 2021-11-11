@@ -13,9 +13,7 @@ feedback_api = Blueprint("feedback_api", __name__)
 def get_feedback():
     upload_ids = request.args.getlist("upload_ids")
     time_start = request.args.get("time_start", type=int, default=0)
-    time_end = request.args.get(
-        "time_end", type=int, default=constants.PSQL_INT_MAX
-    )
+    time_end = request.args.get("time_end", type=int, default=constants.PSQL_INT_MAX)
     feedback_type = request.args.get("feedback_type", type=int)
 
     query = Feedback.query
@@ -27,15 +25,11 @@ def get_feedback():
         except ValueError:
             abort(400)
         query = query.filter_by(type=feedback_type)
-    query = query.filter(
-        Feedback.time_range.contained_by(NumericRange(time_start, time_end))
-    )
+    query = query.filter(Feedback.time_range.contained_by(NumericRange(time_start, time_end)))
 
     response = []
     for feedback in query.all() or []:
-        time_start, time_end = get_integral_numeric_range_bounds(
-            feedback.time_range
-        )
+        time_start, time_end = get_integral_numeric_range_bounds(feedback.time_range)
         response.append(
             {
                 "id": feedback.id,

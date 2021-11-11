@@ -4,9 +4,7 @@ import uuid
 from dotenv import load_dotenv
 
 parser = argparse.ArgumentParser()
-parser.add_argument(
-    "-m", "--mock", dest="requested_mock_data", action="store_true"
-)
+parser.add_argument("-m", "--mock", dest="requested_mock_data", action="store_true")
 args = parser.parse_args()
 
 success = load_dotenv(".env.development")
@@ -43,9 +41,7 @@ if success:
         add_commit_rows(user1, user2)
 
         upload1 = Upload(category=Upload.Category.INTERVIEW, user_id=user1.id)
-        upload2 = Upload(
-            category=Upload.Category.PRESENTATION, user_id=user1.id
-        )
+        upload2 = Upload(category=Upload.Category.PRESENTATION, user_id=user1.id)
         upload3 = Upload(category=Upload.Category.INTERVIEW, user_id=user1.id)
         add_commit_rows(upload1, upload2, upload3)
 
