@@ -54,5 +54,8 @@ class Feedback(db.Model):
 from api.feedback import feedback_api   # noqa: E402
 app.register_blueprint(feedback_api)
 
+from api.analyze import analyze_api
+app.register_blueprint(analyze_api)
+
 if __name__ == '__main__':
     app.run()
