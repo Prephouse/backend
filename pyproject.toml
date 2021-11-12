@@ -7,5 +7,7 @@ exclude = '''
   | \.sh
   | \.venv
   | Dockerfile
+  | prephouse_pb2.py
+  | prephouse_pb2_grpc.py
 )/
 '''
