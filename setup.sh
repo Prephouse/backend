@@ -36,6 +36,8 @@ if [ $down = true ]; then
   docker-compose down --remove-orphans
 fi
 
+docker network create prephouse || true
+
 docker-compose build
 docker-compose up --detach && {
   sleep 10
@@ -43,9 +45,9 @@ docker-compose up --detach && {
   do
     ((iter_cnt++))
     if [ $mock = true ]; then
-      docker exec -it backend-prephouse-1 python3 create_schema.py --mock
+      docker exec -it backend_prephouse_1 python3 create_schema.py --mock
     else
-      docker exec -it backend-prephouse-1 python3 create_schema.py
+      docker exec -it backend_prephouse_1 python3 create_schema.py
     fi
     res=$?
     sleep 3

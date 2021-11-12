@@ -16,3 +16,7 @@ services:
     env_file:
       - .env.development
       - .env
+networks:
+  default:
+    external: true
+    name: prephouse
