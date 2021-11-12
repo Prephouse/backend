@@ -32,6 +32,9 @@ do
   esac
 done
 
+brew install pre-commit
+pre-commit install
+
 if [ $down = true ]; then
   docker-compose down --remove-orphans
 fi
