@@ -1,7 +1,7 @@
 import os
 
 import grpc
-from flask import jsonify, request, Blueprint
+from flask import Blueprint, jsonify, request
 
 from app import app
 from prephouse_pb2 import Video

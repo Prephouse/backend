@@ -1,4 +1,4 @@
-from flask import abort, jsonify, request, Blueprint
+from flask import Blueprint, abort, jsonify, request
 from psycopg2.extras import NumericRange
 
 import constants

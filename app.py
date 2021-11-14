@@ -4,10 +4,9 @@ import uuid
 
 import rollbar
 import rollbar.contrib.flask
-
 from flask import Flask, got_request_exception
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy.dialects.postgresql import UUID, INT4RANGE
+from sqlalchemy.dialects.postgresql import INT4RANGE, UUID
 from sqlalchemy.sql import func as sql_func
 
 app = Flask(__name__)
