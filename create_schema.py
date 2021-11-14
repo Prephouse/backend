@@ -17,8 +17,9 @@ def create_schema():
                     db.session.add(row)
                 db.session.commit()
 
-            from app import User, Upload, Feedback
             from psycopg2.extras import NumericRange
+
+            from app import Feedback, Upload, User
 
             user1 = User(
                 first_name="Jadon",
