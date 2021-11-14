@@ -2,7 +2,10 @@ import enum
 import os
 import uuid
 
-from flask import Flask
+import rollbar
+import rollbar.contrib.flask
+
+from flask import Flask, got_request_exception
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.dialects.postgresql import UUID, INT4RANGE
 from sqlalchemy.sql import func as sql_func
@@ -49,6 +52,18 @@ class Feedback(db.Model):
     time_range = db.Column(INT4RANGE(), nullable=False)
     user_report = db.Column(db.Text)
     upload_id = db.Column(UUID(as_uuid=True), db.ForeignKey("upload.id"), nullable=False)
+
+
+@app.before_first_request
+def init_rollbar():
+    rollbar.init(
+        os.environ["ROLLBAR_ACCESS_TOKEN"],
+        environment=os.environ["FLASK_ENV"],
+        root=os.path.dirname(os.path.realpath(__file__)),
+        allow_logging_basic_config=False,
+    )
+    # send exceptions from `app` to rollbar, using flask's signal system.
+    got_request_exception.connect(rollbar.contrib.flask.report_exception, app)
 
 
 from api.feedback import feedback_api  # noqa: E402
