@@ -21,12 +21,12 @@ display_help() {
   "
 }
 
-while getopts ":dhms" FLAG
+while getopts ":dhmu" FLAG
 do
   case $FLAG in
     d) down=true;;
     m) mock=true;;
-    s) up=true;;
+    u) up=true;;
     h) display_help; exit 0;;
     \?) echo "ERROR: One or more flags are not recognized by this script"; display_help; exit 1;;
   esac
@@ -48,9 +48,9 @@ docker-compose up --detach && {
   do
     ((iter_cnt++))
     if [ $mock = true ]; then
-      docker exec -it backend_prephouse_1 python3 create_schema.py --mock
+      docker exec -it prephouse-backend python3 create_schema.py --mock
     else
-      docker exec -it backend_prephouse_1 python3 create_schema.py
+      docker exec -it prephouse-backend python3 create_schema.py
     fi
     res=$?
     sleep 3
