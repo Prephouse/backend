@@ -2,20 +2,26 @@ version: '3'
 
 services:
   database:
+    container_name: prephouse-db
     image: postgres
     environment:
       - POSTGRES_DB=prephouse
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
     ports:
-      - "5432:5432"
+      - '5432:5432'
   prephouse:
+    container_name: prephouse-backend
+    image: prephouse-backend
     build: ./
-    ports: [ '3001:5000' ]
-    volumes: [ './:/app' ]
+    ports:
+      - '3001:5000'
+    volumes:
+      - './:/app'
     env_file:
       - .env.development
       - .env
+
 networks:
   default:
     external: true
