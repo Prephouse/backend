@@ -10,6 +10,6 @@
 ## Student Hours
 
 <!-- Complete the following table -->
-| Engineer     | Date            | Time spent (hrs) |
-|--------------|-----------------|----------------- |
-| @[username]  |                 |                  |
+| Engineer    | Date | Time spent (hrs) |
+|-------------|------|------------------|
+| @[username] |      |                  |

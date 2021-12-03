@@ -1,16 +1,15 @@
-# Prephouse Backend
+# Prephouse Backend (ph-backend)
 
-## Development Setup
+## Setup Instructions
 
-1. Download and install the [Docker Desktop](https://www.docker.com/products/docker-desktop) and
+1. Download and install [Docker Desktop](https://www.docker.com/products/docker-desktop) and
 [Docker Compose](https://docs.docker.com/compose/install/)
-2. Make sure Docker is running
-3. Go to the root directory of this project on your command line interface (CLI)
-4. Run `./setup.sh` on your CLI
+2. Run Docker Desktop on your machine
+3. Run `./setup.sh` on your command line interface (CLI)
 
-## Development Startup
+## Startup Instructions
 
-1. Make sure Docker is running
+1. Run Docker Desktop on your machine
 2. Run `docker-compose up` on your CLI to start the local database session and local development server
 3. Navigate to [localhost:3001](http://localhost:3001) on your web browser
 
