@@ -5,6 +5,7 @@ Flask~=2.0.2
 Flask-SQLAlchemy~=2.5.1
 grpcio==1.41.1
 grpcio-tools==1.41.1
+pre-commit~=2.16.0
 psycopg2~=2.9.2
 python-dotenv~=0.19.2
 requests~=2.26.0

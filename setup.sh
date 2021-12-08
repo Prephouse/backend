@@ -32,8 +32,13 @@ do
   esac
 done
 
-brew install pre-commit
-pre-commit install
+which -s brew
+if [[ $? != 0 ]] ; then
+  echo "Homebrew not found, please install the pre-commit library yourself (see https://pre-commit.com/)"
+else
+  brew install pre-commit
+  pre-commit install
+fi
 
 if [ $down = true ]; then
   docker-compose down --remove-orphans
