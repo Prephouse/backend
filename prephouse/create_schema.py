@@ -57,15 +57,25 @@ def create_schema(requested_mock_data: bool = False):
         )
         add_commit_rows(db, user1, user2)
 
-        upload1 = Upload(category=Upload.Category.INTERVIEW, user_id=user1.id)
-        upload2 = Upload(category=Upload.Category.PRESENTATION, user_id=user1.id)
-        upload3 = Upload(category=Upload.Category.INTERVIEW, user_id=user1.id)
+        engine1 = Engine(version="0.1.0")
+        add_commit_rows(db, engine1)
+
+        upload1 = Upload(
+            category=Upload.Category.INTERVIEW, user_id=user1.id, engine_id=engine1.id
+        )
+        upload2 = Upload(
+            category=Upload.Category.PRESENTATION, user_id=user1.id, engine_id=engine1.id
+        )
+        upload3 = Upload(
+            category=Upload.Category.INTERVIEW, user_id=user1.id, engine_id=engine1.id
+        )
         add_commit_rows(db, upload1, upload2, upload3)
 
         feedback1 = Feedback(
-            type=Feedback.Type.SENTIMENT,
-            text="testing...",
+            category=Feedback.Feature.PAUSE,
+            comment="testing...",
             score=2.5,
+            confidence=None,
             time_range=NumericRange(1, 10),
             user_report="is this working?",
             upload_id=upload1.id,

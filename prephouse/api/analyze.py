@@ -20,9 +20,32 @@ def analyze_upload():
 
     upload_link = request.args.get("upload_link", type=str)
 
+<<<<<<< HEAD
     try:
         channel = grpc.insecure_channel(
             f"{os.environ['ENGINE_GRPC_IP']}:{os.environ['ENGINE_GRPC_PORT']}"
+=======
+    with grpc.insecure_channel(
+        f"{os.environ['ENGINE_GRPC_IP']}:{os.environ['ENGINE_GRPC_PORT']}"
+    ) as channel:
+        stub = PrephouseEngineStub(channel)
+        feedback = stub.GetFeedback(Video(link=upload_link))
+
+        # TODO Save Feedback into DB
+
+        return jsonify(
+            [
+                {
+                    "category": f.category,
+                    "comment": f.comment,
+                    "score": f.score,
+                    "confidence": f.confidence,
+                    "time_start": f.timeStart,
+                    "time_end": f.timeEnd,
+                }
+                for f in feedback
+            ]
+>>>>>>> c3b9c19 (update tables)
         )
         stub = PrephouseEngineStub(channel)
         feedback_future = stub.GetFeedback.future(Video(link=upload_link))

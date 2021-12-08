@@ -22,4 +22,7 @@ def get_integral_numeric_range_bounds(nr: NumericRange) -> tuple[int, int]:
 
 def get_version_regex_str() -> str:
     return "^\\d+.\\d+.\\d+(-alpha\\d{1,2}|-beta\\d{1,2}|-RC)?$"
+<<<<<<< HEAD
 
+=======
+>>>>>>> 7a60fd4 (update tables)
