@@ -15,46 +15,48 @@ def add_commit_rows(db: SQLAlchemy, *rows: tuple[Any, ...]):
 
 
 def create_schema(requested_mock_data: bool = False):
-    if load_dotenv(".env.development") and os.environ.get("FLASK_ENV") == "development":
-        from app import create_app, db
+    if not (load_dotenv(".env.development") and os.environ.get("FLASK_ENV") == "development"):
+        return
 
-        create_app()
-        db.create_all()
+    from app import create_app, db
 
-        if requested_mock_data:
+    create_app()
+    db.create_all()
 
-            from app import Feedback, Upload, User
+    if requested_mock_data:
 
-            user1 = User(
-                first_name="Jadon",
-                last_name="Fan",
-                email="j53fan@uwaterloo.ca",
-                firebase_token=uuid.uuid4(),
-                is_admin=True,
-            )
-            user2 = User(
-                first_name="Chandler",
-                last_name="Lei",
-                email="q4lei@uwaterloo.ca",
-                firebase_token=uuid.uuid4(),
-                is_admin=True,
-            )
-            add_commit_rows(db, user1, user2)
+        from app import Feedback, Upload, User
 
-            upload1 = Upload(category=Upload.Category.INTERVIEW, user_id=user1.id)
-            upload2 = Upload(category=Upload.Category.PRESENTATION, user_id=user1.id)
-            upload3 = Upload(category=Upload.Category.INTERVIEW, user_id=user1.id)
-            add_commit_rows(db, upload1, upload2, upload3)
+        user1 = User(
+            first_name="Jadon",
+            last_name="Fan",
+            email="j53fan@uwaterloo.ca",
+            firebase_token=uuid.uuid4(),
+            is_admin=True,
+        )
+        user2 = User(
+            first_name="Chandler",
+            last_name="Lei",
+            email="q4lei@uwaterloo.ca",
+            firebase_token=uuid.uuid4(),
+            is_admin=True,
+        )
+        add_commit_rows(db, user1, user2)
 
-            feedback1 = Feedback(
-                type=Feedback.Type.SENTIMENT,
-                text="testing...",
-                score=2.5,
-                time_range=NumericRange(1, 10),
-                user_report="is this working?",
-                upload_id=upload1.id,
-            )
-            add_commit_rows(db, feedback1)
+        upload1 = Upload(category=Upload.Category.INTERVIEW, user_id=user1.id)
+        upload2 = Upload(category=Upload.Category.PRESENTATION, user_id=user1.id)
+        upload3 = Upload(category=Upload.Category.INTERVIEW, user_id=user1.id)
+        add_commit_rows(db, upload1, upload2, upload3)
+
+        feedback1 = Feedback(
+            type=Feedback.Type.SENTIMENT,
+            text="testing...",
+            score=2.5,
+            time_range=NumericRange(1, 10),
+            user_report="is this working?",
+            upload_id=upload1.id,
+        )
+        add_commit_rows(db, feedback1)
 
 
 if __name__ == "__main__":
