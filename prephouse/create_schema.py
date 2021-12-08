@@ -60,15 +60,11 @@ def create_schema(requested_mock_data: bool = False):
         engine1 = Engine(version="0.1.0")
         add_commit_rows(db, engine1)
 
-        upload1 = Upload(
-            category=Upload.Category.INTERVIEW, user_id=user1.id, engine_id=engine1.id
-        )
+        upload1 = Upload(category=Upload.Category.INTERVIEW, user_id=user1.id, engine_id=engine1.id)
         upload2 = Upload(
             category=Upload.Category.PRESENTATION, user_id=user1.id, engine_id=engine1.id
         )
-        upload3 = Upload(
-            category=Upload.Category.INTERVIEW, user_id=user1.id, engine_id=engine1.id
-        )
+        upload3 = Upload(category=Upload.Category.INTERVIEW, user_id=user1.id, engine_id=engine1.id)
         add_commit_rows(db, upload1, upload2, upload3)
 
         feedback1 = Feedback(
