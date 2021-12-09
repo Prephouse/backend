@@ -39,7 +39,7 @@ def create_schema(requested_mock_data: bool = False):
 
     if requested_mock_data:
 
-        from prephouse.model import Feedback, Upload, User
+        from prephouse.model import Engine, Feedback, Upload, User
 
         user1 = User(
             first_name="Jadon",

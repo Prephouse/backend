@@ -18,3 +18,6 @@ def get_integral_numeric_range_bounds(nr: NumericRange) -> tuple[int, int]:
     if m is None:
         raise TypeError("Invalid numeric range")
     return int(m.group(1)), int(m.group(2))
+
+def get_version_regex_str() -> str:
+    return "^\\d+.\\d+.\\d+(-alpha\\d{1,2}|-beta\\d{1,2}|-RC)?$"
