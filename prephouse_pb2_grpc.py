@@ -14,10 +14,10 @@ class PrephouseEngineStub(object):
         Args:
             channel: A grpc.Channel.
         """
-        self.GetFeedback = channel.unary_stream(
+        self.GetFeedback = channel.unary_unary(
                 '/PrephouseEngine/GetFeedback',
                 request_serializer=prephouse__pb2.Video.SerializeToString,
-                response_deserializer=prephouse__pb2.Feedback.FromString,
+                response_deserializer=prephouse__pb2.FeedbackList.FromString,
                 )
 
 
@@ -33,10 +33,10 @@ class PrephouseEngineServicer(object):
 
 def add_PrephouseEngineServicer_to_server(servicer, server):
     rpc_method_handlers = {
-            'GetFeedback': grpc.unary_stream_rpc_method_handler(
+            'GetFeedback': grpc.unary_unary_rpc_method_handler(
                     servicer.GetFeedback,
                     request_deserializer=prephouse__pb2.Video.FromString,
-                    response_serializer=prephouse__pb2.Feedback.SerializeToString,
+                    response_serializer=prephouse__pb2.FeedbackList.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -59,8 +59,8 @@ class PrephouseEngine(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_stream(request, target, '/PrephouseEngine/GetFeedback',
+        return grpc.experimental.unary_unary(request, target, '/PrephouseEngine/GetFeedback',
             prephouse__pb2.Video.SerializeToString,
-            prephouse__pb2.Feedback.FromString,
+            prephouse__pb2.FeedbackList.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

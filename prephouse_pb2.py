@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x0fprephouse.proto\"\x15\n\x05Video\x12\x0c\n\x04link\x18\x01 \x01(\t\"\x8b\x01\n\x08\x46\x65\x65\x64\x62\x61\x63k\x12\x0c\n\x04type\x18\x01 \x01(\t\x12\x11\n\x04text\x18\x02 \x01(\tH\x00\x88\x01\x01\x12\r\n\x05score\x18\x03 \x01(\x02\x12\x16\n\ttimeStart\x18\x04 \x01(\x02H\x01\x88\x01\x01\x12\x14\n\x07timeEnd\x18\x05 \x01(\x02H\x02\x88\x01\x01\x42\x07\n\x05_textB\x0c\n\n_timeStartB\n\n\x08_timeEnd27\n\x0fPrephouseEngine\x12$\n\x0bGetFeedback\x12\x06.Video\x1a\t.Feedback\"\x00\x30\x01\x62\x06proto3'
+  serialized_pb=b'\n\x0fprephouse.proto\"\x15\n\x05Video\x12\x0c\n\x04link\x18\x01 \x01(\t\"\x8b\x01\n\x08\x46\x65\x65\x64\x62\x61\x63k\x12\x0c\n\x04type\x18\x01 \x01(\t\x12\x11\n\x04text\x18\x02 \x01(\tH\x00\x88\x01\x01\x12\r\n\x05score\x18\x03 \x01(\x02\x12\x16\n\ttimeStart\x18\x04 \x01(\x02H\x01\x88\x01\x01\x12\x14\n\x07timeEnd\x18\x05 \x01(\x02H\x02\x88\x01\x01\x42\x07\n\x05_textB\x0c\n\n_timeStartB\n\n\x08_timeEnd\"+\n\x0c\x46\x65\x65\x64\x62\x61\x63kList\x12\x1b\n\x08\x66\x65\x65\x64\x62\x61\x63k\x18\x01 \x03(\x0b\x32\t.Feedback29\n\x0fPrephouseEngine\x12&\n\x0bGetFeedback\x12\x06.Video\x1a\r.FeedbackList\"\x00\x62\x06proto3'
 )
 
 
@@ -131,6 +131,38 @@ _FEEDBACK = _descriptor.Descriptor(
   serialized_end=182,
 )
 
+
+_FEEDBACKLIST = _descriptor.Descriptor(
+  name='FeedbackList',
+  full_name='FeedbackList',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='feedback', full_name='FeedbackList.feedback', index=0,
+      number=1, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=184,
+  serialized_end=227,
+)
+
 _FEEDBACK.oneofs_by_name['_text'].fields.append(
   _FEEDBACK.fields_by_name['text'])
 _FEEDBACK.fields_by_name['text'].containing_oneof = _FEEDBACK.oneofs_by_name['_text']
@@ -140,8 +172,10 @@ _FEEDBACK.fields_by_name['timeStart'].containing_oneof = _FEEDBACK.oneofs_by_nam
 _FEEDBACK.oneofs_by_name['_timeEnd'].fields.append(
   _FEEDBACK.fields_by_name['timeEnd'])
 _FEEDBACK.fields_by_name['timeEnd'].containing_oneof = _FEEDBACK.oneofs_by_name['_timeEnd']
+_FEEDBACKLIST.fields_by_name['feedback'].message_type = _FEEDBACK
 DESCRIPTOR.message_types_by_name['Video'] = _VIDEO
 DESCRIPTOR.message_types_by_name['Feedback'] = _FEEDBACK
+DESCRIPTOR.message_types_by_name['FeedbackList'] = _FEEDBACKLIST
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 Video = _reflection.GeneratedProtocolMessageType('Video', (_message.Message,), {
@@ -158,6 +192,13 @@ Feedback = _reflection.GeneratedProtocolMessageType('Feedback', (_message.Messag
   })
 _sym_db.RegisterMessage(Feedback)
 
+FeedbackList = _reflection.GeneratedProtocolMessageType('FeedbackList', (_message.Message,), {
+  'DESCRIPTOR' : _FEEDBACKLIST,
+  '__module__' : 'prephouse_pb2'
+  # @@protoc_insertion_point(class_scope:FeedbackList)
+  })
+_sym_db.RegisterMessage(FeedbackList)
+
 
 
 _PREPHOUSEENGINE = _descriptor.ServiceDescriptor(
@@ -167,8 +208,8 @@ _PREPHOUSEENGINE = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=184,
-  serialized_end=239,
+  serialized_start=229,
+  serialized_end=286,
   methods=[
   _descriptor.MethodDescriptor(
     name='GetFeedback',
@@ -176,7 +217,7 @@ _PREPHOUSEENGINE = _descriptor.ServiceDescriptor(
     index=0,
     containing_service=None,
     input_type=_VIDEO,
-    output_type=_FEEDBACK,
+    output_type=_FEEDBACKLIST,
     serialized_options=None,
     create_key=_descriptor._internal_create_key,
   ),
