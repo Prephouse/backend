@@ -35,7 +35,7 @@ def get_feedback():
                 "id": feedback.id,
                 "upload_id": feedback.upload_id,
                 "type": feedback.category.value,
-                "text": feedback.text,
+                "comment": feedback.comment,
                 "score": float(feedback.score),
                 "time_start": time_start,
                 "time_end": time_end,
