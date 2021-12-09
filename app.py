@@ -16,7 +16,7 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
 
 
-class User(db.Model):
+class User(db.Model):  # type: ignore
     id = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.String, nullable=False)
     last_name = db.Column(db.String, nullable=False)
@@ -26,7 +26,7 @@ class User(db.Model):
     uploads = db.relationship("Upload", backref="user", lazy=True)
 
 
-class Upload(db.Model):
+class Upload(db.Model):  # type: ignore
     class Category(enum.Enum):
         INTERVIEW = 0
         PRESENTATION = 1
@@ -39,7 +39,7 @@ class Upload(db.Model):
     feedbacks = db.relationship("Feedback", backref="upload", lazy=True)
 
 
-class Feedback(db.Model):
+class Feedback(db.Model):  # type: ignore
     class Type(enum.Enum):
         PAUSE = 0
         SENTIMENT = 1
