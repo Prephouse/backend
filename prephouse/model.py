@@ -80,3 +80,4 @@ class FillerWord(db.Model):
     upload_id = db.Column(UUID(as_uuid=True), db.ForeignKey("upload.id"), primary_key=True)
     word = db.Column(db.String, primary_key=True)
     count = db.Column(db.Integer, nullable=False)
+    feedbacks = db.relationship("Feedback", backref="upload", lazy=True)
