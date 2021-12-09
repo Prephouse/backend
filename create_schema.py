@@ -7,25 +7,27 @@ from dotenv import load_dotenv
 from flask_sqlalchemy import SQLAlchemy
 from psycopg2.extras import NumericRange
 
+from create_app import create_app
 
-def add_commit_rows(db: SQLAlchemy, *rows: tuple[Any, ...]):
+
+def add_commit_rows(_db: SQLAlchemy, *rows: tuple[Any, ...]):
     for row in rows:
-        db.session.add(row)
-    db.session.commit()
+        _db.session.add(row)
+    _db.session.commit()
 
 
 def create_schema(requested_mock_data: bool = False):
     if not (load_dotenv(".env.development") and os.environ.get("FLASK_ENV") == "development"):
         return
 
-    from app import create_app, db
+    from database import db
 
-    create_app()
+    create_app(db)
     db.create_all()
 
     if requested_mock_data:
 
-        from app import Feedback, Upload, User
+        from database import Feedback, Upload, User
 
         user1 = User(
             first_name="Jadon",

@@ -1,15 +1,15 @@
 from flask import Blueprint, abort, jsonify, request
 from psycopg2.extras import NumericRange
 
-import constants
-from app import Feedback, app
-from utils import get_integral_numeric_range_bounds
+from database import Feedback
+from utils import constants
+from utils.sql_utils import get_integral_numeric_range_bounds
 
-feedback_api = Blueprint("feedback_api", __name__)
+feedback_api = Blueprint("feedback_api", __name__, url_prefix="/feedback")
 
 
 # TODO integrate OAuth check
-@app.route("/feedback")
+@feedback_api.route("/")
 def get_feedback():
     upload_ids = request.args.getlist("upload_ids")
     time_start = request.args.get("time_start", type=int, default=0)

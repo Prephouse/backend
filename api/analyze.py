@@ -3,11 +3,10 @@ import os
 import grpc
 from flask import Blueprint, jsonify, request
 
-from app import app
 from prephouse_pb2 import Video
 from prephouse_pb2_grpc import PrephouseEngineStub
 
-analyze_api = Blueprint("analyze_api", __name__)
+analyze_api = Blueprint("analyze_api", __name__, url_prefix="/analyze")
 
 
 def analyze_callback(feedback_future, channel):
@@ -18,7 +17,7 @@ def analyze_callback(feedback_future, channel):
     pass
 
 
-@app.route("/analyze")
+@analyze_api.route("/")
 def analyze_upload():
     upload_link = request.args.get("upload_link", type=str)
 
