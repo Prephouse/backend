@@ -4,7 +4,6 @@ import uuid
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.dialects.postgresql import INT4RANGE, JSON, UUID
 from sqlalchemy.sql import func as sql_func
-from utils.sql_utils import get_version_regex_str
 
 db = SQLAlchemy()
 
@@ -20,7 +19,9 @@ class User(db.Model):  # type: ignore
 
 
 class Engine(db.Model):  # type: ignore
-    __table_args__ = (db.CheckConstraint(f"version ~ '{get_version_regex_str()}'"),)
+    __table_args__ = (
+        db.CheckConstraint(r"version ~ '^\d+.\d+.\d+(-alpha\d{1,2}|-beta\d{1,2}|-RC)?$'"),
+    )
 
     id = db.Column(db.Integer, primary_key=True)
     version = db.Column(db.String, nullable=False)
@@ -57,7 +58,7 @@ class Feedback(db.Model):  # type: ignore
         EMOTION = 4
         PITCH = 5
 
-    __table_args__ = (db.CheckConstraint("confidence BETWEEN 0 AND 100"),)
+    __table_args__ = (db.CheckConstraint(r"confidence BETWEEN 0 AND 100"),)
 
     id = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     category = db.Column(db.Enum(Feature), nullable=False)

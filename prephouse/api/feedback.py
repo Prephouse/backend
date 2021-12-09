@@ -36,7 +36,7 @@ def get_feedback():
             "comment": feedback.comment,
             "score": float(feedback.score),
         }
-        if tr := feedback.time_range is not None:
+        if tr := feedback.time_range:
             time_start, time_end = get_integral_numeric_range_bounds(tr)
             item |= {
                 "time_start": time_start,
