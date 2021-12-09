@@ -3,7 +3,6 @@ import os
 import uuid
 from typing import Any
 
-from app_factory import create_app
 from dotenv import load_dotenv
 from flask_sqlalchemy import SQLAlchemy
 from psycopg2.extras import NumericRange
