@@ -1,7 +1,7 @@
 exclude: >
   (?x)^(
-    prephouse_pb2.py |
-    prephouse_pb2_grpc.py
+    prephouse/prephouse_pb2.py |
+    prephouse/prephouse_pb2_grpc.py
   )$
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks

@@ -53,9 +53,9 @@ docker-compose up --detach && {
   do
     ((iter_cnt++))
     if [ $mock = true ]; then
-      docker exec -it prephouse-backend python3 create_schema.py --mock
+      docker exec -it prephouse-backend python3 prephouse/create_schema.py --mock
     else
-      docker exec -it prephouse-backend python3 create_schema.py
+      docker exec -it prephouse-backend python3 prephouse/create_schema.py
     fi
     res=$?
     sleep 3

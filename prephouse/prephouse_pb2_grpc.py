@@ -12,7 +12,7 @@ class PrephouseEngineStub(object):
         """Constructor.
 
         Args:
-            channel: A grpc.Channel.
+            channel: A rpc.Channel.
         """
         self.GetFeedback = channel.unary_unary(
                 '/PrephouseEngine/GetFeedback',

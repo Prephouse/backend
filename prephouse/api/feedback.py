@@ -1,9 +1,9 @@
 from flask import Blueprint, abort, jsonify, request
 from psycopg2.extras import NumericRange
 
-from model import Feedback
-from utils import constants
-from utils.sql_utils import get_integral_numeric_range_bounds
+from prephouse.model import Feedback
+from prephouse.utils import constants
+from prephouse.utils.sql_utils import get_integral_numeric_range_bounds
 
 feedback_api = Blueprint("feedback_api", __name__, url_prefix="/feedback")
 

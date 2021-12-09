@@ -3,9 +3,6 @@ import os
 import grpc
 from flask import Blueprint, request
 
-from prephouse_pb2 import Video
-from prephouse_pb2_grpc import PrephouseEngineStub
-
 analyze_api = Blueprint("analyze_api", __name__, url_prefix="/analyze")
 
 
@@ -19,6 +16,9 @@ def analyze_callback(feedback_future, channel):
 
 @analyze_api.route("/")
 def analyze_upload():
+    from prephouse.prephouse_pb2 import Video
+    from prephouse.prephouse_pb2_grpc import PrephouseEngineStub
+
     upload_link = request.args.get("upload_link", type=str)
 
     try:
