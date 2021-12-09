@@ -4,13 +4,12 @@ import uuid
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.dialects.postgresql import INT4RANGE, JSON, UUID
 from sqlalchemy.sql import func as sql_func
-
 from utils.sql_utils import get_version_regex_str
 
 db = SQLAlchemy()
 
 
-class User(db.Model):
+class User(db.Model):  # type: ignore
     id = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.String, nullable=False)
     last_name = db.Column(db.String, nullable=False)
@@ -20,7 +19,7 @@ class User(db.Model):
     uploads = db.relationship("Upload", backref="user", lazy=True)
 
 
-class Engine(db.Model):
+class Engine(db.Model):  # type: ignore
     __table_args__ = (db.CheckConstraint(f"version ~ '{get_version_regex_str()}'"),)
 
     id = db.Column(db.Integer, primary_key=True)
@@ -29,7 +28,7 @@ class Engine(db.Model):
     uploads = db.relationship("Upload", backref="engine", lazy=True, uselist=False)
 
 
-class Upload(db.Model):
+class Upload(db.Model):  # type: ignore
     class Category(enum.Enum):
         INTERVIEW = 0
         PRESENTATION = 1
@@ -45,7 +44,7 @@ class Upload(db.Model):
     filler_words = db.relationship("FillerWord", backref="upload", lazy=True)
 
 
-class Feedback(db.Model):
+class Feedback(db.Model):  # type: ignore
     # Flask-SQLAlchemy is not able to resolve inner classes of the same name
     # even if their outer classes have different names, hence this enum class
     # name does not the corresponding table column name
@@ -70,13 +69,13 @@ class Feedback(db.Model):
     upload_id = db.Column(UUID(as_uuid=True), db.ForeignKey("upload.id"), nullable=False)
 
 
-class Suggestion(db.Model):
+class Suggestion(db.Model):  # type: ignore
     id = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     comment = db.Column(db.Text)
     upload_id = db.Column(UUID(as_uuid=True), db.ForeignKey("upload.id"), nullable=False)
 
 
-class FillerWord(db.Model):
+class FillerWord(db.Model):  # type: ignore
     upload_id = db.Column(UUID(as_uuid=True), db.ForeignKey("upload.id"), primary_key=True)
     word = db.Column(db.String, primary_key=True)
     count = db.Column(db.Integer, nullable=False)
