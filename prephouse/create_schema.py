@@ -8,6 +8,8 @@ from dotenv import load_dotenv
 from flask_sqlalchemy import SQLAlchemy
 from psycopg2.extras import NumericRange
 
+from prephouse.app_factory import create_app
+
 
 def add_commit_rows(_db: SQLAlchemy, *rows: tuple[Any, ...]):
     """
@@ -31,14 +33,14 @@ def create_schema(requested_mock_data: bool = False):
     if not (load_dotenv("../.env.development") and os.environ.get("FLASK_ENV") == "development"):
         return
 
-    from model import db
+    from prephouse.model import db
 
     create_app(db)
     db.create_all()
 
     if requested_mock_data:
 
-        from model import Feedback, Upload, User
+        from prephouse.model import Feedback, Upload, User
 
         user1 = User(
             first_name="Jadon",
