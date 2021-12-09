@@ -20,14 +20,14 @@ def create_schema(requested_mock_data: bool = False):
     if not (load_dotenv(".env.development") and os.environ.get("FLASK_ENV") == "development"):
         return
 
-    from database import db
+    from model import db
 
     create_app(db)
     db.create_all()
 
     if requested_mock_data:
 
-        from database import Feedback, Upload, User
+        from model import Feedback, Upload, User
 
         user1 = User(
             first_name="Jadon",

@@ -1,7 +1,7 @@
 from flask import Blueprint, abort, jsonify, request
 from psycopg2.extras import NumericRange
 
-from database import Feedback
+from model import Feedback
 from utils import constants
 from utils.sql_utils import get_integral_numeric_range_bounds
 
