@@ -15,10 +15,10 @@ def create_app(_db: SQLAlchemy) -> Flask:
     return _app
 
 
-def create_test_app(_db: SQLAlchemy) -> Flask:
+def create_test_app(_db: SQLAlchemy, _db_uri: str) -> Flask:
     _app = Flask(__name__)
     _app.config |= {
-        "SQLALCHEMY_DATABASE_URI": os.environ["SQLALCHEMY_DATABASE_URI_TEST"],
+        "SQLALCHEMY_DATABASE_URI": _db_uri,
         "SQLALCHEMY_TRACK_MODIFICATIONS": False,
         "TESTING": True,
     }
