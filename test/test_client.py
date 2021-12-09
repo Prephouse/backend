@@ -1,7 +1,7 @@
 import pytest
 
-from create_app import create_test_app
-from model import db
+from prephouse.app_factory import create_test_app
+from prephouse.model import db
 
 
 @pytest.fixture
