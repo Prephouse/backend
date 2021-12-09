@@ -64,7 +64,7 @@ class Feedback(db.Model):  # type: ignore
     comment = db.Column(db.Text)
     score = db.Column(db.Numeric(10, 2), nullable=False)
     confidence = db.Column(db.Integer)
-    time_range = db.Column(INT4RANGE(), nullable=False)
+    time_range = db.Column(INT4RANGE())
     user_report = db.Column(db.Text)
     upload_id = db.Column(UUID(as_uuid=True), db.ForeignKey("upload.id"), nullable=False)
 
