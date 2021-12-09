@@ -10,12 +10,24 @@ from psycopg2.extras import NumericRange
 
 
 def add_commit_rows(_db: SQLAlchemy, *rows: tuple[Any, ...]):
+    """
+    Add and commit table rows into the current database session.
+
+    :param _db: a PSQL database instance wrapped in SQLAlchemy
+    :param rows: the table rows to be added and committed
+    """
     for row in rows:
         _db.session.add(row)
     _db.session.commit()
 
 
 def create_schema(requested_mock_data: bool = False):
+    """
+    Create the prephouse database and, if requested, some mock data for the database.
+
+    :param requested_mock_data: `True` if mock data should be included after the database
+           is created; `False` otherwise
+    """
     if not (load_dotenv("../.env.development") and os.environ.get("FLASK_ENV") == "development"):
         return
 

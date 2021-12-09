@@ -17,3 +17,10 @@
 
 We are following the [PEP8](https://www.python.org/dev/peps/pep-0008/) style guide. A pre-commit hook
 has been set up to ensure that the codebase conforms to that guide.
+
+## Documentation
+
+We use the restructuredText format (see [PEP287](https://www.python.org/dev/peps/pep-0287/)) for writing
+docstrings in Python functions, classes, modules and so on. If you use VSCode, no further action should be required
+since restructuredText is set as the default docstring format. If you use PyCharm, go to Tools > Python Integrated Tools
+in the IDE preferences and select restructuredText as the docstring format.
