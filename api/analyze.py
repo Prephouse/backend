@@ -10,27 +10,27 @@ from prephouse_pb2_grpc import PrephouseEngineStub
 analyze_api = Blueprint("analyze_api", __name__)
 
 
+def analyze_callback(feedback_future, channel):
+    # TODO: Save Feedback into DB
+    feedback = feedback_future.result()
+    print(feedback)
+    channel.close()
+    pass
+
+
 @app.route("/analyze")
 def analyze_upload():
     upload_link = request.args.get("upload_link", type=str)
 
-    with grpc.insecure_channel(
-        f"{os.environ['ENGINE_GRPC_IP']}:{os.environ['ENGINE_GRPC_PORT']}"
-    ) as channel:
-        stub = PrephouseEngineStub(channel)
-        feedback = stub.GetFeedback(Video(link=upload_link))
-
-        # TODO: Save Feedback into DB
-
-        return jsonify(
-            [
-                {
-                    "type": f.type,
-                    "text": f.text,
-                    "score": f.score,
-                    "time_start": f.timeStart,
-                    "time_end": f.timeEnd,
-                }
-                for f in feedback
-            ]
+    try:
+        channel = grpc.insecure_channel(
+            f"{os.environ['ENGINE_GRPC_IP']}:{os.environ['ENGINE_GRPC_PORT']}"
         )
+        stub = PrephouseEngineStub(channel)
+        feedback_future = stub.GetFeedback.future(Video(link=upload_link))
+        feedback_future.add_done_callback(lambda future: analyze_callback(future, channel))
+    except:
+        # TODO: Return Error
+        pass
+
+    return {}
