@@ -7,7 +7,7 @@ analyze_api = Blueprint("analyze_api", __name__, url_prefix="/analyze")
 
 
 def analyze_callback(feedback_future: grpc.Future, channel: grpc.Channel):
-    # TODO save Feedback into DB
+    # TODO save feedback into DB
     feedback_future.result()
     channel.close()
     pass
@@ -27,7 +27,7 @@ def analyze_upload():
         stub = PrephouseEngineStub(channel)
         feedback_future = stub.GetFeedback.future(Video(link=upload_link))
         feedback_future.add_done_callback(lambda future: analyze_callback(future, channel))
-    except:  # noqa: E722
+    except grpc.RpcError:
         # TODO return error
         return {}
 
