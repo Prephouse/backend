@@ -3,6 +3,9 @@ import os
 import grpc
 from flask import Blueprint, request
 
+from prephouse.types.analyze_type import AnalyzeType
+from prephouse.types.base_type import BaseResponse
+
 analyze_api = Blueprint("analyze_api", __name__, url_prefix="/analyze")
 
 
@@ -14,7 +17,7 @@ def analyze_callback(feedback_future: grpc.Future, channel: grpc.Channel):
 
 
 @analyze_api.route("/")
-def analyze_upload():
+def analyze_upload() -> BaseResponse[AnalyzeType]:
     from prephouse.prephouse_pb2 import Video
     from prephouse.prephouse_pb2_grpc import PrephouseEngineStub
 
