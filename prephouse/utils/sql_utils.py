@@ -1,3 +1,5 @@
+"""Utility methods for creating PostgreSQL queries and parsing PostgreSQL query results."""
+
 import re
 
 from psycopg2.extras import NumericRange
