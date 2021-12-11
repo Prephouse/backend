@@ -32,8 +32,13 @@ do
   esac
 done
 
-brew install pre-commit
-pre-commit install
+which -s brew
+if [[ $? != 0 ]] ; then
+  echo "Homebrew not found, please install the pre-commit library yourself (see https://pre-commit.com/)"
+else
+  brew install pre-commit
+  pre-commit install
+fi
 
 if [ $down = true ]; then
   docker-compose down --remove-orphans
@@ -48,9 +53,9 @@ docker-compose up --detach && {
   do
     ((iter_cnt++))
     if [ $mock = true ]; then
-      docker exec -it prephouse-backend python3 create_schema.py --mock
+      docker exec -it prephouse-backend python3 prephouse/create_schema.py --mock
     else
-      docker exec -it prephouse-backend python3 create_schema.py
+      docker exec -it prephouse-backend python3 prephouse/create_schema.py
     fi
     res=$?
     sleep 3
