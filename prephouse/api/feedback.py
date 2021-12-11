@@ -29,17 +29,19 @@ def get_feedback():
 
     response = []
     for feedback in query.all() or []:
-        time_start, time_end = get_integral_numeric_range_bounds(feedback.time_range)
-        response.append(
-            {
-                "id": feedback.id,
-                "upload_id": feedback.upload_id,
-                "type": feedback.type.value,
-                "text": feedback.text,
-                "score": float(feedback.score),
+        item = {
+            "id": feedback.id,
+            "upload_id": feedback.upload_id,
+            "category": feedback.category.value,
+            "comment": feedback.comment,
+            "score": float(feedback.score),
+        }
+        if tr := feedback.time_range:
+            time_start, time_end = get_integral_numeric_range_bounds(tr)
+            item |= {
                 "time_start": time_start,
                 "time_end": time_end,
             }
-        )
+        response.append(item)
 
     return jsonify(response)
