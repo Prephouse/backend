@@ -77,6 +77,8 @@ class Suggestion(db.Model):  # type: ignore
 
 
 class FillerWord(db.Model):  # type: ignore
-    upload_id = db.Column(UUID(as_uuid=True), db.ForeignKey("upload.id"), primary_key=True)
-    word = db.Column(db.String, primary_key=True)
+    upload_id = db.Column(
+        UUID(as_uuid=True), db.ForeignKey("upload.id"), primary_key=True, autoincrement=False
+    )
+    word = db.Column(db.String, primary_key=True, autoincrement=False)
     count = db.Column(db.Integer, nullable=False)
