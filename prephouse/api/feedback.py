@@ -32,7 +32,7 @@ def get_feedback():
         item = {
             "id": feedback.id,
             "upload_id": feedback.upload_id,
-            "type": feedback.category.value,
+            "category": feedback.category.value,
             "comment": feedback.comment,
             "score": float(feedback.score),
         }

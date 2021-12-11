@@ -48,7 +48,7 @@ class Upload(db.Model):  # type: ignore
 class Feedback(db.Model):  # type: ignore
     # Flask-SQLAlchemy is not able to resolve inner classes of the same name
     # even if their outer classes have different names, hence this enum class
-    # name does not the corresponding table column name
+    # name does not match the corresponding table column name
     # TODO Jadon — investigate
     class Feature(enum.Enum):
         PAUSE = 0
