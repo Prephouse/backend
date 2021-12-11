@@ -7,11 +7,7 @@ exclude = '''
   | \.sh
   | \.venv
   | Dockerfile
-  | prephouse_pb2.py
-  | prephouse_pb2_grpc.py
+  | prephouse/prephouse_pb2.py
+  | prephouse/prephouse_pb2_grpc.py
 )/
 '''
-
-[tool.isort]
-profile = "black"
-multi_line_output = 3

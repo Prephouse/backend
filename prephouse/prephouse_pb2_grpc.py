@@ -15,10 +15,10 @@ class PrephouseEngineStub(object):
             channel: A grpc.Channel.
         """
         self.GetFeedback = channel.unary_unary(
-                '/PrephouseEngine/GetFeedback',
-                request_serializer=prephouse__pb2.Video.SerializeToString,
-                response_deserializer=prephouse__pb2.FeedbackList.FromString,
-                )
+            '/PrephouseEngine/GetFeedback',
+            request_serializer=prephouse__pb2.Video.SerializeToString,
+            response_deserializer=prephouse__pb2.FeedbackList.FromString,
+        )
 
 
 class PrephouseEngineServicer(object):
@@ -33,34 +33,34 @@ class PrephouseEngineServicer(object):
 
 def add_PrephouseEngineServicer_to_server(servicer, server):
     rpc_method_handlers = {
-            'GetFeedback': grpc.unary_unary_rpc_method_handler(
-                    servicer.GetFeedback,
-                    request_deserializer=prephouse__pb2.Video.FromString,
-                    response_serializer=prephouse__pb2.FeedbackList.SerializeToString,
-            ),
+        'GetFeedback': grpc.unary_unary_rpc_method_handler(
+            servicer.GetFeedback,
+            request_deserializer=prephouse__pb2.Video.FromString,
+            response_serializer=prephouse__pb2.FeedbackList.SerializeToString,
+        ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-            'PrephouseEngine', rpc_method_handlers)
+        'PrephouseEngine', rpc_method_handlers)
     server.add_generic_rpc_handlers((generic_handler,))
 
 
- # This class is part of an EXPERIMENTAL API.
+# This class is part of an EXPERIMENTAL API.
 class PrephouseEngine(object):
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod
     def GetFeedback(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
+                    target,
+                    options=(),
+                    channel_credentials=None,
+                    call_credentials=None,
+                    insecure=False,
+                    compression=None,
+                    wait_for_ready=None,
+                    timeout=None,
+                    metadata=None):
         return grpc.experimental.unary_unary(request, target, '/PrephouseEngine/GetFeedback',
-            prephouse__pb2.Video.SerializeToString,
-            prephouse__pb2.FeedbackList.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+                                             prephouse__pb2.Video.SerializeToString,
+                                             prephouse__pb2.FeedbackList.FromString,
+                                             options, channel_credentials,
+                                             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

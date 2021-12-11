@@ -1,0 +1,10 @@
+{
+  "git.enableSmartCommit": true,
+  "git.fetchOnPull": true,
+  "git.confirmSync": false,
+  "files.insertFinalNewline": true,
+  "files.trimTrailingWhitespace": true,
+  "python.formatting.provider": "black",
+  "autoDocstring.docstringFormat": "sphinx",
+  "editor.formatOnSave": true
+}
