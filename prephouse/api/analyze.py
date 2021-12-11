@@ -6,10 +6,9 @@ from flask import Blueprint, request
 analyze_api = Blueprint("analyze_api", __name__, url_prefix="/analyze")
 
 
-def analyze_callback(feedback_future, channel):
-    # TODO: Save Feedback into DB
-    feedback = feedback_future.result()
-    print(feedback)
+def analyze_callback(feedback_future: grpc.Future, channel: grpc.Channel):
+    # TODO save Feedback into DB
+    feedback_future.result()
     channel.close()
     pass
 
@@ -28,8 +27,8 @@ def analyze_upload():
         stub = PrephouseEngineStub(channel)
         feedback_future = stub.GetFeedback.future(Video(link=upload_link))
         feedback_future.add_done_callback(lambda future: analyze_callback(future, channel))
-    except:
-        # TODO: Return Error
-        pass
+    except:  # noqa: E722
+        # TODO return error
+        return {}
 
     return {}
