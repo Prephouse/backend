@@ -1,0 +1,17 @@
+{
+  "configurations": [
+    {
+      "name": "ph-backend (remote attach)",
+      "type": "python",
+      "request": "attach",
+      "port": 5678,
+      "host": "localhost",
+      "pathMappings": [
+        {
+          "localRoot": "${workspaceFolder}",
+          "remoteRoot": "/app"
+        }
+      ]
+    }
+  ]
+}
