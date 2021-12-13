@@ -1,6 +1,14 @@
-.DS_STORE
+# virtual environment
 /venv
-.idea/
+
+# caches
 __pycache__/
 .mypy_cache/
 .pytest_cache/
+
+# misc
+.DS_STORE
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local

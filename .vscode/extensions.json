@@ -1,7 +1,8 @@
 {
   "recommendations": [
     "ms-vsliveshare.vsliveshare",
-    "ms-python.vscode-pylance",
+    "ms-azuretools.vscode-docker",
+    "ms-python.python",
     "MarkLarah.pre-commit-vscode",
     "njpwerner.autodocstring"
   ]
