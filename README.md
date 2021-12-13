@@ -27,7 +27,7 @@
 - A live reload of the backend server will be triggered whenever you modify the [prephouse](prephouse)
   directory, [test](test) directory or their files
 
-### Developer Tools
+## Developer Tools
 
 We support both Visual Studio Code and PyCharm out of the box with the proper
 configurations automatically calibrated.
