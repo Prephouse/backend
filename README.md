@@ -8,8 +8,7 @@
 
 ### Setup
 
-1. Download and install [Docker Desktop](https://www.docker.com/products/docker-desktop) and
-[Docker Compose](https://docs.docker.com/compose/install/)
+1. Download and install [Docker Desktop][docker-desktop] and [Docker Compose][docker-compose]
 2. Run Docker Desktop on your machine
 3. Run `./setup.sh` on your command line interface (CLI)
 
@@ -17,7 +16,7 @@
 
 1. Run Docker Desktop on your machine
 2. Run `docker-compose up` on your CLI to start the local database session and local development server
-3. Navigate to [localhost:3001](http://localhost:3001) on your web browser
+3. Navigate to <http://localhost:3001> on your web browser
 
 ### Development
 
@@ -27,6 +26,9 @@
 - A live reload of the backend server will be triggered whenever you modify the [prephouse](prephouse)
   directory, [test](test) directory or their files
 
+[docker-desktop]: https://www.docker.com/products/docker-desktop
+[docker-compose]: (https://docs.docker.com/compose/install/)
+
 ## Developer Tools
 
 We support both Visual Studio Code and PyCharm out of the box with the proper
@@ -34,13 +36,17 @@ configurations automatically calibrated.
 
 ## Code Style
 
-We are following the [PEP8](https://www.python.org/dev/peps/pep-0008/) style guide. A pre-commit hook
+We are following the [PEP8][] style guide. A pre-commit hook
 has been created to enforce that guide when you attempt to commit your code to the git repository.
+
+[pep8]: https://www.python.org/dev/peps/pep-0008/
 
 ## Documentation
 
 We use the reStructuredText format (reST) for writing docstrings in Python functions, classes, modules and so on
-(see [PEP287](https://www.python.org/dev/peps/pep-0287/)). If you use VS Code, install the [_Python Docstring
-Generator_](https://marketplace.visualstudio.com/items?itemName=njpwerner.autodocstring) extension; reST will be set as
-the default docstring format. If you use PyCharm, go to Tools > Python Integrated Tools in the IDE preferences and
-select reStructuredText as the docstring format.
+(see [PEP287][]). If you use VSCode, install the [_Python Docstring Generator_][vsc-ds-generator] extension; reST
+will be set as the default docstring format. If you use PyCharm, go to Tools > Python Integrated Tools in the IDE
+preferences and select reStructuredText as the docstring format.
+
+[pep287]: https://www.python.org/dev/peps/pep-0287/
+[vsc-ds-generator]: https://marketplace.visualstudio.com/items?itemName=njpwerner.autodocstring
