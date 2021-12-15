@@ -1,7 +1,9 @@
 import os
 
 from flask import Flask
+from flask_seasurf import SeaSurf
 from flask_sqlalchemy import SQLAlchemy
+from flask_talisman import DENY, Talisman
 
 
 def create_app(_db: SQLAlchemy) -> Flask:
@@ -12,13 +14,35 @@ def create_app(_db: SQLAlchemy) -> Flask:
     :return: the Flask app instance with the proper configurations for staging
               and prod environments
     """
+    # Initialize Flask app
     _app = Flask(__name__)
     _app.config |= {
+        "SECRET_KEY": os.environ["FLASK_SECRET_KEY"],
         "SQLALCHEMY_DATABASE_URI": os.environ["SQLALCHEMY_DATABASE_URI"],
         "SQLALCHEMY_TRACK_MODIFICATIONS": False,
+        "CSRF_COOKIE_HTTPONLY": True,
+        "CSRF_COOKIE_SECURE": True,
     }
+
+    # Initialize web security measures such as CSP, HSTS and CSRF
+    Talisman(
+        _app,
+        frame_options=DENY,
+        content_security_policy={
+            "default-src": "'none'",
+            "frame-ancestors": "'none'",
+            "require-trusted-types-for": "'script'",
+        },
+    )
+    csrf = SeaSurf()
+    csrf.init_app(_app)
+
+    # Initialize database
     _db.init_app(_app)
+
+    # Bind app context
     _app.app_context().push()
+
     return _app
 
 
