@@ -3,7 +3,7 @@ from typing import Final
 import pytest
 
 from prephouse.app_factory import create_test_app
-from prephouse.model import db
+from prephouse.models import db
 
 PSQL_URI: Final[str] = "postgresql://postgres:postgres@database:5432"
 DATABASE_NAME: Final[str] = "prephouse_test"

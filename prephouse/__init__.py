@@ -1,7 +1,7 @@
 from flask import Blueprint
 
 from prephouse.app_factory import create_app
-from prephouse.model import db
+from prephouse.models import db
 
 app = create_app(db)
 

@@ -1,12 +1,12 @@
 from typing import Optional, TypedDict
 
 
-class _OptionalSingleFeedbackType(TypedDict, total=False):
+class _OptionalSingleFeedbackSchema(TypedDict, total=False):
     time_start: int
     time_end: int
 
 
-class _SingleFeedbackType(_OptionalSingleFeedbackType):
+class _SingleFeedbackSchema(_OptionalSingleFeedbackSchema):
     id: str
     upload_id: str
     category: int
@@ -15,4 +15,4 @@ class _SingleFeedbackType(_OptionalSingleFeedbackType):
 
 
 # awaiting support for typing.TypeAlias in mypy
-FeedbackType = list[_SingleFeedbackType]  # type alias
+FeedbackSchema = list[_SingleFeedbackSchema]  # type alias

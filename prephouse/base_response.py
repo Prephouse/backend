@@ -10,5 +10,5 @@ ErrorResponse = tuple[ErrorMessage, int]  # type alias
 BaseResponse = Union[S, tuple[S, int], ErrorResponse]  # type alias
 
 
-class TestResponse(Generic[T]):
+class BaseTestResponse(Generic[T]):
     response: T

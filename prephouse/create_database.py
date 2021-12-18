@@ -1,7 +1,6 @@
 import argparse
 import os
 import uuid
-from typing import Any
 
 from app_factory import create_app
 from dotenv import load_dotenv
@@ -9,7 +8,7 @@ from flask_sqlalchemy import SQLAlchemy
 from psycopg2.extras import NumericRange
 
 
-def add_commit_rows(_db: SQLAlchemy, *rows: tuple[Any, ...]):
+def add_commit_rows(_db: SQLAlchemy, *rows):
     """
     Add and commit table rows into the current database session.
 
@@ -21,7 +20,7 @@ def add_commit_rows(_db: SQLAlchemy, *rows: tuple[Any, ...]):
     _db.session.commit()
 
 
-def create_schema(requested_mock_data: bool = False):
+def create_database(requested_mock_data: bool = False):
     """
     Create the prephouse database and, if requested, some mock data for the database.
 
@@ -31,14 +30,14 @@ def create_schema(requested_mock_data: bool = False):
     if not (load_dotenv("../.env.development") and os.environ.get("FLASK_ENV") == "development"):
         return
 
-    from model import db
+    from models import db
 
     create_app(db)
     db.create_all()
 
     if requested_mock_data:
 
-        from model import Engine, Feedback, Upload, User
+        from models import Engine, Feedback, Upload, User
 
         user1 = User(
             first_name="Jadon",
@@ -83,4 +82,4 @@ if __name__ == "__main__":
     parser.add_argument("-m", "--mock", dest="requested_mock_data", action="store_true")
     args = parser.parse_args()
 
-    create_schema(args.requested_mock_data)
+    create_database(args.requested_mock_data)
