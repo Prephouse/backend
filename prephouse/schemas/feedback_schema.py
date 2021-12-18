@@ -1,18 +1,25 @@
-from typing import Optional, TypedDict
+from marshmallow import Schema, fields, validate
+
+from prephouse.models import Feedback
+from prephouse.utils import constants
 
 
-class _OptionalSingleFeedbackSchema(TypedDict, total=False):
-    time_start: int
-    time_end: int
+class FeedbackRequestSchema(Schema):
+    upload_ids = fields.List(fields.Int, dump_default=None)
+    time_start = fields.Int(dump_default=0)
+    time_end = fields.Int(dump_default=constants.PSQL_INT_MAX)
+    category = fields.Int(required=True, validate=validate.OneOf(list(map(int, Feedback.Feature))))
 
 
-class _SingleFeedbackSchema(_OptionalSingleFeedbackSchema):
-    id: str
-    upload_id: str
-    category: int
-    comment: Optional[str]
-    score: float
+class FeedbackResponseSchema(Schema):
+    time_start = fields.Int()
+    time_end = fields.Int()
+    id = fields.Int(required=True)
+    upload_id = fields.Int(required=True)
+    category = fields.Int(required=True, validate=validate.OneOf(list(map(int, Feedback.Feature))))
+    comment = fields.Str()
+    score = fields.Float(required=True, validate=validate.Range(min=0, max=10))
 
 
-# awaiting support for typing.TypeAlias in mypy
-FeedbackSchema = list[_SingleFeedbackSchema]  # type alias
+feedback_request_schema = FeedbackRequestSchema()
+feedback_response_schema = FeedbackResponseSchema(many=True)

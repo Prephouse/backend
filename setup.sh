@@ -46,7 +46,7 @@ fi
 
 docker network create prephouse || true
 
-docker-compose build
+docker-compose build --no-cache
 docker-compose up --detach && {
   sleep 7
   until [ $iter_cnt -gt 0 ] && [ $res = 0 ]
