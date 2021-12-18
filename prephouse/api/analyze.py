@@ -3,8 +3,8 @@ import os
 import grpc
 from flask import Blueprint, request
 
-from prephouse.types.analyze_type import AnalyzeType
-from prephouse.types.base_type import BaseResponse
+from prephouse.base_response import BaseResponse
+from prephouse.schemas.analysis_schema import AnalysisSchema
 
 analyze_api = Blueprint("analyze_api", __name__, url_prefix="/analyze")
 
@@ -16,8 +16,8 @@ def analyze_callback(feedback_future: grpc.Future, channel: grpc.Channel):
     pass
 
 
-@analyze_api.route("/")
-def analyze_upload() -> BaseResponse[AnalyzeType]:
+@analyze_api.get("/")
+def analyze_upload() -> BaseResponse[AnalysisSchema]:
     from prephouse.prephouse_pb2 import Video
     from prephouse.prephouse_pb2_grpc import PrephouseEngineStub
 

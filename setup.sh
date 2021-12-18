@@ -48,14 +48,14 @@ docker network create prephouse || true
 
 docker-compose build
 docker-compose up --detach && {
-  sleep 10
+  sleep 7
   until [ $iter_cnt -gt 0 ] && [ $res = 0 ]
   do
     ((iter_cnt++))
     if [ $mock = true ]; then
-      docker exec -it prephouse-backend python3 prephouse/create_schema.py --mock
+      docker exec -it prephouse-backend python3 prephouse/create_database.py --mock
     else
-      docker exec -it prephouse-backend python3 prephouse/create_schema.py
+      docker exec -it prephouse-backend python3 prephouse/create_database.py
     fi
     res=$?
     sleep 3
