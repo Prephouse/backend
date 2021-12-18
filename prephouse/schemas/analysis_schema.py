@@ -1,5 +1,5 @@
 from typing import TypedDict
 
 
-class AnalyzeType(TypedDict):
+class AnalysisSchema(TypedDict):
     pass

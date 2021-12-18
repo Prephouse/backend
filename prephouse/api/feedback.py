@@ -1,9 +1,9 @@
 from flask import Blueprint, abort, jsonify, request
 from psycopg2.extras import NumericRange
 
-from prephouse.model import Feedback
-from prephouse.types.base_type import BaseResponse
-from prephouse.types.feedback_type import FeedbackType
+from prephouse.base_response import BaseResponse
+from prephouse.models import Feedback
+from prephouse.schemas.feedback_schema import FeedbackSchema
 from prephouse.utils import constants
 from prephouse.utils.sql_utils import get_integral_numeric_range_bounds
 
@@ -11,8 +11,8 @@ feedback_api = Blueprint("feedback_api", __name__, url_prefix="/feedback")
 
 
 # TODO integrate OAuth check
-@feedback_api.route("/")
-def get_feedback() -> BaseResponse[FeedbackType]:
+@feedback_api.get("/")
+def get_feedback() -> BaseResponse[FeedbackSchema]:
     upload_ids = request.args.getlist("upload_ids")
     time_start = request.args.get("time_start", type=int, default=0)
     time_end = request.args.get("time_end", type=int, default=constants.PSQL_INT_MAX)
@@ -32,7 +32,7 @@ def get_feedback() -> BaseResponse[FeedbackType]:
         and Feedback.time_range.contained_by(NumericRange(time_start, time_end))
     )
 
-    response: FeedbackType = []
+    response: FeedbackSchema = []
     for feedback in query.all() or []:
         item = {
             "id": feedback.id,
