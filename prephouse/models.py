@@ -30,7 +30,8 @@ class Engine(db.Model):  # type: ignore
 
 
 class Upload(db.Model):  # type: ignore
-    class Category(enum.Enum):
+    @enum.unique
+    class Category(enum.IntEnum):
         INTERVIEW = 0
         PRESENTATION = 1
 
@@ -50,7 +51,8 @@ class Feedback(db.Model):  # type: ignore
     # even if their outer classes have different names, hence this enum class
     # name does not match the corresponding table column name
     # TODO Jadon — investigate
-    class Feature(enum.Enum):
+    @enum.unique
+    class Feature(enum.IntEnum):
         PAUSE = 0
         VOLUME = 1
         LIGHT = 2

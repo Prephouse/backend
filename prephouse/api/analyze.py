@@ -1,10 +1,9 @@
 import os
 
 import grpc
-from flask import Blueprint, request
+from flask import Blueprint, abort, request
 
-from prephouse.base_response import BaseResponse
-from prephouse.schemas.analysis_schema import AnalysisSchema
+from prephouse.schemas.analysis_schema import analysis_request_schema
 
 analyze_api = Blueprint("analyze_api", __name__, url_prefix="/analyze")
 
@@ -17,10 +16,12 @@ def analyze_callback(feedback_future: grpc.Future, channel: grpc.Channel):
 
 
 @analyze_api.get("/")
-def analyze_upload() -> BaseResponse[AnalysisSchema]:
+def analyze_upload():
     from prephouse.prephouse_pb2 import Video
     from prephouse.prephouse_pb2_grpc import PrephouseEngineStub
 
+    if validation_errors := analysis_request_schema.validate(request.args):
+        abort(422, validation_errors)
     upload_link = request.args.get("upload_link", type=str)
 
     try:
