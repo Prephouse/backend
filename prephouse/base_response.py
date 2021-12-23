@@ -1,13 +1,12 @@
-from typing import Generic, TypeVar, Union
+from typing import Generic, TypeAlias, TypeVar, Union
 
 S = TypeVar("S", str, dict, list[dict])
 T = TypeVar("T")
 
 
-# awaiting support for typing.TypeAlias in mypy
-ErrorMessage = str | None  # type alias
-ErrorResponse = tuple[ErrorMessage, int]  # type alias
-BaseResponse = Union[S, tuple[S, int], ErrorResponse]  # type alias
+ErrorMessage: TypeAlias = str | None
+ErrorResponse: TypeAlias = tuple[ErrorMessage, int]
+BaseResponse: TypeAlias = Union[S, tuple[S, int], ErrorResponse]
 
 
 class BaseTestResponse(Generic[T]):

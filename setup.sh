@@ -9,15 +9,12 @@ res=-1
 
 display_help() {
   echo "
-    USAGE: ./setup.sh [-d] [-h] [-m] [-u]
-    -------------------------------------------------------------------------------------------------------------------------
-    |  FLAG  |  DESCRIPTION                                          |  ARGUMENT                  |  DEFAULT                |
-    |--------|-------------------------------------------------------|----------------------------|-------------------------|
-    |  -d    |  remove existing docker containers first, if any      |  N/A                       |  false                  |
-    |  -h    |  display help message                                 |  N/A                       |  false                  |
-    |  -m    |  insert test data into prephouse database             |  N/A                       |  false                  |
-    |  -u    |  start container immediately after setup completion   |  N/A                       |  false                  |
-    -------------------------------------------------------------------------------------------------------------------------
+    usage: ./setup.sh [-dmu|-h]
+    options:
+      -d remove existing docker containers first, if any
+      -h display help message
+      -m insert test data into prephouse database
+      -u start container immediately after setup completion
   "
 }
 
@@ -36,7 +33,7 @@ which -s brew
 if [[ $? != 0 ]] ; then
   echo "Homebrew not found, please install the pre-commit library yourself (see https://pre-commit.com/)"
 else
-  brew install pre-commit
+  HOMEBREW_NO_AUTO_UPDATE=1 brew install pre-commit
   pre-commit install
 fi
 
@@ -61,7 +58,7 @@ docker-compose up --detach && {
     sleep 3
   done
 }
-docker-compose stop  # stop regardless of the [-u] flag
+docker-compose stop  # stop regardless of the -u option
 
 if [ $up = true ]; then
   docker-compose up --no-recreate
