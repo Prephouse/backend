@@ -25,17 +25,9 @@ do
     m) mock=true;;
     u) up=true;;
     h) display_help; exit 0;;
-    \?) echo "ERROR: One or more flags are not recognized by this script"; display_help; exit 1;;
+    \?) echo "ERROR: One or more options are not recognized by this script"; display_help; exit 1;;
   esac
 done
-
-which -s brew
-if [[ $? != 0 ]] ; then
-  echo "Homebrew not found, please install the pre-commit library yourself (see https://pre-commit.com/)"
-else
-  HOMEBREW_NO_AUTO_UPDATE=1 brew install pre-commit
-  pre-commit install
-fi
 
 if [ $down = true ]; then
   docker-compose down --remove-orphans

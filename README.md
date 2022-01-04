@@ -8,7 +8,8 @@
 
 ### Setup
 
-1. Download and install [Docker Desktop][docker-desktop] and [Docker Compose][docker-compose]
+1. Download and install [Docker Desktop][docker-desktop], [Docker Compose][docker-compose] and
+   [pre-commit][pre-commit]
 2. Run Docker Desktop on your machine
 3. Run `./setup.sh` on your command line interface (CLI)
 
@@ -24,10 +25,11 @@
   development-only packages, to [requirements-dev.txt](requirements-dev.txt)
 - Run `./setup.sh` when you need to install any new packages
 - A live reload of the backend server will be triggered whenever you modify the [prephouse](prephouse)
-  directory, [test](test) directory or their files
+  directory, [tests](tests) directory or their files
 
 [docker-desktop]: https://www.docker.com/products/docker-desktop
 [docker-compose]: (https://docs.docker.com/compose/install/)
+[pre-commit]: https://pre-commit.com/
 
 ## Developer Tools
 

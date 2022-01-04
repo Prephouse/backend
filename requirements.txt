@@ -1,6 +1,6 @@
 Babel~=2.9.1
 blinker==1.4
-boto3~=1.20.26
+boto3~=1.20.27
 Flask~=2.0.2
 Flask-Seasurf~=0.3.1
 Flask-SQLAlchemy~=2.5.1
@@ -8,8 +8,8 @@ flask-talisman~=0.8.1
 grpcio==1.43.0
 grpcio-tools==1.43.0
 marshmallow~=3.14.1
-psycopg2~=2.9.2
+psycopg2~=2.9.3
 python-dotenv~=0.19.2
-requests~=2.26.0
+requests~=2.27.0
 rollbar~=0.16.2
 SQLAlchemy~=1.4.29

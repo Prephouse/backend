@@ -1,4 +1,4 @@
 factory-boy~=3.2.1
-Faker~=10.0.0
+Faker~=11.1.0
 pre-commit~=2.16.0
 pytest~=6.2.5
