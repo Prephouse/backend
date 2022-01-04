@@ -11,12 +11,13 @@
 1. Download and install [Docker Desktop][docker-desktop], [Docker Compose][docker-compose] and
    [pre-commit][pre-commit]
 2. Run Docker Desktop on your machine
-3. Run `./setup.sh` on your command line interface (CLI)
+3. Copy the environment variable files (.env.*) to the root directory of this repository
+4. Run `./setup.sh`
 
 ### Startup
 
 1. Run Docker Desktop on your machine
-2. Run `docker-compose up` on your CLI to start the local database session and local development server
+2. Run `docker-compose up` to start the local database session and local development server
 3. Navigate to <http://localhost:3001> on your web browser
 
 ### Development
@@ -33,8 +34,7 @@
 
 ## Developer Tools
 
-We support both Visual Studio Code and PyCharm out of the box with the proper
-configurations automatically calibrated.
+We support Visual Studio Code and PyCharm out of the box.
 
 ## Code Style
 
