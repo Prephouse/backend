@@ -1,6 +1,7 @@
 import os
 
 from flask import Flask
+from flask_cors import CORS
 from flask_seasurf import SeaSurf
 from flask_sqlalchemy import SQLAlchemy
 from flask_talisman import DENY, Talisman
@@ -34,6 +35,7 @@ def create_app(_db: SQLAlchemy) -> Flask:
             "require-trusted-types-for": "'script'",
         },
     )
+    CORS(_app, support_credentials=True)
     csrf = SeaSurf()
     csrf.init_app(_app)
 
