@@ -7,10 +7,10 @@ app = create_app(db)
 
 from prephouse.api.analyze import analyze_api  # noqa: E402
 from prephouse.api.feedback import feedback_api  # noqa: E402
-from prephouse.watchers.rollbar_watcher import rollbar_watcher  # noqa: E402
+from prephouse.interceptors.rollbar_interceptor import rollbar_interceptor  # noqa: E402
 
 blueprints: tuple[Blueprint, ...] = (
-    rollbar_watcher,
+    rollbar_interceptor,
     feedback_api,
     analyze_api,
 )

@@ -15,7 +15,7 @@ def create_app(_db: SQLAlchemy) -> Flask:
     :return: the Flask app instance with the proper configurations for staging
               and prod environments
     """
-    # Initialize Flask app
+    # Initialize Flask application
     _app = Flask(__name__)
     _app.config |= {
         "SECRET_KEY": os.environ["FLASK_SECRET_KEY"],
@@ -25,7 +25,7 @@ def create_app(_db: SQLAlchemy) -> Flask:
         "CSRF_COOKIE_SECURE": True,
     }
 
-    # Initialize web security measures such as CSP, HSTS and CSRF
+    # Configure web security measures such as CSP, CORS, HSTS and CSRF
     Talisman(
         _app,
         frame_options=DENY,
@@ -39,7 +39,7 @@ def create_app(_db: SQLAlchemy) -> Flask:
     csrf = SeaSurf()
     csrf.init_app(_app)
 
-    # Initialize database
+    # Initialize PostgreSQL database
     _db.init_app(_app)
 
     # Bind app context
@@ -56,12 +56,21 @@ def create_test_app(_db: SQLAlchemy, _db_uri: str) -> Flask:
     :arg _db_uri: the PSQL URI **without** a specified database
     :return: the Flask app instance with the proper configurations for the test environment
     """
+    from secrets import token_hex
+
+    # Initialize Flask application
     _app = Flask(__name__)
     _app.config |= {
+        "SECRET_KEY": token_hex(16),
         "SQLALCHEMY_DATABASE_URI": _db_uri,
         "SQLALCHEMY_TRACK_MODIFICATIONS": False,
         "TESTING": True,
     }
+
+    # Initialize PostgreSQL database
     _db.init_app(_app)
+
+    # Bind app context
     _app.app_context().push()
+
     return _app

@@ -36,10 +36,11 @@
 
 We support Visual Studio Code and PyCharm out of the box.
 
-You can test the APIs with any API client such as Postman or your web browser. Firefox by default (with the
-`devtools.jsonview.enabled` flag set to `true`) renders an excellent JSON viewer for any HTTP response with
-`application/json` as the content type. Chrome and Edge can do something similar through the use of the JSON
-Formatter extension ([Chrome][json-formatter-chrome] | [Edge][json-formatter-edge]).
+You can test the APIs with any API client such as Postman or your web browser. Firefox, with the
+`devtools.jsonview.enabled` flag enabled in the browser configuration, displays an excellent
+JSON viewer for any HTTP response with `application/json` as the content type. Chrome and Edge can
+accomplish something similar through the use of the JSON Formatter extension
+([Chrome][json-formatter-chrome] | [Edge][json-formatter-edge]).
 
 [json-formatter-chrome]: https://chrome.google.com/webstore/detail/json-formatter/bcjindcccaagfpapjjmafapmmgkkhgoa
 [json-formatter-edge]: https://microsoftedge.microsoft.com/addons/detail/json-formatter-for-edge/njpoigijhgbionbfdbaopheedbpdoddi

@@ -4,7 +4,7 @@ import rollbar
 import rollbar.contrib.flask
 from flask import Blueprint, current_app, got_request_exception
 
-rollbar_watcher = Blueprint("rollbar_watcher", __name__)
+rollbar_interceptor = Blueprint("rollbar_interceptor", __name__)
 
 
 @current_app.before_first_request
