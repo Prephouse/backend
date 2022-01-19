@@ -51,7 +51,7 @@ docker-compose up --detach && {
     sleep 3
   done
 }
-docker-compose stop  # stop regardless of the -u option
+docker-compose stop
 
 if [ $up = true ]; then
   docker-compose up --no-recreate

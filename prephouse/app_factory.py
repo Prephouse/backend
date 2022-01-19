@@ -35,7 +35,7 @@ def create_app(_db: SQLAlchemy) -> Flask:
             "require-trusted-types-for": "'script'",
         },
     )
-    CORS(_app, support_credentials=True)
+    CORS(_app, support_credentials=True, origins=["*" if _app.debug else "https://prephouse.io"])
     csrf = SeaSurf()
     csrf.init_app(_app)
 
