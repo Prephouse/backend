@@ -1,0 +1,9 @@
+fix: true
+ignores: [".github/pull_request_template.md"]
+noInlineConfig: true
+noProgress: true
+config:
+  default: true
+  MD013:
+    line_length: 120
+  MD040: false

@@ -1,5 +1,6 @@
 {
   "recommendations": [
+    "DavidAnson.vscode-markdownlint",
     "MarkLarah.pre-commit-vscode",
     "ms-azuretools.vscode-docker",
     "ms-python.python",

@@ -1,7 +1,7 @@
 FROM python:3.10
 
 LABEL version="1.0" \
-      description="Runs the Prephouse backend server that includes the Flask application and a PostgreSQL DB session"
+      description="Run the Prephouse backend server that includes the Flask application and a PostgreSQL DB session"
 
 WORKDIR /app
 

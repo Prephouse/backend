@@ -42,6 +42,7 @@ docker-compose up --detach && {
   do
     ((iter_cnt++))
     if [ $mock = true ]; then
+      echo "Creating a local database with some mock data..."
       docker exec -it prephouse-backend python3 prephouse/create_database.py --mock
     else
       docker exec -it prephouse-backend python3 prephouse/create_database.py

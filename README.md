@@ -29,14 +29,14 @@
   directory, [tests](tests) directory or their files
 
 [docker-desktop]: https://www.docker.com/products/docker-desktop
-[docker-compose]: (https://docs.docker.com/compose/install/)
+[docker-compose]: https://docs.docker.com/compose/install/
 [pre-commit]: https://pre-commit.com/
 
 ## Developer Tools
 
 We support Visual Studio Code and PyCharm out of the box.
 
-You can test the APIs with any API client such as Postman or your web browser. Firefox, with the
+You can test the APIs with any API client such as Postman or a web browser. Firefox, with the
 `devtools.jsonview.enabled` flag enabled in the browser configuration, displays an excellent
 JSON viewer for any HTTP response with `application/json` as the content type. Chrome and Edge can
 accomplish something similar through the use of the JSON Formatter extension
@@ -47,17 +47,17 @@ accomplish something similar through the use of the JSON Formatter extension
 
 ## Code Style
 
-We are following the [PEP8][] style guide. A pre-commit hook
-has been created to enforce that guide when you attempt to commit your code to the git repository.
+We are following the [Black Code Style][black-code-style] which is enforced in the pre-commit hook.
 
 [pep8]: https://www.python.org/dev/peps/pep-0008/
+[black-code-style]: https://black.readthedocs.io/en/stable/the_black_code_style/current_style.html
 
 ## Documentation
 
-We use the reStructuredText format (reST) for writing docstrings in Python functions, classes, modules and so on
-(see [PEP287][]). If you use VSCode, install the [_Python Docstring Generator_][vsc-ds-generator] extension; reST
-will be set as the default docstring format. If you use PyCharm, go to Tools > Python Integrated Tools in the IDE
-preferences and select reStructuredText as the docstring format.
+We use the reStructuredText format (reST) for writing Python docstrings (see [PEP287][]). If you use VSCode,
+install the [_Python Docstring Generator_][vsc-ds-generator] extension; reST will be set as the default docstring
+format. If you use PyCharm, go to Tools > Python Integrated Tools in the IDE preferences and select reStructuredText
+as the docstring format
 
 [pep287]: https://www.python.org/dev/peps/pep-0287/
 [vsc-ds-generator]: https://marketplace.visualstudio.com/items?itemName=njpwerner.autodocstring
