@@ -17,8 +17,8 @@ def analyze_callback(feedback_future: grpc.Future, channel: grpc.Channel):
 
 @analyze_api.get("/")
 def analyze_upload():
-    from prephouse.prephouse_pb2 import Video
-    from prephouse.prephouse_pb2_grpc import PrephouseEngineStub
+    from prephouse_pb2 import Video
+    from prephouse_pb2_grpc import PrephouseEngineStub
 
     if validation_errors := analysis_request_schema.validate(request.args):
         abort(422, validation_errors)

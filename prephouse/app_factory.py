@@ -2,6 +2,8 @@ import os
 
 from flask import Flask
 from flask_cors import CORS
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
 from flask_seasurf import SeaSurf
 from flask_sqlalchemy import SQLAlchemy
 from flask_talisman import DENY, Talisman
@@ -24,6 +26,11 @@ def create_app(_db: SQLAlchemy) -> Flask:
         "CSRF_COOKIE_HTTPONLY": True,
         "CSRF_COOKIE_SECURE": True,
     }
+
+    # TODO: Limit by User instead of IP when auth is done
+    limiter = Limiter(
+        _app, key_func=get_remote_address, default_limits=["5 per second", "1000 per day"]
+    )
 
     # Configure web security measures such as CSP, CORS, HSTS and CSRF
     Talisman(
