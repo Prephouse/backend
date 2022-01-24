@@ -27,10 +27,9 @@ def create_app(_db: SQLAlchemy) -> Flask:
         "CSRF_COOKIE_SECURE": True,
     }
 
-    # TODO: Limit by User instead of IP when auth is done
-    limiter = Limiter(
-        _app, key_func=get_remote_address, default_limits=["5 per second", "1000 per day"]
-    )
+    # TODO: limit by user instead of IP when auth is done
+    # Limit API call rates
+    Limiter(_app, key_func=get_remote_address, default_limits=["5 per second", "1000 per day"])
 
     # Configure web security measures such as CSP, CORS, HSTS and CSRF
     Talisman(

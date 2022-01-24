@@ -134,8 +134,8 @@ When an HTTP request is successful, the corresponding API should always return a
 where applicable, with a dictionary of reasons for the failure.
 
 If you need the current app context for your API, import the `current_app` object from the Flask library.
-Do not try to import the `app` object from the [prephouse/\__init\__.py](prephouse/__init__.py) file as
-that is likely to cause import errors.
+Do not try to import the `app` object from [prephouse/\__init\__.py](prephouse/__init__.py) as that would
+likely cause import errors.
 
 [flask]: https://flask.palletsprojects.com/en/2.0.x/
 
