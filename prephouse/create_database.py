@@ -37,7 +37,7 @@ def create_database(requested_mock_data: bool = False):
 
     if requested_mock_data:
 
-        from models import Engine, Feedback, Upload, User
+        from models import Engine, Feedback, Question, Upload, User
 
         user1 = User(
             first_name="Jadon",
@@ -54,6 +54,9 @@ def create_database(requested_mock_data: bool = False):
             is_admin=True,
         )
         add_commit_rows(db, user1, user2)
+
+        questions1 = Question(category=Question.Category.GENERAL, question="Tell me about yourself")
+        add_commit_rows(db, questions1)
 
         engine1 = Engine(version="0.1.0")
         add_commit_rows(db, engine1)

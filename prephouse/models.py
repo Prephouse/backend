@@ -44,6 +44,7 @@ class Upload(db.Model):  # type: ignore
     feedbacks = db.relationship("Feedback", backref="upload", lazy=True)
     suggestions = db.relationship("Suggestion", backref="upload", lazy=True)
     filler_words = db.relationship("FillerWord", backref="upload", lazy=True)
+    questions = db.relationship("Question", backref="upload", lazy=True)
 
 
 class Feedback(db.Model):  # type: ignore
@@ -70,6 +71,24 @@ class Feedback(db.Model):  # type: ignore
     time_range = db.Column(INT4RANGE())
     user_report = db.Column(db.Text)
     upload_id = db.Column(UUID(as_uuid=True), db.ForeignKey("upload.id"), nullable=False)
+
+
+class Question(db.Model):  # type: ignore
+    @enum.unique
+    class Category(enum.IntEnum):
+        GENERAL = 0
+        SOFTWARE = 1
+        PRODUCT = 2
+        DATA = 3
+        BUSINESS = 4
+        # TODO complete
+
+    id = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    category = db.Column(db.Enum(Category), nullable=False)
+    question = db.Column(db.Text, nullable=False)
+    description = db.Column(db.Text)
+    sample_answer = db.Column(db.Text)
+    frequency = db.Column(db.Integer)
 
 
 class Suggestion(db.Model):  # type: ignore
