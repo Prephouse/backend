@@ -70,8 +70,9 @@ def create_database(requested_mock_data: bool = False):
 
         feedback1 = Feedback(
             category=Feedback.Feature.PAUSE,
+            subcategory="test",
             comment="testing...",
-            score=2.5,
+            result=2.5,
             confidence=None,
             time_range=NumericRange(1, 10),
             user_report="is this working?",

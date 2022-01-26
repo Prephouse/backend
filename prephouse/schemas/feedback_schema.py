@@ -12,13 +12,14 @@ class FeedbackRequestSchema(Schema):
 
 
 class FeedbackResponseSchema(Schema):
-    time_start = fields.Int()
-    time_end = fields.Int()
     id = fields.Int(required=True)
     upload_id = fields.Int(required=True)
     category = fields.Int(required=True, validate=validate.OneOf(list(map(int, Feedback.Feature))))
+    subcategory = fields.Str()
     comment = fields.Str()
-    score = fields.Float(required=True, validate=validate.Range(min=0, max=10))
+    result = fields.Float(required=True)
+    time_start = fields.Int()
+    time_end = fields.Int()
 
 
 feedback_request_schema = FeedbackRequestSchema()

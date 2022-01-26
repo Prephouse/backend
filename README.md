@@ -11,7 +11,7 @@
 1. Download and install [Docker Desktop][docker-desktop], [Docker Compose][docker-compose] and
    [pre-commit][pre-commit]
 2. Run Docker Desktop on your machine
-3. Copy the environment variable files (.env.*) to the root directory of this repository
+3. Copy the environment variable files (.env.\*) to the root directory of this repository
 4. Run `./setup.sh`
 
 ### Startup
@@ -105,9 +105,8 @@ minimal security checks and, in some cases, may be randomized.
 
 In order to implement a new API endpoint, follow these steps:
 
-1. Create a Flask blueprint within a new Python module in the [api](prephouse/api) directory
-2. Register your blueprint in the app package initialization module
-   (i.e., [prephouse/\__init\__.py](prephouse/__init__.py))
+1. Create a Flask blueprint within a new Python module in the [api](prephouse/api) package
+2. Register your blueprint in the app initialization module (i.e., [prephouse/\_\_init\_\_.py](prephouse/__init__.py))
 3. Choose the appropriate URL prefix for the blueprint
 4. Create the Python function for the API endpoint
 5. Annotate the Python function with the relevant HTTP method(s)
@@ -134,7 +133,7 @@ When an HTTP request is successful, the corresponding API should always return a
 where applicable, with a dictionary of reasons for the failure.
 
 If you need the current app context for your API, import the `current_app` object from the Flask library.
-Do not try to import the `app` object from [prephouse/\__init\__.py](prephouse/__init__.py) as that would
+Do not try to import the `app` object from [prephouse/\_\_init\_\_.py](prephouse/__init__.py) as that would
 likely cause import errors.
 
 [flask]: https://flask.palletsprojects.com/en/2.0.x/
@@ -143,7 +142,7 @@ likely cause import errors.
 
 We use the [marshmallow] library to declare the schemas for our HTTP query parameters, request body and response data,
 and to validate those data against the relevant schemas. The schemas are located in the [schemas](prephouse/schemas)
-directory. Each Python module in that directory should correspond to a single Flask blueprint.
+package. Each Python module in that package should correspond to a single Flask blueprint.
 
 Before retrieving the HTTP query parameters and request body, you should call the `validate` method on the
 corresponding schema. If marshmallows returns errors in the validation process, then the API should abort

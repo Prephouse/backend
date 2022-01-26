@@ -37,9 +37,10 @@ def get_feedback():
         item = {
             "id": feedback.id,
             "upload_id": feedback.upload_id,
+            "subcategory": feedback.subcategory,
             "category": feedback.category.value,
             "comment": feedback.comment,
-            "score": float(feedback.score),
+            "result": float(feedback.result),
         }
         if tr := feedback.time_range:
             time_start, time_end = get_integral_numeric_range_bounds(tr)

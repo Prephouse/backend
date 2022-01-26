@@ -65,8 +65,9 @@ class Feedback(db.Model):  # type: ignore
 
     id = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     category = db.Column(db.Enum(Feature), nullable=False)
+    subcategory = db.Column(db.String)
     comment = db.Column(db.Text)
-    score = db.Column(db.Numeric(10, 2), nullable=False)
+    result = db.Column(db.Numeric(10, 2), nullable=False)
     confidence = db.Column(db.Integer)
     time_range = db.Column(INT4RANGE())
     user_report = db.Column(db.Text)
