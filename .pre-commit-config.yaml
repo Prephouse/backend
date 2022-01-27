@@ -1,5 +1,7 @@
 exclude: >
   (?x)^(
+    venv/.* |
+    migrations/.* |
     prephouse_pb2.py |
     prephouse_pb2_grpc.py
   )$
@@ -42,7 +44,7 @@ repos:
     hooks:
       - id: markdownlint-cli2
   - repo: https://github.com/PyCQA/bandit
-    rev: 1.7.1
+    rev: 1.7.2
     hooks:
       - id: bandit
   - repo: https://github.com/pre-commit/mirrors-mypy

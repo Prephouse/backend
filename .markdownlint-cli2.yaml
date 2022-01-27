@@ -1,5 +1,9 @@
 fix: true
-ignores: [".github/pull_request_template.md"]
+ignores:
+  - ".github/**"
+  - ".mypy_cache/**"
+  - ".pytest_cache/**"
+  - "migrations/**"
 noInlineConfig: true
 noProgress: true
 config:

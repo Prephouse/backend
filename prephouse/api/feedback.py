@@ -1,7 +1,7 @@
 from flask import Blueprint, abort, jsonify, request
 from psycopg2.extras import NumericRange
 
-from prephouse.models import Feedback
+from prephouse.models import Feedback, UploadQuestion
 from prephouse.schemas.feedback_schema import (
     feedback_request_schema,
     feedback_response_schema,
@@ -22,23 +22,34 @@ def get_feedback():
     time_end = request.args.get("time_end", type=int, default=constants.PSQL_INT_MAX)
     category = request.args.get("category", type=int)
 
-    query = Feedback.query
+    query = UploadQuestion.query
     if upload_ids:
-        query = query.filter(Feedback.upload_id.in_(upload_ids))
+        query = query.filter(UploadQuestion.upload_id.in_(upload_ids))
+    query = query.join(Feedback).add_columns(
+        UploadQuestion.upload_id,
+        Feedback.id,
+        Feedback.category,
+        Feedback.subcategory,
+        Feedback.comment,
+        Feedback.result,
+        Feedback.confidence,
+        Feedback.time_range,
+    )
     if category is not None:
-        query = query.filter_by(category=Feedback.Feature(category))
+        query = query.filter_by(category=Feedback.FeedbackCategory(category))
     query = query.filter(
         Feedback.time_range is not None
         and Feedback.time_range.contained_by(NumericRange(time_start, time_end))
     )
 
     response = []
-    for feedback in query.all() or []:
+    feedbacks: list[UploadQuestion | Feedback] = query.all() or []
+    for feedback in feedbacks:
         item = {
             "id": feedback.id,
             "upload_id": feedback.upload_id,
             "subcategory": feedback.subcategory,
-            "category": feedback.category.value,
+            "category": feedback.category,
             "comment": feedback.comment,
             "result": float(feedback.result),
         }

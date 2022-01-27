@@ -1,5 +1,4 @@
 version: '3'
-
 services:
   database:
     container_name: prephouse-db
@@ -21,6 +20,24 @@ services:
     env_file:
       - .env.development
       - .env
+    links:
+      - database
+    depends_on:
+      - migration
+  migration:
+    container_name: prephouse-migration
+    image: prephouse-backend
+    build: .
+    command: flask db upgrade
+    volumes:
+      - './:/app'
+    env_file:
+      - .env.development
+      - .env
+    links:
+      - database
+    depends_on:
+      - database
 networks:
   default:
     external: true
