@@ -9,6 +9,13 @@ from prephouse.api.analyze import analyze_api  # noqa: E402
 from prephouse.api.feedback import feedback_api  # noqa: E402
 from prephouse.interceptors.rollbar_interceptor import rollbar_interceptor  # noqa: E402
 
+
+import firebase_admin
+from firebase_admin import credentials
+
+cred = credentials.Certificate() # Have the path stored as an environment variable for use in call to Certificate when ready
+firebase_admin.initialize_app(cred)
+
 blueprints: tuple[Blueprint, ...] = (
     rollbar_interceptor,
     feedback_api,
