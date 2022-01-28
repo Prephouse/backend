@@ -1,0 +1,15 @@
+.idea/
+.mypy_cache/
+.vscode/
+.git/
+.dockerignore
+.DS_Store
+.gitignore
+.flake8
+.markdownlint-cli2.yaml
+.pre-commit-config.yaml
+docker-compose.yml
+docker-compose.production.yml
+Dockerfile
+README.md
+setup.sh
