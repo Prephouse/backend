@@ -16,5 +16,8 @@ __pycache__/
 .env.production
 .env.production.local
 
+# Firebase Private Key File
+firebase-key.json
+
 # misc
 .DS_STORE

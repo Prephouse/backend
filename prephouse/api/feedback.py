@@ -1,6 +1,7 @@
 from flask import Blueprint, abort, jsonify, request
 from psycopg2.extras import NumericRange
 
+from prephouse.api.decorators import check_token
 from prephouse.models import Feedback, UploadQuestion
 from prephouse.schemas.feedback_schema import (
     feedback_request_schema,
@@ -12,8 +13,8 @@ from prephouse.utils.sql_utils import get_integral_numeric_range_bounds
 feedback_api = Blueprint("feedback_api", __name__, url_prefix="/feedback")
 
 
-# TODO integrate OAuth check
 @feedback_api.get("/")
+@check_token
 def get_feedback():
     if validation_errors := feedback_request_schema.validate(request.args):
         abort(422, validation_errors)
