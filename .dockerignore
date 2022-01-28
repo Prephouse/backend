@@ -1,7 +1,9 @@
+.git/
+.github/
 .idea/
 .mypy_cache/
+.pytest_cache/
 .vscode/
-.git/
 .dockerignore
 .DS_Store
 .gitignore
