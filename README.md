@@ -26,7 +26,7 @@
 - Add any required external Python packages to [requirements.txt](requirements.txt) or, for
   development-only packages, to [requirements-dev.txt](requirements-dev.txt)
 - Run `./setup.sh` when you need to install any new packages
-- Run `./migrate.sh -g` to generate a new database migration after you have updated the
+- Run `./migrate.sh -g <message>` to generate a new database migration after you have updated the
   models in [models.py](prephouse/models.py)
 - Run `./migrate.sh -m` to insert some mock values into your local database
 - A live reload of the backend server will be triggered whenever you add, modify or delete files in
