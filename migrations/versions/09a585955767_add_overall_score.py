@@ -1,8 +1,8 @@
 """add overall score
 
-Revision ID: f97715273f19
-Revises: 58adf3117261
-Create Date: 2022-02-04 15:12:03.581378
+Revision ID: 09a585955767
+Revises: fa9e5fe74b8e
+Create Date: 2022-02-05 16:13:33.721221
 
 """
 from alembic import op
@@ -10,8 +10,8 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'f97715273f19'
-down_revision = '58adf3117261'
+revision = '09a585955767'
+down_revision = 'fa9e5fe74b8e'
 branch_labels = None
 depends_on = None
 

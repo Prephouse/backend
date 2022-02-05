@@ -1,13 +1,15 @@
 #!/usr/bin/env bash
 
 mig=""
-mock=false;
+mock=false
 up=false
+down=false
 
 display_help() {
   echo "
     usage: ./setup.sh [-mu|-h][-g MESSAGE]
     options:
+      -d downgrade database from the most recent migration
       -h display help message
       -m insert mock values into the database
       -u upgrade database with the latest migrations
@@ -16,9 +18,10 @@ display_help() {
   "
 }
 
-while getopts ":g:mhu" OPTION
+while getopts ":dg:mhu" OPTION
 do
   case $OPTION in
+    d) down=false;;
     g) mig=${OPTARG};;
     m) mock=true;;
     h) display_help; exit 0;;
@@ -33,6 +36,10 @@ fi
 
 if [ $up = true ] || [ $mock = true ]; then
   docker-compose run --service-ports --rm migration flask db upgrade
+fi
+
+if [ $down = true ]; then
+  docker-compose run --service-ports --rm migration flask db downgrade
 fi
 
 if [ $mock = true ]; then

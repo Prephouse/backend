@@ -23,12 +23,34 @@
 
 ### Development
 
+#### Migration
+
+In order to keep track of changes to the database across every environment, we have
+migration scripts to upgrade and downgrade between each change. The migration scripts can
+be found in the [migrations](/migrations) directory. The [migrate.sh](migrate.sh) script
+includes all the commands you need to perform migrations on your local development environment.
+The following table describes the possible commands for migrate.sh.
+
+| Command                     | Description                                       |
+|-----------------------------|---------------------------------------------------|
+| `./migrate.sh -h`           | Print a summary of options in migrate.sh          |
+| `./migrate.sh -g <message>` | Generate a new database migration script          |
+| `./migrate.sh -m`           | Insert some mock values into the database         |
+| `./migrate.sh -u`           | Upgrade database with the latest migrations \*    |
+| `./migrate.sh -d`           | Downgrade database from the most recent migration |
+
+**Note:** You usually only need to run `./migrate.sh -u` after you have generated a new database
+migration script. Otherwise, Docker automatically runs this command when you start the Docker
+container via `docker-compose up`.
+
+#### Packages
+
 - Add any required external Python packages to [requirements.txt](requirements.txt) or, for
   development-only packages, to [requirements-dev.txt](requirements-dev.txt)
 - Run `./setup.sh` when you need to install any new packages
-- Run `./migrate.sh -g <message>` to generate a new database migration after you have updated the
-  models in [models.py](prephouse/models.py)
-- Run `./migrate.sh -m` to insert some mock values into your local database
+
+#### Miscellaneous
+
 - A live reload of the backend server will be triggered whenever you add, modify or delete files in
   the [prephouse](prephouse) or [tests](tests) directories
 
