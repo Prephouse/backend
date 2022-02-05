@@ -52,7 +52,7 @@ def insert_mock_values():
     add_commit_rows(db, engine1)
 
     upload1 = Upload(
-        category=Upload.UploadCategory.INTERVIEW, user_id=user1.id, engine_id=engine1.id
+        category=Upload.UploadCategory.INTERVIEW, user_id=user1.id, engine_id=engine1.id, score=1.23
     )
     upload2 = Upload(
         category=Upload.UploadCategory.PRESENTATION, user_id=user1.id, engine_id=engine1.id

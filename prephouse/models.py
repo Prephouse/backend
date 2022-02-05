@@ -36,6 +36,7 @@ class Upload(db.Model):  # type: ignore
 
     id = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     category = db.Column(db.Enum(UploadCategory), nullable=False, index=True)
+    score = db.Column(db.Numeric(10, 2), nullable=True)
     date_uploaded = db.Column(db.DateTime, nullable=False, server_default=sql_func.now())
     date_modified = db.Column(db.DateTime, server_onupdate=sql_func.now())
     user_id = db.Column(UUID(as_uuid=True), db.ForeignKey("user.id"), nullable=False)
