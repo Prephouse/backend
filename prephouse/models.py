@@ -10,8 +10,7 @@ db = SQLAlchemy()
 
 class User(db.Model):  # type: ignore
     id = db.Column(UUID(as_uuid=True), primary_key=True, autoincrement=False)
-    first_name = db.Column(db.String, nullable=False)
-    last_name = db.Column(db.String, nullable=False)
+    name = db.Column(db.String, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     is_admin = db.Column(db.Boolean, nullable=False, default=False)
     uploads = db.relationship("Upload", backref="user", lazy=True)

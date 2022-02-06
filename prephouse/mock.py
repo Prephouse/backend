@@ -29,15 +29,13 @@ def insert_mock_values():
 
     user1 = User(
         id=uuid.uuid4(),
-        first_name="Jadon",
-        last_name="Fan",
+        name="Jadon Fan",
         email="j53fan@uwaterloo.ca",
         is_admin=True,
     )
     user2 = User(
         id=uuid.uuid4(),
-        first_name="Chandler",
-        last_name="Lei",
+        name="Chandler Lei",
         email="q4lei@uwaterloo.ca",
         is_admin=True,
     )

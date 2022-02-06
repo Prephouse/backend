@@ -3,7 +3,7 @@ import os
 import grpc
 from flask import Blueprint, abort, request
 
-from prephouse.api.decorators import check_token
+from prephouse.decorators.authentication import private_route
 from prephouse.schemas.analysis_schema import analysis_request_schema
 
 analyze_api = Blueprint("analyze_api", __name__, url_prefix="/analyze")
@@ -17,7 +17,7 @@ def analyze_callback(feedback_future: grpc.Future, channel: grpc.Channel):
 
 
 @analyze_api.post("/")
-@check_token
+@private_route
 def analyze_upload():
     from prephouse_pb2 import Video
     from prephouse_pb2_grpc import PrephouseEngineStub
