@@ -26,9 +26,11 @@ def analyze_upload():
         abort(422, validation_errors)
     upload_link = request.args.get("upload_link", type=str)
 
+    credentials = grpc.ssl_channel_credentials()
+
     try:
-        channel = grpc.insecure_channel(
-            f"{os.environ['ENGINE_GRPC_IP']}:{os.environ['ENGINE_GRPC_PORT']}"
+        channel = grpc.secure_channel(
+            f"{os.environ['ENGINE_GRPC_IP']}:{os.environ['ENGINE_GRPC_PORT']}", credentials
         )
         stub = PrephouseEngineStub(channel)
         feedback_future = stub.GetFeedback.future(Video(link=upload_link))
