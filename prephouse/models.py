@@ -69,6 +69,8 @@ class UploadQuestion(db.Model):  # type: ignore
     id = db.Column(db.Integer, primary_key=True)
     upload_id = db.Column(UUID(as_uuid=True), db.ForeignKey("upload.id"))
     question_id = db.Column(db.Integer, db.ForeignKey("question.id"))
+    cloudfront_url = db.Column(db.Text)
+    manifest_file = db.Column(db.Text)
     feedbacks = db.relationship(
         "Feedback", backref="upload_question", lazy=True, cascade="all, delete-orphan"
     )
