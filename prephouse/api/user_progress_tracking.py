@@ -1,22 +1,23 @@
 from flask import Blueprint, abort, jsonify, request
 
-from prephouse.api.decorators import check_token
+from prephouse.decorators.authentication import private_route
 from prephouse.models import Feedback, Upload, UploadQuestion
 from prephouse.schemas.user_progress_tracking_schema import (
     user_progress_tracking_request,
     user_progress_tracking_response,
 )
+
 user_progress_tracking_api = Blueprint(
     "user_progress_tracking", __name__, url_prefix="/user_progress_tracking"
 )
 
+
 @user_progress_tracking_api.get("/feature_per_question")
-@check_token
+@private_route
 def get_score_per_feature_per_question():
     if validation_errors := user_progress_tracking_request.validate(request.args):
         abort(422, validation_errors)
     question_id = request.args.get("question_id")
-    # feature_scores = dict.fromkeys(Feedback.FeedbackCategory, 0.0)
 
     query = UploadQuestion.query
     if question_id:
@@ -44,7 +45,7 @@ def get_score_per_feature_per_question():
 
 
 @user_progress_tracking_api.get("/feature_per_session")
-@check_token
+@private_route
 def get_overall_score_per_feature_per_session():
     # feature_scores = dict.fromkeys(Feedback.FeedbackCategory, 0.0)
     if validation_errors := user_progress_tracking_request.validate(request.args):
@@ -77,7 +78,7 @@ def get_overall_score_per_feature_per_session():
 
 
 @user_progress_tracking_api.get("/overall_session")
-@check_token
+@private_route
 def get_overall_score_per_all_feature_per_session():
     if validation_errors := user_progress_tracking_request.validate(request.args):
         abort(422, validation_errors)

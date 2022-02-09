@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 mig=""
+merge=false
 mock=false
 up=false
 down=false
@@ -12,19 +13,21 @@ display_help() {
       -d downgrade database from the most recent migration
       -h display help message
       -m insert mock values into the database
+      -r merge multiple head revisions
       -u upgrade database with the latest migrations
     optional arguments:
       -g generate a new database migration with the specified message
   "
 }
 
-while getopts ":dg:mhu" OPTION
+while getopts ":dg:mhru" OPTION
 do
   case $OPTION in
     d) down=false;;
     g) mig=${OPTARG};;
     m) mock=true;;
     h) display_help; exit 0;;
+    r) merge=true;;
     u) up=true;;
     \?) echo "ERROR: One or more options are not recognized by this script"; display_help; exit 1;;
   esac
@@ -32,6 +35,10 @@ done
 
 if [ -n "$mig" ]; then
   docker-compose run --rm migration flask db migrate -m "$mig"
+fi
+
+if [ $merge = true ]; then
+  docker-compose run --rm migration flask db merge heads
 fi
 
 if [ $up = true ] || [ $mock = true ]; then

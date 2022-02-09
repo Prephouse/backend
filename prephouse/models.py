@@ -40,9 +40,6 @@ class Upload(db.Model):  # type: ignore
     date_modified = db.Column(db.DateTime, server_onupdate=sql_func.now())
     user_id = db.Column(UUID(as_uuid=True), db.ForeignKey("user.id"), nullable=False)
     engine_id = db.Column(UUID(as_uuid=True), db.ForeignKey("engine.id"))
-    filler_words = db.relationship(
-        "FillerWord", backref="upload", lazy=True, cascade="all, delete-orphan"
-    )
     questions = db.relationship("Question", secondary="upload_question", back_populates="uploads")
 
 
@@ -85,6 +82,7 @@ class Feedback(db.Model):  # type: ignore
         GAZE = 3
         EMOTION = 4
         PITCH = 5
+        FILLER_WORD = 6
 
     __table_args__ = (db.CheckConstraint(r"confidence BETWEEN 0 AND 100"),)
 
@@ -97,11 +95,3 @@ class Feedback(db.Model):  # type: ignore
     confidence = db.Column(db.Integer)
     time_range = db.Column(INT4RANGE())
     user_report = db.Column(db.Text)
-
-
-class FillerWord(db.Model):  # type: ignore
-    upload_id = db.Column(
-        UUID(as_uuid=True), db.ForeignKey("upload.id"), primary_key=True, autoincrement=False
-    )
-    word = db.Column(db.String, primary_key=True, autoincrement=False)
-    count = db.Column(db.Integer, nullable=False)

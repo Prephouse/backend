@@ -1,6 +1,4 @@
-from marshmallow import Schema, fields, validate
-
-from prephouse.models import Feedback
+from marshmallow import Schema, fields
 
 
 class UserProgressTrackingRequestSchema(Schema):
@@ -8,10 +6,10 @@ class UserProgressTrackingRequestSchema(Schema):
     question_id = fields.Int(required=True)
 
 
-class UserProgressTrackingResponse(Schema):
+class UserProgressTrackingResponseSchema(Schema):
     id = fields.Int(required=True)
     score = fields.Float(required=True)
 
 
 user_progress_tracking_request = UserProgressTrackingRequestSchema()
-user_progress_tracking_response = UserProgressTrackingResponse(many=True)
+user_progress_tracking_response = UserProgressTrackingResponseSchema(many=True)
