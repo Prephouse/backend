@@ -1,15 +1,19 @@
 from marshmallow import Schema, fields
 
 
-class UserProgressTrackingRequestSchema(Schema):
-    session_id = fields.Int(required=True)
+class UserProgressTrackingQuestionRequestSchema(Schema):
     question_id = fields.Int(required=True)
 
 
+class UserProgressTrackingSessionRequestSchema(Schema):
+    session_id = fields.Str(required=True)
+
+
 class UserProgressTrackingResponseSchema(Schema):
-    id = fields.Int(required=True)
+    id = fields.Str(required=True)
     score = fields.Float(required=True)
 
 
-user_progress_tracking_request = UserProgressTrackingRequestSchema()
+user_progress_tracking_question_request = UserProgressTrackingQuestionRequestSchema()
+user_progress_tracking_session_request = UserProgressTrackingSessionRequestSchema()
 user_progress_tracking_response = UserProgressTrackingResponseSchema(many=True)

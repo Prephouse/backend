@@ -5,12 +5,14 @@ merge=false
 mock=false
 up=false
 down=false
+empty=false
 
 display_help() {
   echo "
     usage: ./setup.sh [-mu|-h][-g MESSAGE]
     options:
       -d downgrade database from the most recent migration
+      -e create an empty migration file
       -h display help message
       -m insert mock values into the database
       -r merge multiple head revisions
@@ -20,7 +22,7 @@ display_help() {
   "
 }
 
-while getopts ":dg:mhru" OPTION
+while getopts ":dg:mhrue" OPTION
 do
   case $OPTION in
     d) down=false;;
@@ -29,6 +31,7 @@ do
     h) display_help; exit 0;;
     r) merge=true;;
     u) up=true;;
+    e) empty=true;;
     \?) echo "ERROR: One or more options are not recognized by this script"; display_help; exit 1;;
   esac
 done
@@ -51,4 +54,8 @@ fi
 
 if [ $mock = true ]; then
   docker-compose run --service-ports --rm migration python3 prephouse/mock.py
+fi
+
+if [ $empty = true ]; then
+  docker-compose run --service-ports --rm migration flask db revision
 fi

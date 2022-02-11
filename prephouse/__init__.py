@@ -8,6 +8,9 @@ app = create_app(db)
 from prephouse.api.analyze import analyze_api  # noqa: E402
 from prephouse.api.feedback import feedback_api  # noqa: E402
 from prephouse.api.question import question_api  # noqa: E402
+from prephouse.api.user_progress_tracking import (  # noqa: E402
+    user_progress_tracking_api,
+)
 from prephouse.interceptors.firebase_interceptor import (  # noqa: E402
     firebase_interceptor,
 )
@@ -19,6 +22,7 @@ blueprints: tuple[Blueprint, ...] = (
     feedback_api,
     analyze_api,
     question_api,
+    user_progress_tracking_api,
 )
 for blueprint in blueprints:
     app.register_blueprint(blueprint)
