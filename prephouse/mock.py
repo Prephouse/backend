@@ -1,22 +1,39 @@
 import logging
-import uuid
+import random
+from typing import Any
 
 from app_factory import create_app
+from faker import Faker
 from flask_sqlalchemy import SQLAlchemy
 from psycopg2.extras import NumericRange
+from sqlalchemy.dialects.postgresql import insert as psql_insert
 from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy.inspection import inspect
 
 
-def add_commit_rows(_db: SQLAlchemy, *rows):
+def upsert(_db: SQLAlchemy, table: Any, **values):
     """
-    Add and commit table rows into the current database session.
+    Upsert values into some DB table.
 
     :param _db: a PSQL database instance wrapped in SQLAlchemy
-    :param rows: the table rows to be added and committed
+    :param table: model class for the corresponding DB table
+    :param values: the values to upsert
     """
-    for row in rows:
-        _db.session.add(row)
+    pks = [pk.name for pk in inspect(table).primary_key]
+    stmt = (
+        psql_insert(table)
+        .values(**values)
+        .on_conflict_do_update(
+            index_elements=pks, set_={k: v for k, v in values.items() if k not in pks}
+        )
+    )
+    _db.session.execute(stmt)
     _db.session.commit()
+
+    results = table.query.all()
+    random.shuffle(results)
+
+    return results[0]
 
 
 def insert_mock_values():
@@ -27,65 +44,87 @@ def insert_mock_values():
 
     from models import Engine, Feedback, Question, Upload, UploadQuestion, User
 
-    user1 = User(
-        id=uuid.uuid4(),
-        name="Jadon Fan",
-        email="j53fan@uwaterloo.ca",
-        is_admin=True,
-    )
-    user2 = User(
-        id=uuid.uuid4(),
-        name="Chandler Lei",
-        email="q4lei@uwaterloo.ca",
-        is_admin=True,
-    )
-    add_commit_rows(db, user1, user2)
+    fake = Faker()
+    try:
+        users = [
+            upsert(
+                db,
+                User,
+                id=fake.uuid4(),
+                name=fake.name(),
+                email=fake.email(),
+                is_admin=fake.boolean(),
+            )
+            for _ in range(10)
+        ]
 
-    questions1 = Question(
-        category=Question.QuestionCategory.GENERAL, question="Tell me about yourself"
-    )
-    add_commit_rows(db, questions1)
+        questions = [
+            upsert(
+                db,
+                Question,
+                category=random.choice(list(Question.QuestionCategory)),
+                question=fake.text(max_nb_chars=20),
+                description=fake.text(max_nb_chars=50),
+                frequency=random.randrange(100),
+            )
+            for _ in range(10)
+        ]
 
-    engine1 = Engine(version="0.1.0")
-    add_commit_rows(db, engine1)
+        engines = [upsert(db, Engine, version="0.1.0")]
 
-    upload1 = Upload(
-        category=Upload.UploadCategory.INTERVIEW,
-        user_id=user1.id,
-        engine_id=engine1.id,
-        score=1.23,
-    )
-    upload2 = Upload(
-        category=Upload.UploadCategory.PRESENTATION, user_id=user1.id, engine_id=engine1.id
-    )
-    upload3 = Upload(
-        category=Upload.UploadCategory.INTERVIEW, user_id=user1.id, engine_id=engine1.id
-    )
-    add_commit_rows(db, upload1, upload2, upload3)
+        uploads = [
+            upsert(
+                db,
+                Upload,
+                category=random.choice(list(Upload.UploadCategory)),
+                user_id=random.choice(users).id,
+                engine_id=random.choice(engines).id,
+                score=random.uniform(0, 100),
+            )
+            for _ in range(10)
+        ]
 
-    uq1 = UploadQuestion(
-        upload_id=upload1.id,
-        question_id=questions1.id,
-        cloudfront_url="http://d2949o5mkkp72v.cloudfront.net",
-        manifest_file="manifest_file",
-    )
-    add_commit_rows(db, uq1)
+        upload_questions = [
+            upsert(
+                db,
+                UploadQuestion,
+                upload_id=random.choice(uploads).id,
+                question_id=random.choice(questions).id,
+                cloudfront_url="http://d2949o5mkkp72v.cloudfront.net",
+                manifest_file="manifest_file",
+            )
+            for _ in range(5)
+        ]
 
-    feedback1 = Feedback(
-        uq_id=uq1.id,
-        category=Feedback.FeedbackCategory.PAUSE,
-        subcategory="test",
-        comment="testing...",
-        result=2.5,
-        confidence=None,
-        time_range=NumericRange(1, 10),
-        user_report="is this working?",
-    )
-    add_commit_rows(db, feedback1)
+        for _ in range(5):
+            upsert(
+                db,
+                Feedback,
+                uq_id=random.choice(upload_questions).id,
+                category=random.choice(list(Feedback.FeedbackCategory)),
+                subcategory="test",
+                result=random.uniform(0, 100),
+                confidence=random.uniform(0, 100),
+                time_range=NumericRange(1, 10),
+            )
+        for feature in Feedback.FeedbackCategory:
+            upsert(
+                db,
+                Feedback,
+                uq_id=random.choice(upload_questions).id,
+                category=feature,
+                subcategory="score",
+                comment=fake.text(max_nb_chars=20),
+                result=random.uniform(0, 100),
+                confidence=None,
+                time_range=NumericRange(1, 10),
+                user_report=fake.text(max_nb_chars=50),
+            )
+    except SQLAlchemyError as e:
+        logging.error(e)
+    finally:
+        db.session.close()
 
 
 if __name__ == "__main__":
-    try:
-        insert_mock_values()
-    except SQLAlchemyError as e:
-        logging.error(e)
+    insert_mock_values()

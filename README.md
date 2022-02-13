@@ -21,6 +21,10 @@
 2. Run `docker-compose up` to start the local database session and local development server
 3. Navigate to <http://localhost:3001> on your web browser
 
+> We have separate services for the PSQL database, the database migration and the Flask app.
+> Docker will run each service in a particular order such that the database should be up
+> and ready by the time that the Flask app starts accepting HTTP requests.
+
 ### Development
 
 #### Migration
@@ -29,15 +33,9 @@ In order to keep track of changes to the database across every environment, we h
 migration scripts to upgrade and downgrade between each change. The migration scripts can
 be found in the [migrations](/migrations) directory. The [migrate.sh](migrate.sh) script
 includes all the commands you need to perform migrations on your local development environment.
-The following table describes the possible commands for migrate.sh.
 
-| Command                     | Description                                       |
-|-----------------------------|---------------------------------------------------|
-| `./migrate.sh -h`           | Print a summary of options in migrate.sh          |
-| `./migrate.sh -g <message>` | Generate a new database migration script          |
-| `./migrate.sh -m`           | Insert some mock values into the database         |
-| `./migrate.sh -u`           | Upgrade database with the latest migrations \*    |
-| `./migrate.sh -d`           | Downgrade database from the most recent migration |
+- Run `./migrate.sh -h` to get a list of available migration commands
+- Update the [mock.py](prephouse/mock.py) script to reflect your changes to the database schema
 
 **Note:** You usually only need to run `./migrate.sh -u` after you have generated a new database
 migration script. Otherwise, Docker automatically runs this command when you start the Docker
@@ -45,14 +43,15 @@ container via `docker-compose up`.
 
 #### Packages
 
-- Add any required external Python packages to [requirements.txt](requirements.txt) or, for
-  development-only packages, to [requirements-dev.txt](requirements-dev.txt)
-- Run `./setup.sh` when you need to install any new packages
+- Add any required external Python packages to [requirements.txt](requirements.txt)
+- Run `docker-compose up --build` when you need to install any new packages
 
 #### Miscellaneous
 
 - A live reload of the backend server will be triggered whenever you add, modify or delete files in
   the [prephouse](prephouse) or [tests](tests) directories
+- Include in your PRs any changes to the generated gRPC code if you have updated the protobuf
+  files in the analyzer-engine repository
 
 [docker-desktop]: https://www.docker.com/products/docker-desktop
 [docker-compose]: https://docs.docker.com/compose/install/
@@ -69,8 +68,8 @@ accomplish something similar through the use of the JSON Formatter extension
 ([Chrome][json-formatter-chrome] | [Edge][json-formatter-edge]).
 
 You can view the local Prephouse database with any PostgreSQL client, but we recommend
-[Postico][postico] due to its clean and modern user interface. The username and password
-for the Prephouse database can be found in [docker-compose.yml](docker-compose.yml).
+[Postico][postico] due to its clean and modern user interface. The host, port, username
+and password for the Prephouse database can be found in [docker-compose.yml](docker-compose.yml).
 
 [json-formatter-chrome]: https://chrome.google.com/webstore/detail/json-formatter/bcjindcccaagfpapjjmafapmmgkkhgoa
 [json-formatter-edge]: https://microsoftedge.microsoft.com/addons/detail/json-formatter-for-edge/njpoigijhgbionbfdbaopheedbpdoddi

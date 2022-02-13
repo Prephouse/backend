@@ -12,7 +12,6 @@ question_api = Blueprint("question_api", __name__, url_prefix="/question")
 
 @question_api.get("/")
 def get_question():
-
     if validation_errors := question_request_schema.validate(request.args):
         abort(422, validation_errors)
     question_categories = request.args.getlist("question_categories")

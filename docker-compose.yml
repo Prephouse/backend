@@ -9,6 +9,20 @@ services:
       - POSTGRES_PASSWORD=postgres
     ports:
       - '5432:5432'
+  migration:
+    container_name: prephouse-migration
+    image: prephouse-backend
+    build: .
+    command: flask db upgrade
+    volumes:
+      - './:/app'
+    env_file:
+      - .env.development
+      - .env
+    links:
+      - database
+    depends_on:
+      - database
   prephouse:
     container_name: prephouse-backend
     image: prephouse-backend
@@ -24,20 +38,6 @@ services:
       - database
     depends_on:
       - migration
-  migration:
-    container_name: prephouse-migration
-    image: prephouse-backend
-    build: .
-    command: flask db upgrade
-    volumes:
-      - './:/app'
-    env_file:
-      - .env.development
-      - .env
-    links:
-      - database
-    depends_on:
-      - database
 networks:
   default:
     external: true

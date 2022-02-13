@@ -1,3 +1,6 @@
+[tool.bandit]
+exclude_dirs = ["prephouse/mock.py"]
+
 [tool.black]
 line-length = 100
 extend-exclude = "/migrations/|prephouse_pb2.py|prephouse_pb2_grpc.py"
