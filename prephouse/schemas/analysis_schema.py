@@ -1,8 +1,9 @@
-from marshmallow import Schema, fields
+from marshmallow import Schema
+from webargs import fields
 
 
 class AnalysisRequestSchema(Schema):
-    upload_link = fields.Str(required=True)
+    upload_link = fields.Url(required=True)
 
 
 class AnalysisResponseSchema(Schema):

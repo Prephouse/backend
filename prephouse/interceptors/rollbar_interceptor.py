@@ -2,9 +2,7 @@ import os
 
 import rollbar
 import rollbar.contrib.flask
-from flask import Blueprint, current_app, got_request_exception
-
-rollbar_interceptor = Blueprint("rollbar_interceptor", __name__)
+from flask import current_app, got_request_exception
 
 
 @current_app.before_first_request

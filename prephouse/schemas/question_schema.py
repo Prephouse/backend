@@ -1,4 +1,5 @@
-from marshmallow import Schema, fields, validate
+from marshmallow import Schema
+from webargs import fields, validate
 
 from prephouse.models import Question
 
@@ -8,10 +9,10 @@ class QuestionRequestSchema(Schema):
         fields.Int(
             required=True, validate=validate.OneOf(list(map(int, Question.QuestionCategory)))
         ),
-        dump_default=None,
+        missing=None,
     )
-    limit = fields.Int(dump_default=0)
-    randomize = fields.Bool(dump_default=False)
+    limit = fields.Int(missing=0)
+    randomize = fields.Bool(missing=False)
 
 
 class QuestionResponseSchema(Schema):

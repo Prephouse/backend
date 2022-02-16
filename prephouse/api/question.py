@@ -1,5 +1,6 @@
-from flask import Blueprint, abort, jsonify, request
+from flask import Blueprint, jsonify
 from sqlalchemy.sql.expression import func
+from webargs.flaskparser import use_kwargs
 
 from prephouse.models import Question
 from prephouse.schemas.question_schema import (
@@ -11,13 +12,8 @@ question_api = Blueprint("question_api", __name__, url_prefix="/question")
 
 
 @question_api.get("/")
-def get_question():
-    if validation_errors := question_request_schema.validate(request.args):
-        abort(422, validation_errors)
-    question_categories = request.args.getlist("question_categories")
-    limit = request.args.get("limit", type=int)
-    randomize = request.args.get("randomize", type=bool)
-
+@use_kwargs(question_request_schema, location="query")
+def get_question(question_categories, limit, randomize):
     query = Question.query
     if question_categories is not None:
         query = query.filter_by(Question.QuestionCategory.in_(question_categories))

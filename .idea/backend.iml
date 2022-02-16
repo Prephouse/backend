@@ -8,7 +8,7 @@
       <excludeFolder url="file://$MODULE_DIR$/.mypy_cache" />
       <excludeFolder url="file://$MODULE_DIR$/.idea/dataSources" />
     </content>
-    <orderEntry type="jdk" jdkName="Remote Python 3.10.0 Docker Compose (prephouse at [/Users/jadon/Desktop/Prephouse/backend/docker-compose.yml])" jdkType="Python SDK" />
+    <orderEntry type="jdk" jdkName="Remote Python 3.10.2 Docker (prephouse-backend:latest)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
 </module>

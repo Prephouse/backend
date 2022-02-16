@@ -1,30 +1,27 @@
-import json
-
-from flask import Blueprint, abort, jsonify, request
+from flask import Blueprint, jsonify
+from webargs.flaskparser import use_kwargs
 
 from prephouse.decorators.authentication import private_route
 from prephouse.models import Feedback, Upload, UploadQuestion
 from prephouse.schemas.user_progress_tracking_schema import (
-    user_progress_tracking_overall_score_session_response,
-    user_progress_tracking_question_request,
-    user_progress_tracking_question_response,
-    user_progress_tracking_session_request,
-    user_progress_tracking_session_response,
+    user_progress_tracking_request,
+    user_progress_tracking_response,
 )
 
 user_progress_tracking_api = Blueprint(
     "user_progress_tracking", __name__, url_prefix="/user_progress_tracking"
 )
 
-# The score for all features for all questions for all sessions
-# Session >> Question >> Feature Score
-@user_progress_tracking_api.get("feature_per_question/")
-@private_route
-def get_score_per_feature_per_question_per_session():
-    if validation_errors := user_progress_tracking_question_request.validate(request.args):
-        abort(422, validation_errors)
-    session_id = request.args.get("session_id")
 
+@user_progress_tracking_api.get("feature_per_question/")
+@use_kwargs(user_progress_tracking_request, location="query")
+@private_route
+def get_score_per_feature_per_question_per_session(session_id):
+    """
+    Get the score for all features for all questions for a given session.
+
+    Session >> Question >> Feature Score
+    """
     upload_questions = UploadQuestion.query.filter_by(upload_id=session_id)
     scores = [
         (feedback.category.name, float(feedback.result), upload_question.question_id)
@@ -32,18 +29,19 @@ def get_score_per_feature_per_question_per_session():
         for feedback in upload_question.feedbacks
     ]
 
-    return {"session_id": session_id, "response_data": json.dumps(scores)}
+    res = {"session_id": session_id, "response_data": scores}
+    return jsonify(user_progress_tracking_response.dump(res))
 
 
-# Returns a total score for each feature for a given session
-# Session >> Feature Score Averages
 @user_progress_tracking_api.get("feature_per_session/")
+@use_kwargs(user_progress_tracking_request, location="query")
 @private_route
-def get_score_per_feature_per_session():
-    if validation_errors := user_progress_tracking_session_request.validate(request.args):
-        abort(422, validation_errors)
-    session_id = request.args.get("session_id")
+def get_score_per_feature_per_session(session_id):
+    """
+    Get the total score for each feature for a given session.
 
+    Session >> Feature Score
+    """
     upload_questions = UploadQuestion.query.filter_by(upload_id=session_id)
     scores = [
         (feedback.category.name, float(feedback.result), upload_question.question_id)
@@ -57,21 +55,24 @@ def get_score_per_feature_per_session():
     for score_data in scores:
         feature_scores_dict[score_data[0]] += score_data[1]
 
-    return {"session_id": session_id, "response_data": json.dumps(feature_scores_dict)}
+    res = {"session_id": session_id, "response_data": feature_scores_dict}
+    return jsonify(user_progress_tracking_response.dump(res))
 
 
-# The overall score for all sessions
-# Session >> Overall Score
 @user_progress_tracking_api.get("overall_per_session/")
+@use_kwargs(user_progress_tracking_request, location="query")
 @private_route
-def get_overall_score_per_session():
-    if validation_errors := user_progress_tracking_session_request.validate(request.args):
-        abort(422, validation_errors)
-    session_id = request.args.get("session_id")
+def get_overall_score_per_session(session_id):
+    """
+    Get the overall score for a given session.
 
+    Session >> Overall Score
+    """
     query = Upload.query.filter_by(id=session_id)
     response = query.first()
-    return {
+
+    res = {
         "session_id": session_id,
         "response_data": response.score if response else -1,
     }
+    return jsonify(user_progress_tracking_response.dump(res))

@@ -1,5 +1,6 @@
-from flask import Blueprint, abort, jsonify, request
+from flask import Blueprint, jsonify
 from psycopg2.extras import NumericRange
+from webargs.flaskparser import use_kwargs
 
 from prephouse.decorators.authentication import private_route
 from prephouse.models import Feedback, UploadQuestion
@@ -7,22 +8,15 @@ from prephouse.schemas.feedback_schema import (
     feedback_request_schema,
     feedback_response_schema,
 )
-from prephouse.utils import constants
 from prephouse.utils.sql_utils import get_integral_numeric_range_bounds
 
 feedback_api = Blueprint("feedback_api", __name__, url_prefix="/feedback")
 
 
 @feedback_api.get("/")
+@use_kwargs(feedback_request_schema, location="query")
 @private_route
-def get_feedback():
-    if validation_errors := feedback_request_schema.validate(request.args):
-        abort(422, validation_errors)
-    upload_ids = request.args.getlist("upload_ids")
-    time_start = request.args.get("time_start", type=int, default=0)
-    time_end = request.args.get("time_end", type=int, default=constants.PSQL_INT_MAX)
-    category = request.args.get("category", type=int)
-
+def get_feedback(upload_ids, time_start, time_end, category):
     query = UploadQuestion.query
     if upload_ids:
         query = query.filter(UploadQuestion.upload_id.in_(upload_ids))

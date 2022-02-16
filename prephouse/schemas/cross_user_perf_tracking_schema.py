@@ -1,10 +1,9 @@
-from marshmallow import Schema, fields
-
-from prephouse.models import Upload
+from marshmallow import Schema
+from webargs import fields
 
 
 class UserPerfTrackingOverallScoresRequestSchema(Schema):
-    user_id = fields.Str(required=True)
+    user_id = fields.UUID(required=True)
 
 
 class UserPerfTrackingOverallScoresResponseSchema(Schema):

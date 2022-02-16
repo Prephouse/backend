@@ -44,7 +44,7 @@ container via `docker-compose up`.
 #### Packages
 
 - Add any required external Python packages to [requirements.txt](requirements.txt)
-- Run `docker-compose up --build` when you need to install any new packages
+- Run `docker-compose up --build --remove-orphans` when you need to install any new packages
 
 #### Miscellaneous
 

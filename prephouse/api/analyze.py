@@ -1,7 +1,8 @@
 import os
 
 import grpc
-from flask import Blueprint, abort, request
+from flask import Blueprint
+from webargs.flaskparser import use_kwargs
 
 from prephouse.decorators.authentication import private_route
 from prephouse.schemas.analysis_schema import analysis_request_schema
@@ -17,14 +18,11 @@ def analyze_callback(feedback_future: grpc.Future, channel: grpc.Channel):
 
 
 @analyze_api.post("/")
+@use_kwargs(analysis_request_schema, location="query")
 @private_route
-def analyze_upload():
+def analyze_upload(upload_link):
     from prephouse_pb2 import Video
     from prephouse_pb2_grpc import PrephouseEngineStub
-
-    if validation_errors := analysis_request_schema.validate(request.args):
-        abort(422, validation_errors)
-    upload_link = request.args.get("upload_link", type=str)
 
     credentials = grpc.ssl_channel_credentials()
 

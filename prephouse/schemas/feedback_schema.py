@@ -1,14 +1,18 @@
-from marshmallow import Schema, fields, validate
+from marshmallow import Schema
+from webargs import fields, validate
 
 from prephouse.models import Feedback
 from prephouse.utils import constants
 
 
 class FeedbackRequestSchema(Schema):
-    upload_ids = fields.List(fields.Int, dump_default=None)
-    time_start = fields.Int(dump_default=0)
-    time_end = fields.Int(dump_default=constants.PSQL_INT_MAX)
-    category = fields.Int(validate=validate.OneOf(list(map(int, Feedback.FeedbackCategory))))
+    upload_ids = fields.DelimitedList(fields.UUID, required=True)
+    time_start = fields.Int(missing=0)
+    time_end = fields.Int(missing=constants.PSQL_INT_MAX)
+    category = fields.Int(
+        validate=validate.OneOf(list(map(int, Feedback.FeedbackCategory))),
+        missing=None,
+    )
 
 
 class FeedbackResponseSchema(Schema):

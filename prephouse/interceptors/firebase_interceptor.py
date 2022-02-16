@@ -1,7 +1,5 @@
 import firebase_admin
-from flask import Blueprint, current_app
-
-firebase_interceptor = Blueprint("firebase_interceptor", __name__)
+from flask import current_app
 
 
 @current_app.before_first_request

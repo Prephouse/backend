@@ -9,15 +9,15 @@ empty=false
 
 display_help() {
   echo "
-    usage: ./setup.sh [-mu|-h][-g MESSAGE]
-    options:
+    Usage: ./setup.sh [options][-g MESSAGE]
+    Options:
       -d downgrade database from the most recent migration
       -e create an empty migration file
       -h display help message
       -m insert mock values into the database
       -r merge multiple head revisions
       -u upgrade database with the latest migrations
-    optional arguments:
+    Optional Arguments:
       -g generate a new database migration with the specified message
   "
 }
