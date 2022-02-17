@@ -3,7 +3,7 @@ from webargs import fields
 
 
 class UserPerfTrackingOverallScoresRequestSchema(Schema):
-    user_id = fields.UUID(required=True)
+    pass
 
 
 class UserPerfTrackingOverallScoresResponseSchema(Schema):

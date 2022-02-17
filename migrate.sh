@@ -37,25 +37,25 @@ do
 done
 
 if [ -n "$mig" ]; then
-  docker-compose run --rm migration flask db migrate -m "$mig"
+  docker compose run --rm migration flask db migrate -m "$mig"
 fi
 
 if [ $merge = true ]; then
-  docker-compose run --rm migration flask db merge heads
+  docker compose run --rm migration flask db merge heads
 fi
 
 if [ $up = true ] || [ $mock = true ]; then
-  docker-compose run --service-ports --rm migration flask db upgrade
+  docker compose run --service-ports --rm migration flask db upgrade
 fi
 
 if [ $down = true ]; then
-  docker-compose run --service-ports --rm migration flask db downgrade
+  docker compose run --service-ports --rm migration flask db downgrade
 fi
 
 if [ $mock = true ]; then
-  docker-compose run --service-ports --rm migration python3 prephouse/mock.py
+  docker compose run --service-ports --rm migration python3 prephouse/mock.py
 fi
 
 if [ $empty = true ]; then
-  docker-compose run --service-ports --rm migration flask db revision
+  docker compose run --service-ports --rm migration flask db revision
 fi

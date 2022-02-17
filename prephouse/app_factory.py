@@ -9,6 +9,8 @@ from flask_seasurf import SeaSurf
 from flask_sqlalchemy import SQLAlchemy
 from flask_talisman import DENY, Talisman
 
+from prephouse.internal import PrephouseRequest
+
 
 def create_app(_db: SQLAlchemy) -> Flask:
     """
@@ -27,6 +29,9 @@ def create_app(_db: SQLAlchemy) -> Flask:
         "CSRF_COOKIE_HTTPONLY": True,
         "CSRF_COOKIE_SECURE": True,
     }
+
+    # Set internal classes
+    _app.request_class = PrephouseRequest
 
     # TODO: limit by user instead of IP when auth is done
     # Limit API call rates

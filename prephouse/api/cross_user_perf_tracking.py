@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, request
 from sqlalchemy import desc
 from webargs.flaskparser import use_kwargs
 
@@ -17,9 +17,10 @@ cross_user_perf_tracking_api = Blueprint(
 @cross_user_perf_tracking_api.get("compare_overall_outputs/")
 @use_kwargs(user_perf_tracking_overall_scores_request, location="query")
 @private_route
-def get_overall_score_comparison_data(user_id):
+def get_overall_score_comparison_data():
     """Get a comparison of a user's score relative to their past performance and to other users."""
     # Match on user_id, disregard results with null for overall score (Upload.score) value
+    user_id = request.user.id
     query = (
         Upload.query.filter(Upload.score is not None, Upload.user_id == user_id)
         .order_by(desc(Upload.date_uploaded))

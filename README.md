@@ -18,7 +18,7 @@
 ### Startup
 
 1. Run Docker Desktop on your machine
-2. Run `docker-compose up` to start the local database session and local development server
+2. Run `docker compose up` to start the local database session and local development server
 3. Navigate to <http://localhost:3001> on your web browser
 
 > We have separate services for the PSQL database, the database migration and the Flask app.
@@ -39,12 +39,12 @@ includes all the commands you need to perform migrations on your local developme
 
 **Note:** You usually only need to run `./migrate.sh -u` after you have generated a new database
 migration script. Otherwise, Docker automatically runs this command when you start the Docker
-container via `docker-compose up`.
+container via `docker compose up`.
 
 #### Packages
 
 - Add any required external Python packages to [requirements.txt](requirements.txt)
-- Run `docker-compose up --build --remove-orphans` when you need to install any new packages
+- Run `docker compose up --build --remove-orphans` when you need to install any new packages
 
 #### Miscellaneous
 
