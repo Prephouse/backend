@@ -12,14 +12,14 @@ class User(db.Model):  # type: ignore
     """
     A single Prephouse user.
 
-    :cvar id: firebase uuid
+    :cvar id: firebase uid
     :cvar name: full username
     :cvar email: email address
     :cvar is_admin: `True` if the user has admin privileges, `False` otherwise
     :cvar uploads: past interview/presentation sessions for this user
     """
 
-    id = db.Column(UUID(as_uuid=True), primary_key=True, autoincrement=False)
+    id = db.Column(db.String, primary_key=True, autoincrement=False)
     name = db.Column(db.String, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     is_admin = db.Column(db.Boolean, nullable=False, default=False)
@@ -68,12 +68,20 @@ class Upload(db.Model):  # type: ignore
         INTERVIEW = 0
         PRESENTATION = 1
 
+        # TODO replace with match case once supported by mypy
+        def get_category_name(self) -> str | None:
+            if self == self.INTERVIEW:
+                return "Interview"
+            elif self == self.PRESENTATION:
+                return "Presentation"
+            return None
+
     id = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     category = db.Column(db.Enum(UploadCategory), nullable=False, index=True)
     score = db.Column(db.Numeric(10, 2), nullable=True)
     date_uploaded = db.Column(db.DateTime, nullable=False, server_default=sql_func.now())
     date_modified = db.Column(db.DateTime, server_onupdate=sql_func.now())
-    user_id = db.Column(UUID(as_uuid=True), db.ForeignKey("user.id"), nullable=False)
+    user_id = db.Column(db.String, db.ForeignKey("user.id"), nullable=False)
     engine_id = db.Column(UUID(as_uuid=True), db.ForeignKey("engine.id"))
     questions = db.relationship("Question", secondary="upload_question", back_populates="uploads")
 

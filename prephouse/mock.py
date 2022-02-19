@@ -40,7 +40,7 @@ def insert_mock_values():
     """Create some mock data in the database."""
     from models import db
 
-    create_app(db)
+    create_app(db, False)
 
     from models import Engine, Feedback, Question, Upload, UploadQuestion, User
 
@@ -121,6 +121,7 @@ def insert_mock_values():
                 user_report=fake.text(max_nb_chars=50),
             )
     except SQLAlchemyError as e:
+        db.session.rollback()
         logging.error(e)
     finally:
         db.session.close()

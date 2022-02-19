@@ -9,14 +9,13 @@ from flask_seasurf import SeaSurf
 from flask_sqlalchemy import SQLAlchemy
 from flask_talisman import DENY, Talisman
 
-from prephouse.internal import PrephouseRequest
 
-
-def create_app(_db: SQLAlchemy) -> Flask:
+def create_app(_db: SQLAlchemy, with_internal: bool = True) -> Flask:
     """
     Create a Flask app for staging and production environments with the corresponding database.
 
     :arg _db: a PSQL database instance wrapped in SQLAlchemy
+    :arg with_internal: `True` to set internal classes, `False` otherwise
     :return: the Flask app instance with the proper configurations for staging
               and prod environments
     """
@@ -31,7 +30,10 @@ def create_app(_db: SQLAlchemy) -> Flask:
     }
 
     # Set internal classes
-    _app.request_class = PrephouseRequest
+    if with_internal:
+        from prephouse.internal import PrephouseRequest
+
+        _app.request_class = PrephouseRequest
 
     # TODO: limit by user instead of IP when auth is done
     # Limit API call rates
@@ -55,7 +57,7 @@ def create_app(_db: SQLAlchemy) -> Flask:
     _db.init_app(_app)
 
     # Set up database migrations
-    Migrate().init_app(_app, _db)
+    Migrate(compare_type=True).init_app(_app, _db)
 
     # Bind app context
     _app.app_context().push()

@@ -25,7 +25,7 @@ display_help() {
 while getopts ":dg:mhrue" OPTION
 do
   case $OPTION in
-    d) down=false;;
+    d) down=true;;
     g) mig=${OPTARG};;
     m) mock=true;;
     h) display_help; exit 0;;

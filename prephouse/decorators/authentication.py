@@ -34,7 +34,7 @@ def private_route(f: Callable[P, ErrorResponse]) -> Callable[P, ErrorResponse]:
                 app_user = User.query.filter_by(id=firebase_user["uid"]).first()
                 if not app_user:
                     app_user = User(
-                        name=firebase_user["display_name"],
+                        name=firebase_user.get("name", firebase_user.get("display_name", "")),
                         email=firebase_user["email"],
                         id=firebase_user["uid"],
                     )
