@@ -3,7 +3,7 @@ from webargs import fields
 
 
 class AnalysisRequestSchema(Schema):
-    upload_link = fields.Url(required=True)
+    upload_link = fields.Str(required=True)
 
 
 class AnalysisResponseSchema(Schema):
