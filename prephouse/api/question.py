@@ -1,11 +1,16 @@
-from flask import Blueprint, jsonify
-from sqlalchemy.sql.expression import func
-from webargs.flaskparser import use_kwargs
+from collections import defaultdict
 
-from prephouse.models import Question
+from flask import Blueprint, jsonify, request
+from sqlalchemy.sql.expression import func
+from webargs.flaskparser import abort, use_kwargs
+
+from prephouse.decorators.authentication import private_route
+from prephouse.models import Question, Upload
 from prephouse.schemas.question_schema import (
     question_request_schema,
     question_response_schema,
+    question_upload_request_schema,
+    question_upload_response_schema,
 )
 
 question_api = Blueprint("question_api", __name__, url_prefix="/question")
@@ -37,3 +42,28 @@ def get_question(question_categories, limit, randomize):
         )
 
     return jsonify(question_response_schema.dump(response))
+
+
+@question_api.get("<upload_id>/")
+@use_kwargs(question_upload_request_schema, location="query")
+@private_route
+def get_questions_for_upload(upload_id):
+    upload = Upload.query.filter_by(id=upload_id).first()
+    if upload is None or upload.user_id != request.user.id:
+        abort(401)
+
+    query = Upload.query.filter_by(id=upload_id)
+    response = {
+        "upload_id": upload_id,
+        "questions": defaultdict(dict),
+    }
+    if upload := query.first():
+        for question in upload.questions:
+            response["questions"][question.id] = {
+                "category": question.category,
+                "category_name": question.category.get_category_name(),
+                "question": question.question,
+                "description": question.description,
+            }
+
+    return jsonify(question_upload_response_schema.dump(response))

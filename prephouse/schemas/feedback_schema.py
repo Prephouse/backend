@@ -35,19 +35,30 @@ class FeedbackRequestSchema(Schema):
 
 
 class FeedbackResponseSchema(Schema):
-    id = fields.Int(required=True)
-    upload_id = fields.Int(required=True)
-    category = fields.Int(
-        required=True, validate=validate.OneOf(list(map(int, Feedback.FeedbackCategory)))
+    class SingleFeedback(Schema):
+        id = fields.UUID(required=True)
+        feature_name = fields.Str(required=True)
+        subcategory = fields.Str()
+        comment = fields.Str()
+        result = fields.Float(required=True)
+        time_start = fields.Int()
+        time_end = fields.Int()
+
+    upload_id = fields.UUID(required=True)
+    feedbacks = fields.Dict(
+        keys=fields.Str(),
+        values=fields.Dict(
+            keys=fields.Int(
+                required=True,
+                validate=validate.OneOf(list(map(int, Feedback.FeedbackCategory))),
+            ),
+            values=fields.Nested(SingleFeedback),
+        ),
+        required=True,
     )
-    subcategory = fields.Str()
-    comment = fields.Str()
-    result = fields.Float(required=True)
-    time_start = fields.Int()
-    time_end = fields.Int()
 
 
 upload_request_schema = UploadRequestSchema()
 upload_response_schema = UploadResponseSchema()
 feedback_request_schema = FeedbackRequestSchema()
-feedback_response_schema = FeedbackResponseSchema(many=True)
+feedback_response_schema = FeedbackResponseSchema()

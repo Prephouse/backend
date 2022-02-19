@@ -102,6 +102,20 @@ class Question(db.Model):  # type: ignore
         DATA = 3
         BUSINESS = 4
 
+        # TODO replace with match case once supported by mypy
+        def get_category_name(self) -> str | None:
+            if self == self.GENERAL:
+                return "General"
+            elif self == self.SOFTWARE:
+                return "Software"
+            elif self == self.PRODUCT:
+                return "Product"
+            elif self == self.DATA:
+                return "Data"
+            elif self == self.BUSINESS:
+                return "Business"
+            return None
+
     id = db.Column(db.Integer, primary_key=True)
     category = db.Column(db.Enum(QuestionCategory), nullable=False)
     question = db.Column(db.Text, nullable=False)
@@ -168,6 +182,24 @@ class Feedback(db.Model):  # type: ignore
         EMOTION = 4
         PITCH = 5
         FILLER_WORD = 6
+
+        # TODO replace with match case once supported by mypy
+        def get_feature_name(self) -> str | None:
+            if self == self.PAUSE:
+                return "Silent Pauses"
+            elif self == self.VOLUME:
+                return "Volume"
+            elif self == self.LIGHT:
+                return "Background Light"
+            elif self == self.GAZE:
+                return "Gaze Direction"
+            elif self == self.EMOTION:
+                return "Emotion"
+            elif self == self.PITCH:
+                return "Pitch"
+            elif self == self.FILLER_WORD:
+                return "Filler Words"
+            return None
 
     __table_args__ = (db.CheckConstraint(r"confidence BETWEEN 0 AND 100"),)
 

@@ -8,9 +8,9 @@ class UserPerfTrackingOverallScoresRequestSchema(Schema):
 
 class UserPerfTrackingOverallScoresResponseSchema(Schema):
     latest_overall_score = fields.Float(required=True)
-    all_user_overall_score_data = fields.List(fields.Float)
-    all_users_overall_scores_data = fields.List(fields.Float)
-    average_all_overall_score_all_users = fields.Float(required=True)
+    overall_scores_history_current_user = fields.List(fields.Float)
+    overall_scores_history_all_other_users = fields.List(fields.Float)
+    average_overall_scores_history_all_other_users = fields.Float(required=True)
 
 
 user_perf_tracking_overall_scores_request = UserPerfTrackingOverallScoresRequestSchema()
