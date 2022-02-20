@@ -21,15 +21,17 @@ feedback_api = Blueprint("feedback_api", __name__, url_prefix="/feedback")
 @feedback_api.get("/")
 @use_kwargs(upload_request_schema, location="query")
 @private_route
-def get_uploads(page):
+def get_uploads(page, per_page):
     upload_page = (
         Upload.query.filter_by(user_id=request.user.id)
         .order_by(desc(Upload.date_uploaded))
-        .paginate(page=page, per_page=20, error_out=False)
+        .paginate(page=page, per_page=per_page, error_out=False)
     )
+
     response = {
-        "page": upload_page.next_num,
+        "next_page": upload_page.next_num,
         "has_next": upload_page.has_next,
+        "total_pages": upload_page.pages,
         "uploads": [
             {
                 "id": upload.id,
@@ -40,6 +42,7 @@ def get_uploads(page):
             for upload in upload_page.items or []
         ],
     }
+
     return jsonify(upload_response_schema.dump(response))
 
 

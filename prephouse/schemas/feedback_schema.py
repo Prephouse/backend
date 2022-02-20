@@ -7,6 +7,7 @@ from prephouse.utils import constants
 
 class UploadRequestSchema(Schema):
     page = fields.Int(missing=1)
+    per_page = fields.Int(missing=20)
 
 
 class UploadResponseSchema(Schema):
@@ -19,7 +20,7 @@ class UploadResponseSchema(Schema):
         date_uploaded = fields.DateTime(required=True)
         score = fields.Float()
 
-    page = fields.Int(required=True)
+    next_page = fields.Int(required=True)
     has_next = fields.Bool(required=True)
     uploads = fields.List(fields.Nested(SingleUploadSchema), required=True)
 
