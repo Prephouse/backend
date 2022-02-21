@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x0fprephouse.proto\"\x15\n\x05Video\x12\x0c\n\x04link\x18\x01 \x01(\t\"\xa4\x03\n\x08\x46\x65\x65\x64\x62\x61\x63k\x12#\n\x08\x63\x61tegory\x18\x01 \x01(\x0e\x32\x11.Feedback.Feature\x12\x18\n\x0bsubcategory\x18\x02 \x01(\tH\x00\x88\x01\x01\x12\x14\n\x07\x63omment\x18\x03 \x01(\tH\x01\x88\x01\x01\x12\x0e\n\x06result\x18\x04 \x01(\x02\x12\x17\n\nconfidence\x18\x05 \x01(\x05H\x02\x88\x01\x01\x12\x17\n\ntime_start\x18\x06 \x01(\x02H\x03\x88\x01\x01\x12\x15\n\x08time_end\x18\x07 \x01(\x02H\x04\x88\x01\x01\"\xa2\x01\n\x07\x46\x65\x61ture\x12\x1d\n\x19\x46\x45\x41TURE_PAUSE_UNSPECIFIED\x10\x00\x12\x12\n\x0e\x46\x45\x41TURE_VOLUME\x10\x01\x12\x11\n\rFEATURE_LIGHT\x10\x02\x12\x10\n\x0c\x46\x45\x41TURE_GAZE\x10\x03\x12\x13\n\x0f\x46\x45\x41TURE_EMOTION\x10\x04\x12\x11\n\rFEATURE_PITCH\x10\x05\x12\x17\n\x13\x46\x45\x41TURE_FILLER_WORD\x10\x06\x42\x0e\n\x0c_subcategoryB\n\n\x08_commentB\r\n\x0b_confidenceB\r\n\x0b_time_startB\x0b\n\t_time_end\"Z\n\x0c\x46\x65\x65\x64\x62\x61\x63kList\x12\x1b\n\x08\x66\x65\x65\x64\x62\x61\x63k\x18\x01 \x03(\x0b\x32\t.Feedback\x12\x16\n\x0e\x65ngine_version\x18\x02 \x01(\t\x12\x15\n\rengine_config\x18\x03 \x01(\t2e\n\x0fPrephouseEngine\x12&\n\x0bGetFeedback\x12\x06.Video\x1a\r.FeedbackList\"\x00\x12*\n\x0fGetMockFeedback\x12\x06.Video\x1a\r.FeedbackList\"\x00\x62\x06proto3'
+  serialized_pb=b'\n\x0fprephouse.proto\"3\n\tMediaList\x12\x12\n\naudio_link\x18\x01 \x01(\t\x12\x12\n\nvideo_link\x18\x02 \x01(\t\"\xa4\x03\n\x08\x46\x65\x65\x64\x62\x61\x63k\x12#\n\x08\x63\x61tegory\x18\x01 \x01(\x0e\x32\x11.Feedback.Feature\x12\x18\n\x0bsubcategory\x18\x02 \x01(\tH\x00\x88\x01\x01\x12\x14\n\x07\x63omment\x18\x03 \x01(\tH\x01\x88\x01\x01\x12\x0e\n\x06result\x18\x04 \x01(\x02\x12\x17\n\nconfidence\x18\x05 \x01(\x05H\x02\x88\x01\x01\x12\x17\n\ntime_start\x18\x06 \x01(\x02H\x03\x88\x01\x01\x12\x15\n\x08time_end\x18\x07 \x01(\x02H\x04\x88\x01\x01\"\xa2\x01\n\x07\x46\x65\x61ture\x12\x1d\n\x19\x46\x45\x41TURE_PAUSE_UNSPECIFIED\x10\x00\x12\x12\n\x0e\x46\x45\x41TURE_VOLUME\x10\x01\x12\x11\n\rFEATURE_LIGHT\x10\x02\x12\x10\n\x0c\x46\x45\x41TURE_GAZE\x10\x03\x12\x13\n\x0f\x46\x45\x41TURE_EMOTION\x10\x04\x12\x11\n\rFEATURE_PITCH\x10\x05\x12\x17\n\x13\x46\x45\x41TURE_FILLER_WORD\x10\x06\x42\x0e\n\x0c_subcategoryB\n\n\x08_commentB\r\n\x0b_confidenceB\r\n\x0b_time_startB\x0b\n\t_time_end\"Z\n\x0c\x46\x65\x65\x64\x62\x61\x63kList\x12\x1b\n\x08\x66\x65\x65\x64\x62\x61\x63k\x18\x01 \x03(\x0b\x32\t.Feedback\x12\x16\n\x0e\x65ngine_version\x18\x02 \x01(\t\x12\x15\n\rengine_config\x18\x03 \x01(\t2m\n\x0fPrephouseEngine\x12*\n\x0bGetFeedback\x12\n.MediaList\x1a\r.FeedbackList\"\x00\x12.\n\x0fGetMockFeedback\x12\n.MediaList\x1a\r.FeedbackList\"\x00\x62\x06proto3'
 )
 
 
@@ -69,23 +69,30 @@ _FEEDBACK_FEATURE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=230,
-  serialized_end=392,
+  serialized_start=260,
+  serialized_end=422,
 )
 _sym_db.RegisterEnumDescriptor(_FEEDBACK_FEATURE)
 
 
-_VIDEO = _descriptor.Descriptor(
-  name='Video',
-  full_name='Video',
+_MEDIALIST = _descriptor.Descriptor(
+  name='MediaList',
+  full_name='MediaList',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='link', full_name='Video.link', index=0,
+      name='audio_link', full_name='MediaList.audio_link', index=0,
       number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='video_link', full_name='MediaList.video_link', index=1,
+      number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -103,7 +110,7 @@ _VIDEO = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=19,
-  serialized_end=40,
+  serialized_end=70,
 )
 
 
@@ -202,8 +209,8 @@ _FEEDBACK = _descriptor.Descriptor(
       create_key=_descriptor._internal_create_key,
     fields=[]),
   ],
-  serialized_start=43,
-  serialized_end=463,
+  serialized_start=73,
+  serialized_end=493,
 )
 
 
@@ -248,8 +255,8 @@ _FEEDBACKLIST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=465,
-  serialized_end=555,
+  serialized_start=495,
+  serialized_end=585,
 )
 
 _FEEDBACK.fields_by_name['category'].enum_type = _FEEDBACK_FEATURE
@@ -270,17 +277,17 @@ _FEEDBACK.oneofs_by_name['_time_end'].fields.append(
   _FEEDBACK.fields_by_name['time_end'])
 _FEEDBACK.fields_by_name['time_end'].containing_oneof = _FEEDBACK.oneofs_by_name['_time_end']
 _FEEDBACKLIST.fields_by_name['feedback'].message_type = _FEEDBACK
-DESCRIPTOR.message_types_by_name['Video'] = _VIDEO
+DESCRIPTOR.message_types_by_name['MediaList'] = _MEDIALIST
 DESCRIPTOR.message_types_by_name['Feedback'] = _FEEDBACK
 DESCRIPTOR.message_types_by_name['FeedbackList'] = _FEEDBACKLIST
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
-Video = _reflection.GeneratedProtocolMessageType('Video', (_message.Message,), {
-  'DESCRIPTOR' : _VIDEO,
+MediaList = _reflection.GeneratedProtocolMessageType('MediaList', (_message.Message,), {
+  'DESCRIPTOR' : _MEDIALIST,
   '__module__' : 'prephouse_pb2'
-  # @@protoc_insertion_point(class_scope:Video)
+  # @@protoc_insertion_point(class_scope:MediaList)
   })
-_sym_db.RegisterMessage(Video)
+_sym_db.RegisterMessage(MediaList)
 
 Feedback = _reflection.GeneratedProtocolMessageType('Feedback', (_message.Message,), {
   'DESCRIPTOR' : _FEEDBACK,
@@ -305,15 +312,25 @@ _PREPHOUSEENGINE = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=557,
-  serialized_end=658,
+  serialized_start=587,
+  serialized_end=696,
   methods=[
   _descriptor.MethodDescriptor(
     name='GetFeedback',
     full_name='PrephouseEngine.GetFeedback',
     index=0,
     containing_service=None,
-    input_type=_VIDEO,
+    input_type=_MEDIALIST,
+    output_type=_FEEDBACKLIST,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='GetMockFeedback',
+    full_name='PrephouseEngine.GetMockFeedback',
+    index=1,
+    containing_service=None,
+    input_type=_MEDIALIST,
     output_type=_FEEDBACKLIST,
     serialized_options=None,
     create_key=_descriptor._internal_create_key,
