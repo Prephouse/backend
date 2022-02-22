@@ -12,16 +12,14 @@ import prephouse.interceptors.rollbar_interceptor  # noqa: E402, F401
 from prephouse.api.analyze import analyze_api  # noqa: E402
 from prephouse.api.feedback import feedback_api  # noqa: E402
 from prephouse.api.leaderboard import leaderboard_api  # noqa: E402
+from prephouse.api.progress import progress_api  # noqa: E402
 from prephouse.api.question import question_api  # noqa: E402
-from prephouse.api.user_progress_tracking import (  # noqa: E402
-    user_progress_tracking_api,
-)
 
 blueprints: tuple[Blueprint, ...] = (
     feedback_api,
     analyze_api,
     question_api,
-    user_progress_tracking_api,
+    progress_api,
     leaderboard_api,
 )
 for blueprint in blueprints:

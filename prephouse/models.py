@@ -209,6 +209,10 @@ class Feedback(db.Model):  # type: ignore
                 return "Filler Words"
             return None
 
+        def get_api_safe_feature_name(self) -> str | None:
+            name = self.get_feature_name()
+            return name.lower().replace(" ", "_") if name else name
+
     __table_args__ = (db.CheckConstraint(r"confidence BETWEEN 0 AND 100"),)
 
     id = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
