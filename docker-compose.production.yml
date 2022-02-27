@@ -1,7 +1,12 @@
 version: '3'
-
 services:
   prephouse:
+    container_name: prephouse-backend
+    image: prephouse-backend
+    build: ./
+    ports:
+      - '3001:5000'
+    volumes:
+      - './:/app'
     env_file:
-      - .env.production
       - .env

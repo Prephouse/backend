@@ -15,3 +15,5 @@ docker-compose.production.yml
 Dockerfile
 README.md
 setup.sh
+# Elastic Beanstalk Files
+.elasticbeanstalk/*

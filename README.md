@@ -57,6 +57,12 @@ container via `docker compose up`.
 [docker-compose]: https://docs.docker.com/compose/install/
 [pre-commit]: https://pre-commit.com/
 
+### Deployment
+1. Install AWS [Elastic Beanstalk CLI](https://github.com/aws/aws-elastic-beanstalk-cli-setup) using `pip install awsebcli --upgrade` in a new virtual environment
+2. Before deploying to AWS, ensure that the prod docker compose file `docker-compose.production.yml` is set as the main `docker-compose.yml`. To do this, rename  `docker-compose.production.yml` to `docker-compose.yml`.
+3. Run `.awsbeanstalk.sh` to deploy any env variable and recent commit changes. If you want to deploy uncommited/staged changes, stage the files and edit the `.awsbeanstalk.sh` to use `eb deploy --staged`
+4. If you run into access issues, use the `--profile` flag to use the AWS backend user `louis` who has Beanstalk permissions
+
 ## Developer Tools
 
 We support Visual Studio Code and PyCharm out of the box.
