@@ -1,12 +1,13 @@
 from collections import defaultdict
 
 from flask import Blueprint, jsonify, request
-from sqlalchemy import asc, func
+from sqlalchemy import asc, desc, func
 from webargs.flaskparser import use_kwargs
 
 from prephouse.decorators.authentication import private_route
 from prephouse.models import Feedback, Upload, UploadQuestion
 from prephouse.schemas.progress_schema import (
+    all_scores_per_category_response,
     all_scores_per_session_request,
     all_scores_per_session_response,
     progress_request,
@@ -56,7 +57,57 @@ def get_scores_per_feature_across_all_sessions():
         for feature, score in session_scores.items():
             res[f"{feature}_scores"].append(float(score))
 
-    return jsonify(all_scores_per_session_response.dump(res))
+    return jsonify(all_scores_per_category_response.dump(res))
+
+
+@progress_api.get("scores_per_session/")
+@use_kwargs(all_scores_per_session_request, location="query")
+@private_route
+def get_scores_per_session():
+    """
+    Get scores of all features for each session the user has.
+
+    User >> Uploads >> Upload Questions >> Feedback
+    """
+    scores_dict = defaultdict(lambda: [None, None, 0, {f: 0 for f in Feedback.FeedbackCategory}])
+    res = []
+    user_id = request.user.id
+
+    query = (
+        Upload.query.join(UploadQuestion, UploadQuestion.upload_id == Upload.id, isouter=True)
+        .join(Feedback, Feedback.uq_id == UploadQuestion.id, isouter=True)
+        .filter(Upload.user_id == user_id)
+        .group_by(Upload.id, Feedback.category)
+        .order_by(desc(Upload.date_uploaded))
+        .add_columns(
+            Upload.id,
+            Upload.date_uploaded,
+            Upload.score.label("upload_score"),
+            Upload.category.label("upload_category"),
+            Feedback.category.label("feedback_category"),
+            func.avg(Feedback.result).label("avg_score"),
+        )
+    ).all()
+
+    for feedback in query:
+        scores_dict[feedback.id][0] = feedback.date_uploaded
+        scores_dict[feedback.id][1] = feedback.upload_category
+        scores_dict[feedback.id][2] = feedback.upload_score
+        scores_dict[feedback.id][3][feedback.feedback_category] = float(feedback.avg_score or 0)
+
+    for upload_id, (date, upload_category, upload_score, scores) in scores_dict.items():
+        item = {
+            f"{f.get_api_safe_feature_name()}_score": scores[f] for f in Feedback.FeedbackCategory
+        }
+        item |= {
+            "date": date,
+            "session_category": upload_category.get_category_name(),
+            "session_id": upload_id,
+            "overall_score": upload_score,
+        }
+        res.append(item)
+
+    return jsonify(all_scores_per_session_response.dump({"sessions": res}))
 
 
 @progress_api.get("feature_per_question/")
