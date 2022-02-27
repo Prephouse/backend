@@ -1,7 +1,7 @@
 import os
 
 import grpc
-from flask import Blueprint, abort, request
+from flask import Blueprint
 from psycopg2.extras import NumericRange
 from webargs.flaskparser import use_kwargs
 
@@ -25,7 +25,7 @@ def analyze_callback(feedback_future: grpc.Future, channel: grpc.Channel, upload
                 uq_id=int(upload_link),  # Need to change this once we know url format
             )
             db.session.add(feedback_row)
-    except:
+    except Exception:
         db.session.rollback()
         raise
     else:

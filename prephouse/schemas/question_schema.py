@@ -5,7 +5,7 @@ from prephouse.models import Question
 
 
 class QuestionRequestSchema(Schema):
-    question_categories = fields.List(
+    categories = fields.DelimitedList(
         fields.Int(
             required=True,
             validate=validate.OneOf(list(map(int, Question.QuestionCategory))),
@@ -22,7 +22,8 @@ class QuestionResponseSchema(Schema):
         required=True,
         validate=validate.OneOf(list(map(int, Question.QuestionCategory))),
     )
-    question = fields.Str()
+    category_name = fields.Str(required=True)
+    question = fields.Str(required=True)
     description = fields.Str()
     sample_answer = fields.Str()
     frequency = fields.Int()
@@ -44,7 +45,21 @@ class QuestionUploadResponseSchema(Schema):
     )
 
 
+class QuestionCategoriesRequestSchema(Schema):
+    pass
+
+
+class QuestionCategoriesResponseSchema(Schema):
+    categories = fields.Dict(
+        keys=fields.Int(validate=validate.OneOf(list(map(int, Question.QuestionCategory)))),
+        values=fields.Str(),
+        required=True,
+    )
+
+
 question_request_schema = QuestionRequestSchema()
 question_response_schema = QuestionResponseSchema(many=True)
 question_upload_request_schema = QuestionUploadRequestSchema()
 question_upload_response_schema = QuestionUploadResponseSchema()
+question_categories_request_schema = QuestionCategoriesRequestSchema()
+question_categories_response_schema = QuestionCategoriesResponseSchema()
