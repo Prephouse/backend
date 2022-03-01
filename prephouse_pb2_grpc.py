@@ -24,11 +24,6 @@ class PrephouseEngineStub(object):
                 request_serializer=prephouse__pb2.MediaList.SerializeToString,
                 response_deserializer=prephouse__pb2.FeedbackList.FromString,
                 )
-        self.GetMockFeedback = channel.unary_unary(
-                '/PrephouseEngine/GetMockFeedback',
-                request_serializer=prephouse__pb2.Video.SerializeToString,
-                response_deserializer=prephouse__pb2.FeedbackList.FromString,
-                )
 
 
 class PrephouseEngineServicer(object):
@@ -57,11 +52,6 @@ def add_PrephouseEngineServicer_to_server(servicer, server):
             'GetMockFeedback': grpc.unary_unary_rpc_method_handler(
                     servicer.GetMockFeedback,
                     request_deserializer=prephouse__pb2.MediaList.FromString,
-                    response_serializer=prephouse__pb2.FeedbackList.SerializeToString,
-            ),
-            'GetMockFeedback': grpc.unary_unary_rpc_method_handler(
-                    servicer.GetMockFeedback,
-                    request_deserializer=prephouse__pb2.Video.FromString,
                     response_serializer=prephouse__pb2.FeedbackList.SerializeToString,
             ),
     }
@@ -104,23 +94,6 @@ class PrephouseEngine(object):
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/PrephouseEngine/GetMockFeedback',
             prephouse__pb2.MediaList.SerializeToString,
-            prephouse__pb2.FeedbackList.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
-
-    @staticmethod
-    def GetMockFeedback(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/PrephouseEngine/GetMockFeedback',
-            prephouse__pb2.Video.SerializeToString,
             prephouse__pb2.FeedbackList.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
