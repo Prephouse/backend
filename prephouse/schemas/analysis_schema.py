@@ -3,8 +3,10 @@ from webargs import fields
 
 
 class AnalysisRequestSchema(Schema):
-    upload_link = fields.Str(required=True)
-
+    upload_question_id = fields.UUID(required=True)
+    audio_link = fields.Str(required=True)
+    transcript_link = fields.Str(required=True)
+    video_link = fields.Str(missing=None)
 
 class AnalysisResponseSchema(Schema):
     pass

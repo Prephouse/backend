@@ -183,13 +183,13 @@ class Feedback(db.Model):  # type: ignore
 
     @enum.unique
     class FeedbackCategory(enum.IntEnum):
-        PAUSE = 0
-        VOLUME = 1
-        LIGHT = 2
-        GAZE = 3
-        EMOTION = 4
-        PITCH = 5
-        FILLER_WORD = 6
+        PAUSE = 1
+        VOLUME = 2
+        LIGHT = 3
+        GAZE = 4
+        EMOTION = 5
+        PITCH = 6
+        FILLER_WORD = 7
 
         # TODO replace with match case once supported by mypy
         def get_feature_name(self) -> str | None:
