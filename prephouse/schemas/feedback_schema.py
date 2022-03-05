@@ -26,7 +26,6 @@ class UploadResponseSchema(Schema):
 
 
 class FeedbackRequestSchema(Schema):
-    # upload_ids = fields.DelimitedList(fields.UUID, required=True)
     time_start = fields.Int(missing=0)
     time_end = fields.Int(missing=constants.PSQL_INT_MAX)
     category = fields.Int(

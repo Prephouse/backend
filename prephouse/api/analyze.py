@@ -6,7 +6,6 @@ from flask import Blueprint
 from psycopg2.extras import NumericRange
 from webargs.flaskparser import use_kwargs
 
-from prephouse.decorators.authentication import private_route
 from prephouse.models import Feedback, db
 from prephouse.schemas.analysis_schema import analysis_request_schema
 
@@ -49,7 +48,9 @@ def analyze_upload(upload_question_id, audio_link, transcript_link, video_link):
             f"{os.environ['ENGINE_GRPC_IP']}:{os.environ['ENGINE_GRPC_PORT']}", credentials
         )
         stub = PrephouseEngineStub(channel)
-        feedback_future = stub.GetFeedback.future(MediaList(audio_link=audio_link, video_link=video_link, transcript_link=transcript_link))
+        feedback_future = stub.GetFeedback.future(
+            MediaList(audio_link=audio_link, video_link=video_link, transcript_link=transcript_link)
+        )
         feedback_future.add_done_callback(
             lambda future: analyze_callback(future, channel, upload_question_id)
         )

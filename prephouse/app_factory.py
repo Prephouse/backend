@@ -35,7 +35,6 @@ def create_app(_db: SQLAlchemy, with_internal: bool = True) -> Flask:
 
         _app.request_class = PrephouseRequest
 
-    # TODO: limit by user instead of IP when auth is done
     # Limit API call rates
     Limiter(_app, key_func=get_remote_address, default_limits=["5 per second", "1000 per day"])
 

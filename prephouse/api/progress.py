@@ -7,18 +7,18 @@ from webargs.flaskparser import use_kwargs
 from prephouse.decorators.authentication import private_route
 from prephouse.models import Feedback, Upload, UploadQuestion
 from prephouse.schemas.progress_schema import (
-    all_scores_per_category_response,
-    all_scores_per_session_request,
-    all_scores_per_session_response,
-    progress_request,
-    progress_response,
+    category_scores_response_schema,
+    progress_request_schema,
+    progress_response_schema,
+    session_scores_request_schema,
+    session_scores_response_schema,
 )
 
 progress_api = Blueprint("progress", __name__, url_prefix="/progress")
 
 
 @progress_api.get("scores_per_category/")
-@use_kwargs(all_scores_per_session_request, location="query")
+@use_kwargs(session_scores_request_schema, location="query")
 @private_route
 def get_scores_per_feature_across_all_sessions():
     """
@@ -57,11 +57,11 @@ def get_scores_per_feature_across_all_sessions():
         for feature, score in session_scores.items():
             res[f"{feature}_scores"].append(float(score))
 
-    return jsonify(all_scores_per_category_response.dump(res))
+    return jsonify(category_scores_response_schema.dump(res))
 
 
 @progress_api.get("scores_per_session/")
-@use_kwargs(all_scores_per_session_request, location="query")
+@use_kwargs(session_scores_request_schema, location="query")
 @private_route
 def get_scores_per_session():
     """
@@ -107,11 +107,11 @@ def get_scores_per_session():
         }
         res.append(item)
 
-    return jsonify(all_scores_per_session_response.dump({"sessions": res}))
+    return jsonify(session_scores_response_schema.dump({"sessions": res}))
 
 
 @progress_api.get("feature_per_question/")
-@use_kwargs(progress_request, location="query")
+@use_kwargs(progress_request_schema, location="query")
 @private_route
 def get_score_per_feature_per_question_per_session(session_id):
     """
@@ -127,11 +127,11 @@ def get_score_per_feature_per_question_per_session(session_id):
     ]
 
     res = {"session_id": session_id, "response_data": scores}
-    return jsonify(progress_response.dump(res))
+    return jsonify(progress_response_schema.dump(res))
 
 
 @progress_api.get("feature_per_session/")
-@use_kwargs(progress_request, location="query")
+@use_kwargs(progress_request_schema, location="query")
 @private_route
 def get_score_per_feature_per_session(session_id):
     """
@@ -153,11 +153,11 @@ def get_score_per_feature_per_session(session_id):
         feature_scores_dict[score_data[0]] += score_data[1]
 
     res = {"session_id": session_id, "response_data": feature_scores_dict}
-    return jsonify(progress_response.dump(res))
+    return jsonify(progress_response_schema.dump(res))
 
 
 @progress_api.get("overall_per_session/")
-@use_kwargs(progress_request, location="query")
+@use_kwargs(progress_request_schema, location="query")
 @private_route
 def get_overall_score_per_session(session_id):
     """
@@ -172,4 +172,4 @@ def get_overall_score_per_session(session_id):
         "session_id": session_id,
         "response_data": response.score if response else -1,
     }
-    return jsonify(progress_response.dump(res))
+    return jsonify(progress_response_schema.dump(res))

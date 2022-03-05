@@ -63,7 +63,6 @@ def get_leaderboard(page, per_page):
 @private_route
 def get_leaderboard_overview():
     """Get a comparison of a user's score relative to their past performance and to other users."""
-    # Match on user_id, disregard results with null for overall score (Upload.score) value
     user_id = request.user.id
     user_uploads = (
         Upload.query.options(load_only(Upload.score))

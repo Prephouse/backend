@@ -14,7 +14,7 @@ from prephouse.api.feedback import feedback_api  # noqa: E402
 from prephouse.api.leaderboard import leaderboard_api  # noqa: E402
 from prephouse.api.progress import progress_api  # noqa: E402
 from prephouse.api.question import question_api  # noqa: E402
-from prephouse.api.upload import upload_api
+from prephouse.api.upload import upload_api  # noqa: E402
 
 blueprints: tuple[Blueprint, ...] = (
     feedback_api,

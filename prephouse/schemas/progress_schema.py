@@ -11,11 +11,11 @@ class ProgressResponseSchema(Schema):
     response_data = fields.Raw(required=True)
 
 
-class AllScoresPerSessionRequestSchema(Schema):
+class SessionScoresRequestSchema(Schema):
     pass
 
 
-class AllScoresPerSessionResponseSchema(Schema):
+class SessionScoresResponseSchema(Schema):
     class UploadEntrySchema(Schema):
         session_id = fields.UUID(required=True)
         session_category = fields.String(required=True)
@@ -32,7 +32,7 @@ class AllScoresPerSessionResponseSchema(Schema):
     sessions = fields.List(fields.Nested(UploadEntrySchema), required=True)
 
 
-class AllScoresPerCategoryResponseSchema(Schema):
+class CategoryScoresResponseSchema(Schema):
     dates = fields.List(fields.DateTime, required=True)
     overall_scores = fields.List(fields.Float, required=True)
     silent_pauses_scores = fields.List(fields.Float, required=True)
@@ -44,8 +44,8 @@ class AllScoresPerCategoryResponseSchema(Schema):
     filler_words_scores = fields.List(fields.Float, required=True)
 
 
-progress_request = ProgressRequestSchema()
-progress_response = ProgressResponseSchema()
-all_scores_per_session_request = AllScoresPerSessionRequestSchema()
-all_scores_per_session_response = AllScoresPerSessionResponseSchema()
-all_scores_per_category_response = AllScoresPerCategoryResponseSchema()
+progress_request_schema = ProgressRequestSchema()
+progress_response_schema = ProgressResponseSchema()
+session_scores_request_schema = SessionScoresRequestSchema()
+session_scores_response_schema = SessionScoresResponseSchema()
+category_scores_response_schema = CategoryScoresResponseSchema()

@@ -8,6 +8,7 @@ class AnalysisRequestSchema(Schema):
     transcript_link = fields.Str(required=True)
     video_link = fields.Str(missing=None)
 
+
 class AnalysisResponseSchema(Schema):
     pass
 
