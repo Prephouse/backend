@@ -76,6 +76,16 @@ class Upload(db.Model):  # type: ignore
                 return "Presentation"
             return None
 
+    @enum.unique
+    class UploadMedium(enum.IntEnum):
+        VIDEO_AUDIO = 0
+        AUDIO_ONLY = 1
+
+    @enum.unique
+    class UploadOrigin(enum.IntEnum):
+        RECORD = 0
+        UPLOAD = 1
+
     id = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     category = db.Column(db.Enum(UploadCategory), nullable=False, index=True)
     score = db.Column(db.Numeric(10, 2))
@@ -190,6 +200,10 @@ class Feedback(db.Model):  # type: ignore
         EMOTION = 5
         PITCH = 6
         FILLER_WORD = 7
+
+        @classmethod
+        def get_video_only_features(cls) -> set["Feedback.FeedbackCategory"]:
+            return {cls.LIGHT, cls.GAZE, cls.EMOTION}
 
         # TODO replace with match case once supported by mypy
         def get_feature_name(self) -> str | None:
