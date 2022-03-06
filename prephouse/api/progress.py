@@ -128,10 +128,11 @@ def get_score_per_feature_per_question_per_session(session_id):
         Upload.query.join(UploadQuestion, UploadQuestion.upload_id == Upload.id, isouter=True)
         .join(Feedback, Feedback.uq_id == UploadQuestion.id, isouter=True)
         .filter(Upload.id == session_id)
-        .group_by(Upload.id, Feedback.category)
+        .group_by(Upload.id, UploadQuestion.id, Feedback.category)
         .add_columns(
             Upload.id,
             Upload.date_uploaded,
+            UploadQuestion.cloudfront_url,
             Upload.score.label("upload_score"),
             Upload.category.label("upload_category"),
             Feedback.category.label("feedback_category"),
@@ -150,6 +151,7 @@ def get_score_per_feature_per_question_per_session(session_id):
             "date": query[0].date_uploaded,
         }
         res["scores"]["overall_score"] = query[0].upload_score
+        res["cloudfront_url"] = query[0].cloudfront_url
 
     for f in Feedback.FeedbackCategory:
         res["scores"][f"{f.get_api_safe_feature_name()}_score"] = scores_dict[f]

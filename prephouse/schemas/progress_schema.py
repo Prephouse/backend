@@ -30,6 +30,7 @@ class SessionResponseSchema(Schema):
     session_category = fields.String(required=True)
     date = fields.DateTime(required=True)
     scores = fields.Nested(ScoresSchema, required=True)
+    cloudfront_url = fields.String(required=True)
 
 
 class SessionScoresResponseSchema(Schema):
