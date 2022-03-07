@@ -200,6 +200,7 @@ class Feedback(db.Model):  # type: ignore
         EMOTION = 5
         PITCH = 6
         FILLER_WORD = 7
+        TEXT_SUMMARY = 8
 
         @classmethod
         def get_video_only_features(cls) -> set["Feedback.FeedbackCategory"]:
@@ -221,6 +222,8 @@ class Feedback(db.Model):  # type: ignore
                 return "Pitch"
             elif self == self.FILLER_WORD:
                 return "Filler Words"
+            elif self == self.TEXT_SUMMARY:
+                return "Textual Summary"
             return None
 
         def get_api_safe_feature_name(self) -> str | None:
