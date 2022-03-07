@@ -69,16 +69,15 @@ def get_user_instructions(category, medium, origin):
 
     if category == Upload.UploadCategory.INTERVIEW:
         response["pre_analysis"] = (
-            "Once you have answered all the questions, or once the time limit has "
-            "been exceeded, your mock interview will be submitted to the Prephouse "
+            "Once you have answered the question and ended the interview, your mock interview will be submitted to the Prephouse "
             "servers for automated analysis. The analysis generates an overall score "
             "for your interview as well as numerical and textual feedback for the "
             "following criteria."
         )
         if origin == Upload.UploadOrigin.RECORD:
             response["overview"] = (
-                "You will be asked a series of interview questions from the Prephouse "
-                "question bank. The questions are selected at random. For each question, "
+                "You will be asked an interview question from the Prephouse "
+                "question bank. The question is selected at random. For each question, "
                 "you will be asked to record yourself using your webcam and microphone with "
                 "your answer to that question. These recordings collectively form your mock "
                 "interview. You can only answer one question at a time. Moreover, there is a "
@@ -87,8 +86,8 @@ def get_user_instructions(category, medium, origin):
             )
         elif origin == Upload.UploadOrigin.UPLOAD:
             response["overview"] = (
-                "You will be asked a series of interview questions from the Prephouse question "
-                "bank. The questions are selected at random. For each question, you will be asked "
+                "You will be asked an interview question from the Prephouse question "
+                "bank. The question is selected at random. For each question, you will be asked "
                 "to upload a media file from your computer with your answer to that question. "
                 "These uploads collectively form your mock interview. There is a time limit of "
                 "30 minutes across all questions, so please plan your time accordingly."
