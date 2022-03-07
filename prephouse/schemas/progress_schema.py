@@ -16,6 +16,10 @@ class SessionScoresRequestSchema(Schema):
 
 
 class SessionResponseSchema(Schema):
+    class TextSchema(Schema):
+        comment = fields.String(required=True)
+        category = fields.String(required=True)
+
     class ScoresSchema(Schema):
         overall_score = fields.Float(required=True)
         silent_pauses_score = fields.Float(required=True)
@@ -31,6 +35,7 @@ class SessionResponseSchema(Schema):
     date = fields.DateTime(required=True)
     scores = fields.Nested(ScoresSchema, required=True)
     cloudfront_url = fields.String(required=True)
+    text_feedback = fields.List(fields.Nested(TextSchema), required=False)
 
 
 class SessionScoresResponseSchema(Schema):

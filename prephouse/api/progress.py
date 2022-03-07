@@ -1,7 +1,7 @@
 from collections import defaultdict
 
 from flask import Blueprint, jsonify, request
-from sqlalchemy import asc, desc, func
+from sqlalchemy import asc, desc, func, or_
 from webargs.flaskparser import use_kwargs
 
 from prephouse.decorators.authentication import private_route
@@ -77,7 +77,10 @@ def get_scores_by_session():
     query = (
         Upload.query.join(UploadQuestion, UploadQuestion.upload_id == Upload.id, isouter=True)
         .join(Feedback, Feedback.uq_id == UploadQuestion.id, isouter=True)
-        .filter(Upload.user_id == user_id)
+        .filter(
+            Upload.user_id == user_id,
+            or_(Feedback.subcategory == "score", Feedback.subcategory.is_(None)),
+        )
         .group_by(Upload.id, Feedback.category)
         .order_by(desc(Upload.date_uploaded))
         .add_columns(
@@ -116,7 +119,7 @@ def get_scores_by_session():
 @progress_api.get("scores_for_session/")
 @use_kwargs(progress_request_schema, location="query")
 # @private_route
-def get_score_per_feature_per_question_per_session(session_id):
+def get_scores_for_session(session_id):
     """
     Get the score for all features for all questions for a given session.
 
@@ -124,10 +127,14 @@ def get_score_per_feature_per_question_per_session(session_id):
     """
     scores_dict = {f: 0 for f in Feedback.FeedbackCategory}
 
-    query = (
+    base_query = (
         Upload.query.join(UploadQuestion, UploadQuestion.upload_id == Upload.id, isouter=True)
         .join(Feedback, Feedback.uq_id == UploadQuestion.id, isouter=True)
         .filter(Upload.id == session_id)
+    )
+
+    score_query = (
+        base_query.filter(Feedback.subcategory == "score")
         .group_by(Upload.id, UploadQuestion.id, Feedback.category)
         .add_columns(
             Upload.id,
@@ -138,20 +145,30 @@ def get_score_per_feature_per_question_per_session(session_id):
             Feedback.category.label("feedback_category"),
             func.avg(Feedback.result).label("avg_score"),
         )
-    ).all()
+    )
 
-    for feedback in query:
+    text_query = base_query.filter(Feedback.subcategory == "recommendation").add_columns(
+        Feedback.category,
+        Feedback.comment,
+    )
+
+    for feedback in score_query.all():
         scores_dict[feedback.feedback_category] = float(feedback.avg_score or 0)
 
     res = {"scores": {"overall_score": 0}}
 
-    if query:
+    res["text_feedback"] = [
+        {"category": feedback.category.get_feature_name(), "comment": feedback.comment}
+        for feedback in text_query.all()
+    ]
+
+    if score_query:
         res |= {
-            "session_category": query[0].upload_category.get_category_name(),
-            "date": query[0].date_uploaded,
+            "session_category": score_query[0].upload_category.get_category_name(),
+            "date": score_query[0].date_uploaded,
         }
-        res["scores"]["overall_score"] = query[0].upload_score
-        res["cloudfront_url"] = query[0].cloudfront_url
+        res["scores"]["overall_score"] = score_query[0].upload_score
+        res["cloudfront_url"] = score_query[0].cloudfront_url
 
     for f in Feedback.FeedbackCategory:
         res["scores"][f"{f.get_api_safe_feature_name()}_score"] = scores_dict[f]
