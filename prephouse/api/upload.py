@@ -1,10 +1,13 @@
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, request
 from webargs.flaskparser import use_kwargs
 
 from prephouse.decorators.authentication import private_route
 from prephouse.models import Feedback, Upload, UploadQuestion, db
 from prephouse.schemas.upload_schema import (
+    new_question_upload_id_request_schema,
     new_question_upload_id_response_schema,
+    new_upload_session_record_request_schema,
+    new_upload_session_record_response_schema,
     upload_instructions_request_schema,
     upload_instructions_response_schema,
 )
@@ -13,10 +16,17 @@ upload_api = Blueprint("upload_api", __name__, url_prefix="/upload")
 
 
 @upload_api.post("question/")
+@use_kwargs(new_question_upload_id_request_schema, location="query")
 @private_route
-def add_upload_question():
+def add_upload_question(upload_id):
     response = {}
-    upload_question_row = UploadQuestion()
+    upload = Upload.query.filter_by(id=upload_id).first()
+    if upload is None or upload.user_id != request.user.id:
+        abort(401)
+
+    upload_question_row = UploadQuestion(
+        upload_id=upload_id,
+    )
     try:
         db.session.add(upload_question_row)
     except Exception:
@@ -103,3 +113,25 @@ def get_user_instructions(category, medium, origin):
             )
 
     return jsonify(upload_instructions_response_schema.dump(response))
+
+
+@upload_api.post("record/")
+@use_kwargs(new_upload_session_record_request_schema, location="query")
+@private_route
+def add_upload_record(category):
+    response = {}
+    upload_record_row = Upload(
+        category=category,
+        user_id=request.user.id,
+    )
+    try:
+        db.session.add(upload_record_row)
+    except Exception:
+        db.session.rollback()
+        raise
+    else:
+        db.session.commit()
+
+    response["id"] = upload_record_row.id if upload_record_row.id else -1
+
+    return jsonify(new_upload_session_record_response_schema.dump(response))
