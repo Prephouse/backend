@@ -230,7 +230,7 @@ class Feedback(db.Model):  # type: ignore
             name = self.get_feature_name()
             return name.lower().replace(" ", "_") if name else name
 
-    __table_args__ = (db.CheckConstraint(r"confidence BETWEEN 0 AND 100"),)
+    __table_args__ = (db.CheckConstraint(r"confidence BETWEEN 0 AND 1"),)
 
     id = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     uq_id = db.Column(UUID(as_uuid=True), db.ForeignKey("upload_question.id"), nullable=False)
@@ -238,6 +238,6 @@ class Feedback(db.Model):  # type: ignore
     subcategory = db.Column(db.String)
     comment = db.Column(db.Text)
     result = db.Column(db.Numeric(10, 2), nullable=False)
-    confidence = db.Column(db.Integer)
+    confidence = db.Column(db.Numeric(10, 9))
     time_range = db.Column(INT4RANGE())
     user_report = db.Column(db.Text)

@@ -104,7 +104,7 @@ def insert_mock_values():
                 category=random.choice(list(Feedback.FeedbackCategory)),
                 subcategory="test",
                 result=random.uniform(0, 100),
-                confidence=random.uniform(0, 100),
+                confidence=random.uniform(0, 1),
                 time_range=NumericRange(1, 10),
             )
         for feature in Feedback.FeedbackCategory:
