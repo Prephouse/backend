@@ -44,15 +44,13 @@ def add_upload_record(category, token):
 @upload_api.post("question/")
 @use_kwargs(new_question_upload_request_schema, location="query")
 @private_route
-def add_upload_question(upload_id):
+def add_upload_question(upload_id, question_id=None):
     response = {}
     upload = Upload.query.get(upload_id)
     if upload is None or upload.user_id != request.user.id:
         abort(401)
 
-    upload_question_row = UploadQuestion(
-        upload_id=upload_id,
-    )
+    upload_question_row = UploadQuestion(upload_id=upload_id, question_id=question_id)
     try:
         db.session.add(upload_question_row)
     except Exception:

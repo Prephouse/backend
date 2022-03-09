@@ -18,6 +18,7 @@ class NewUploadSessionResponseSchema(Schema):
 
 class NewQuestionUploadRequestSchema(Schema):
     upload_id = fields.UUID(required=True)
+    question_id = fields.Int(required=False)
 
 
 class NewQuestionUploadResponseSchema(Schema):
