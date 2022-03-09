@@ -21,6 +21,16 @@ class NewQuestionUploadRequestSchema(Schema):
     question_id = fields.Int(missing=None)
 
 
+class UploadCloudFrontURLRequestSchema(Schema):
+    upload_id = fields.Str(required=True)
+    cloudfront = fields.Str(required=True)
+    manifest = fields.Str(required=True)
+
+
+class UploadCloudFrontURLResponseSchema(Schema):
+    pass
+
+
 class NewQuestionUploadResponseSchema(Schema):
     id = fields.UUID(required=True)
 
@@ -54,3 +64,5 @@ new_question_upload_request_schema = NewQuestionUploadRequestSchema()
 new_question_upload_response_schema = NewQuestionUploadResponseSchema()
 upload_instructions_request_schema = UploadInstructionsRequestSchema()
 upload_instructions_response_schema = UploadInstructionsResponseSchema()
+upload_cloudfronturl_request_schema = UploadCloudFrontURLRequestSchema()
+upload_cloudfronturl_response_schema = UploadCloudFrontURLResponseSchema()

@@ -10,6 +10,7 @@ from prephouse.schemas.upload_schema import (
     new_upload_session_response_schema,
     upload_instructions_request_schema,
     upload_instructions_response_schema,
+    upload_cloudfronturl_request_schema
 )
 from prephouse.utils.recaptcha import validate_recaptcha
 
@@ -136,3 +137,13 @@ def get_user_instructions(category, medium, origin):
             )
 
     return jsonify(upload_instructions_response_schema.dump(response))
+
+
+@upload_api.post("/cloudfront")
+@use_kwargs(upload_cloudfronturl_request_schema, location="query")
+def add_cloudfront_url(upload_id, cloudfront, manifest):
+    upload_row = UploadQuestion.query.filter_by(upload_id=upload_id)
+    upload_row.update(dict(cloudfront_url=cloudfront))
+    upload_row.update(dict(manifest_file=manifest))
+    db.session.commit()
+    return {}
