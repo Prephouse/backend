@@ -1,26 +1,52 @@
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, abort, jsonify, request
 from webargs.flaskparser import use_kwargs
 
 from prephouse.decorators.authentication import private_route
 from prephouse.models import Feedback, Upload, UploadQuestion, db
 from prephouse.schemas.upload_schema import (
-    new_question_upload_id_request_schema,
-    new_question_upload_id_response_schema,
-    new_upload_session_record_request_schema,
-    new_upload_session_record_response_schema,
+    new_question_upload_request_schema,
+    new_question_upload_response_schema,
+    new_upload_session_request_schema,
+    new_upload_session_response_schema,
     upload_instructions_request_schema,
     upload_instructions_response_schema,
 )
+from prephouse.utils.recaptcha import validate_recaptcha
 
 upload_api = Blueprint("upload_api", __name__, url_prefix="/upload")
 
 
+@upload_api.post("record/")
+@use_kwargs(new_upload_session_request_schema, location="query")
+@private_route
+def add_upload_record(category, token):
+    if not validate_recaptcha(token, "submit_practice_session"):
+        abort(400)
+
+    response = {}
+    upload_record_row = Upload(
+        category=category,
+        user_id=request.user.id,
+    )
+    try:
+        db.session.add(upload_record_row)
+    except Exception:
+        db.session.rollback()
+        raise
+    else:
+        db.session.commit()
+
+    response["id"] = upload_record_row.id if upload_record_row.id else -1
+
+    return jsonify(new_upload_session_response_schema.dump(response))
+
+
 @upload_api.post("question/")
-@use_kwargs(new_question_upload_id_request_schema, location="query")
+@use_kwargs(new_question_upload_request_schema, location="query")
 @private_route
 def add_upload_question(upload_id):
     response = {}
-    upload = Upload.query.filter_by(id=upload_id).first()
+    upload = Upload.query.get(upload_id)
     if upload is None or upload.user_id != request.user.id:
         abort(401)
 
@@ -37,7 +63,7 @@ def add_upload_question(upload_id):
 
     response["id"] = upload_question_row.id if upload_question_row.id else -1
 
-    return jsonify(new_question_upload_id_response_schema.dump(response))
+    return jsonify(new_question_upload_response_schema.dump(response))
 
 
 @upload_api.get("/instructions/")
@@ -69,10 +95,10 @@ def get_user_instructions(category, medium, origin):
 
     if category == Upload.UploadCategory.INTERVIEW:
         response["pre_analysis"] = (
-            "Once you have answered the question and ended the interview, your mock interview will be submitted to the Prephouse "
-            "servers for automated analysis. The analysis generates an overall score "
-            "for your interview as well as numerical and textual feedback for the "
-            "following criteria."
+            "Once you have answered the question and ended the interview, your mock interview "
+            "will be submitted to the Prephouse servers for automated analysis. The analysis "
+            "generates an overall score for your interview as well as numerical and textual "
+            "feedback for the following criteria."
         )
         if origin == Upload.UploadOrigin.RECORD:
             response["overview"] = (
@@ -112,25 +138,3 @@ def get_user_instructions(category, medium, origin):
             )
 
     return jsonify(upload_instructions_response_schema.dump(response))
-
-
-@upload_api.post("record/")
-@use_kwargs(new_upload_session_record_request_schema, location="query")
-@private_route
-def add_upload_record(category):
-    response = {}
-    upload_record_row = Upload(
-        category=category,
-        user_id=request.user.id,
-    )
-    try:
-        db.session.add(upload_record_row)
-    except Exception:
-        db.session.rollback()
-        raise
-    else:
-        db.session.commit()
-
-    response["id"] = upload_record_row.id if upload_record_row.id else -1
-
-    return jsonify(new_upload_session_record_response_schema.dump(response))

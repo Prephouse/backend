@@ -50,7 +50,7 @@ def get_uploads(page, per_page):
 @use_kwargs(feedback_request_schema, location="query")
 @private_route
 def get_feedback(time_start, time_end, category, upload_id):
-    upload = Upload.query.filter_by(id=upload_id).first()
+    upload = Upload.query.get(upload_id)
     if upload is None or upload.user_id != request.user.id:
         abort(401)
 

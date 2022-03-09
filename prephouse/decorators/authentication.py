@@ -31,7 +31,7 @@ def private_route(f: Callable[P, ErrorResponse]) -> Callable[P, ErrorResponse]:
             if auth_header or not current_app.debug:
                 id_token = auth_header.split(" ").pop()
                 firebase_user = auth.verify_id_token(id_token, check_revoked=True)
-                app_user = User.query.filter_by(id=firebase_user["uid"]).first()
+                app_user = User.query.get(firebase_user["uid"])
                 if not app_user:
                     app_user = User(
                         name=firebase_user.get("name", firebase_user.get("display_name", "")),
@@ -42,7 +42,7 @@ def private_route(f: Callable[P, ErrorResponse]) -> Callable[P, ErrorResponse]:
                     db.session.commit()
             else:
                 uid = request.args.get("test_uid")
-                app_user = User.query.filter_by(id=uid).first()
+                app_user = User.query.get(uid)
                 if not app_user:
                     raise ValueError
         except (ValueError, InvalidIdTokenError):

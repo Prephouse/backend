@@ -51,16 +51,15 @@ def get_question(categories, limit, randomize):
 @use_kwargs(question_upload_request_schema, location="query")
 @private_route
 def get_questions_for_upload(upload_id):
-    upload = Upload.query.filter_by(id=upload_id).first()
+    upload = Upload.query.get(upload_id)
     if upload is None or upload.user_id != request.user.id:
         abort(401)
 
-    query = Upload.query.filter_by(id=upload_id)
     response = {
         "upload_id": upload_id,
         "questions": defaultdict(dict),
     }
-    if upload := query.first():
+    if upload:
         for question in upload.questions:
             response["questions"][question.id] = {
                 "category": question.category,

@@ -211,11 +211,10 @@ def get_overall_score_per_session(session_id):
 
     Session >> Overall Score
     """
-    query = Upload.query.filter_by(id=session_id)
-    response = query.first()
+    upload = Upload.query.get(session_id)
 
     res = {
         "session_id": session_id,
-        "response_data": response.score if response else -1,
+        "response_data": upload.score if upload else -1,
     }
     return jsonify(progress_response_schema.dump(res))
