@@ -145,24 +145,29 @@ def get_scores_for_session(session_id):
             Feedback.category.label("feedback_category"),
             func.avg(Feedback.result).label("avg_score"),
         )
+        .all()
     )
 
-    text_query = base_query.filter(Feedback.subcategory == "recommendation").add_columns(
-        Feedback.category,
-        Feedback.comment,
+    text_query = (
+        base_query.filter(Feedback.subcategory == "recommendation")
+        .add_columns(
+            Feedback.category,
+            Feedback.comment,
+        )
+        .all()
     )
 
-    for feedback in score_query.all():
+    for feedback in score_query:
         scores_dict[feedback.feedback_category] = float(feedback.avg_score or 0)
 
     res = {"scores": {"overall_score": 0}}
 
     res["text_feedback"] = [
         {"category": feedback.category.get_feature_name(), "comment": feedback.comment}
-        for feedback in text_query.all()
+        for feedback in text_query
     ]
 
-    if score_query:
+    if len(score_query) > 0:
         res |= {
             "session_category": score_query[0].upload_category.get_category_name(),
             "date": score_query[0].date_uploaded,
