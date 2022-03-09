@@ -41,7 +41,7 @@ class Engine(db.Model):  # type: ignore
     )
 
     id = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    version = db.Column(db.String, nullable=False)
+    version = db.Column(db.String, nullable=False, unique=True, index=True)
     configuration = db.Column(JSON, nullable=False, default={})
     uploads = db.relationship("Upload", backref="engine", lazy=True, uselist=False)
 
@@ -85,6 +85,8 @@ class Upload(db.Model):  # type: ignore
     class UploadOrigin(enum.IntEnum):
         RECORD = 0
         UPLOAD = 1
+
+    __table_args__ = (db.CheckConstraint(r"score BETWEEN 0 and 100"),)
 
     id = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     category = db.Column(db.Enum(UploadCategory), nullable=False, index=True)
@@ -162,7 +164,7 @@ class UploadQuestion(db.Model):  # type: ignore
     """
 
     id = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    upload_id = db.Column(UUID(as_uuid=True), db.ForeignKey("upload.id"))
+    upload_id = db.Column(UUID(as_uuid=True), db.ForeignKey("upload.id"), nullable=False)
     question_id = db.Column(db.Integer, db.ForeignKey("question.id"))
     cloudfront_url = db.Column(db.Text)
     manifest_file = db.Column(db.Text)

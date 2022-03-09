@@ -70,7 +70,10 @@ def insert_mock_values():
             for _ in range(10)
         ]
 
-        engines = [upsert(db, Engine, version="0.1.0")]
+        engine = Engine.query.filter_by(version="0.1.0").first()
+        if not engine:
+            engine = upsert(db, Engine, version="0.1.0")
+        engines = [engine]
 
         uploads = [
             upsert(

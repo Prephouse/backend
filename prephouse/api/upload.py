@@ -44,7 +44,7 @@ def add_upload_record(category, token):
 @upload_api.post("question/")
 @use_kwargs(new_question_upload_request_schema, location="query")
 @private_route
-def add_upload_question(upload_id, question_id=None):
+def add_upload_question(upload_id, question_id):
     response = {}
     upload = Upload.query.get(upload_id)
     if upload is None or upload.user_id != request.user.id:
