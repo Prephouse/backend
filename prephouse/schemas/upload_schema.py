@@ -22,7 +22,7 @@ class NewQuestionUploadRequestSchema(Schema):
 
 
 class UploadCloudFrontURLRequestSchema(Schema):
-    upload_id = fields.Str(required=True)
+    file = fields.Str(required=True)
     cloudfront = fields.Str(required=True)
     manifest = fields.Str(required=True)
 

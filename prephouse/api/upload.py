@@ -141,8 +141,8 @@ def get_user_instructions(category, medium, origin):
 
 @upload_api.post("/cloudfront")
 @use_kwargs(upload_cloudfronturl_request_schema, location="query")
-def add_cloudfront_url(upload_id, cloudfront, manifest):
-    upload_row = UploadQuestion.query.filter_by(upload_id=upload_id)
+def add_cloudfront_url(file, cloudfront, manifest):
+    upload_row = UploadQuestion.query.filter_by(id=file)
     upload_row.update(dict(cloudfront_url=cloudfront))
     upload_row.update(dict(manifest_file=manifest))
     db.session.commit()
