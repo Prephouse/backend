@@ -140,6 +140,7 @@ def get_scores_for_session(session_id):
             Upload.id,
             Upload.date_uploaded,
             UploadQuestion.cloudfront_url,
+            UploadQuestion.textual_summary,
             Upload.score.label("upload_score"),
             Upload.category.label("upload_category"),
             Feedback.category.label("feedback_category"),
@@ -174,6 +175,7 @@ def get_scores_for_session(session_id):
         }
         res["scores"]["overall_score"] = score_query[0].upload_score
         res["cloudfront_url"] = score_query[0].cloudfront_url
+        res["text_summary"] = score_query[0].textual_summary
 
     for f in Feedback.FeedbackCategory:
         res["scores"][f"{f.get_api_safe_feature_name()}_score"] = scores_dict[f]

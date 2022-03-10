@@ -35,6 +35,7 @@ class SessionResponseSchema(Schema):
     date = fields.DateTime(required=True)
     scores = fields.Nested(ScoresSchema, required=True)
     cloudfront_url = fields.String(required=True)
+    text_summary = fields.String(required=False)
     text_feedback = fields.List(fields.Nested(TextSchema), required=False)
 
 
