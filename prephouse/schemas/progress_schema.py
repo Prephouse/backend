@@ -16,6 +16,14 @@ class SessionScoresRequestSchema(Schema):
 
 
 class SessionResponseSchema(Schema):
+    class TimestampSchema(Schema):
+        feedback_id = fields.Str(required=True)
+        comment = fields.String(required=True)
+        category = fields.String(required=True)
+        subcategory = fields.String(required=True)
+        time_start = fields.Int(required=True)
+        time_end = fields.Int(required=True)
+
     class TextSchema(Schema):
         comment = fields.String(required=True)
         category = fields.String(required=True)
@@ -37,6 +45,7 @@ class SessionResponseSchema(Schema):
     cloudfront_url = fields.String(required=True)
     text_summary = fields.String(required=False)
     text_feedback = fields.List(fields.Nested(TextSchema), required=False)
+    timestamp_feedback = fields.List(fields.Nested(TimestampSchema), required=False)
 
 
 class SessionScoresResponseSchema(Schema):

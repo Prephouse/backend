@@ -1,7 +1,7 @@
 from collections import defaultdict
 
 from flask import Blueprint, jsonify, request
-from sqlalchemy import asc, desc, func, or_
+from sqlalchemy import asc, desc, func, not_, or_
 from webargs.flaskparser import use_kwargs
 
 from prephouse.decorators.authentication import private_route
@@ -158,6 +158,21 @@ def get_scores_for_session(session_id):
         .all()
     )
 
+    time_query = (
+        base_query.filter(not_(Feedback.category == Feedback.FeedbackCategory.LIGHT))
+        .add_columns(
+            Feedback.id.label("feedback_id"),
+            Feedback.category,
+            Feedback.subcategory,
+            Feedback.comment,
+            Feedback.time_range,
+        )
+        .all()
+    )
+
+    time_query = [feedback for feedback in time_query if not feedback.time_range.isempty]
+    time_query.sort(key=lambda feedback: (feedback.time_range.lower, feedback.time_range.upper))
+
     for feedback in score_query:
         scores_dict[feedback.feedback_category] = float(feedback.avg_score or 0)
 
@@ -166,6 +181,18 @@ def get_scores_for_session(session_id):
     res["text_feedback"] = [
         {"category": feedback.category.get_feature_name(), "comment": feedback.comment}
         for feedback in text_query
+    ]
+
+    res["timestamp_feedback"] = [
+        {
+            "feedback_id": feedback.feedback_id,
+            "category": feedback.category.get_feature_name(),
+            "subcategory": feedback.category.get_feature_name(),
+            "comment": feedback.comment,
+            "time_start": feedback.time_range.lower,
+            "time_end": feedback.time_range.upper,
+        }
+        for feedback in time_query
     ]
 
     if len(score_query) > 0:
