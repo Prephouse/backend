@@ -82,6 +82,7 @@ def insert_mock_values():
                 category=random.choice(list(Upload.UploadCategory)),
                 user_id=random.choice(users).id,
                 engine_id=random.choice(engines).id,
+                summary="",
                 score=random.uniform(0, 100),
             )
             for _ in range(10)

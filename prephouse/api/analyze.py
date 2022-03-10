@@ -36,6 +36,8 @@ def analyze_callback(feedback_future: grpc.Future, channel: grpc.Channel, uq_id:
 
     try:
         upload.engine_id = engine.id
+        upload_question.textual_summary = result.textual_summary
+
         scores = []
 
         for feedback in result.feedback:
@@ -53,7 +55,8 @@ def analyze_callback(feedback_future: grpc.Future, channel: grpc.Channel, uq_id:
             if feedback.subcategory == "score":
                 scores.append(feedback.result)
 
-        upload.score = mean(scores)
+        if len(scores):
+           upload.score = mean(scores)
     except Exception:
         db.session.rollback()
         raise

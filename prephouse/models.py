@@ -157,6 +157,7 @@ class UploadQuestion(db.Model):  # type: ignore
     :cvar upload_id: ID of the upload (interview session) where the question with the specified
                      question ID was asked
     :cvar question_id: ID of the question that was asked in the upload with the specified upload ID
+    :cvar textual_summary: summary of users response
     :cvar cloudfront_url: cloudfront URL where the user response to this upload question
                           can be found
     :cvar manifest_file: path to the cloudfront manifest file
@@ -166,6 +167,7 @@ class UploadQuestion(db.Model):  # type: ignore
     id = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     upload_id = db.Column(UUID(as_uuid=True), db.ForeignKey("upload.id"), nullable=False)
     question_id = db.Column(db.Integer, db.ForeignKey("question.id"))
+    textual_summary = db.Column(db.Text)
     cloudfront_url = db.Column(db.Text)
     manifest_file = db.Column(db.Text)
     feedbacks = db.relationship(
