@@ -30,7 +30,7 @@ def get_leaderboard(page, per_page):
             Upload.date_uploaded,
             Upload.score,
         )
-        .filter(Upload.score is not None)
+        .filter(Upload.score.isnot(None))
         .order_by(desc(Upload.score))
         .paginate(page=page, per_page=per_page, error_out=False)
     )
@@ -66,15 +66,15 @@ def get_leaderboard_overview():
     user_id = request.user.id
     user_uploads = (
         Upload.query.options(load_only(Upload.score))
-        .filter(Upload.score is not None, Upload.user_id == user_id)
+        .filter(Upload.score.isnot(None), Upload.user_id == user_id)
         .order_by(desc(Upload.date_uploaded))
         .all()
     )
-    user_scores = [u.score for u in (user_uploads or []) if u.score is not None]
+    user_scores = [u.score for u in user_uploads or []]
 
     global_upload_aggregates = (
         Upload.query.with_entities(func.avg(Upload.score).label("average_score"))
-        .filter(Upload.score is not None)
+        .filter(Upload.score.isnot(None))
         .all()
     )
 

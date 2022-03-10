@@ -14,7 +14,6 @@ def get_integral_numeric_range_bounds(nr: NumericRange) -> tuple[int, int]:
     :exception TypeError: invalid numeric range
     """
     p = re.compile(r"\[(\d+), (\d+)\)")
-    m = p.match(str(nr))
-    if m is None:
+    if (m := p.match(str(nr))) is None:
         raise TypeError("Invalid numeric range")
     return int(m.group(1)), int(m.group(2))
