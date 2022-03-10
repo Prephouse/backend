@@ -70,7 +70,7 @@ def get_leaderboard_overview():
         .order_by(desc(Upload.date_uploaded))
         .all()
     )
-    user_scores = [u.score for u in (user_uploads or []) if u.score]
+    user_scores = [u.score for u in (user_uploads or []) if u.score is not None]
 
     global_upload_aggregates = (
         Upload.query.with_entities(func.avg(Upload.score).label("average_score"))
