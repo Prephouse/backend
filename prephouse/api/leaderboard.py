@@ -15,7 +15,7 @@ from prephouse.schemas.leaderboard_schema import (
 leaderboard_api = Blueprint("leaderboard_api", __name__, url_prefix="/leaderboard")
 
 
-@leaderboard_api.get("/")
+@leaderboard_api.get("")
 @use_kwargs(leaderboard_request_schema, location="query")
 def get_leaderboard(page, per_page):
     upload_page = (
@@ -58,7 +58,7 @@ def get_leaderboard(page, per_page):
     return jsonify(leaderboard_response_schema.dump(response))
 
 
-@leaderboard_api.get("overview/")
+@leaderboard_api.get("overview")
 @use_kwargs(leaderboard_overview_request_schema, location="query")
 @private_route
 def get_leaderboard_overview():

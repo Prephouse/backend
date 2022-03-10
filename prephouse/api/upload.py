@@ -8,16 +8,16 @@ from prephouse.schemas.upload_schema import (
     new_question_upload_response_schema,
     new_upload_session_request_schema,
     new_upload_session_response_schema,
+    upload_cloudfronturl_request_schema,
     upload_instructions_request_schema,
     upload_instructions_response_schema,
-    upload_cloudfronturl_request_schema
 )
 from prephouse.utils.recaptcha import validate_recaptcha
 
 upload_api = Blueprint("upload_api", __name__, url_prefix="/upload")
 
 
-@upload_api.post("record/")
+@upload_api.post("record")
 @use_kwargs(new_upload_session_request_schema, location="query")
 @private_route
 def add_upload_record(category, token):
@@ -42,7 +42,7 @@ def add_upload_record(category, token):
     return jsonify(new_upload_session_response_schema.dump(response))
 
 
-@upload_api.post("question/")
+@upload_api.post("question")
 @use_kwargs(new_question_upload_request_schema, location="query")
 @private_route
 def add_upload_question(upload_id, question_id):
@@ -65,7 +65,7 @@ def add_upload_question(upload_id, question_id):
     return jsonify(new_question_upload_response_schema.dump(response))
 
 
-@upload_api.get("/instructions/")
+@upload_api.get("/instructions")
 @use_kwargs(upload_instructions_request_schema, location="query")
 def get_user_instructions(category, medium, origin):
     video_only_features = Feedback.FeedbackCategory.get_video_only_features()
@@ -143,7 +143,7 @@ def get_user_instructions(category, medium, origin):
 @use_kwargs(upload_cloudfronturl_request_schema, location="query")
 def add_cloudfront_url(file, cloudfront, manifest):
     upload_row = UploadQuestion.query.filter_by(id=file)
-    upload_row.update(dict(cloudfront_url=cloudfront))
-    upload_row.update(dict(manifest_file=manifest))
+    upload_row.update({"cloudfront_url": cloudfront})
+    upload_row.update({"manifest_file": manifest})
     db.session.commit()
     return {}

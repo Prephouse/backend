@@ -18,7 +18,7 @@ from prephouse.schemas.progress_schema import (
 progress_api = Blueprint("progress", __name__, url_prefix="/progress")
 
 
-@progress_api.get("scores_by_feature/")
+@progress_api.get("scores_by_feature")
 @use_kwargs(session_scores_request_schema, location="query")
 @private_route
 def get_scores_by_feature():
@@ -61,7 +61,7 @@ def get_scores_by_feature():
     return jsonify(category_scores_response_schema.dump(res))
 
 
-@progress_api.get("scores_by_session/")
+@progress_api.get("scores_by_session")
 @use_kwargs(session_scores_request_schema, location="query")
 @private_route
 def get_scores_by_session():
@@ -116,7 +116,7 @@ def get_scores_by_session():
     return jsonify(session_scores_response_schema.dump({"sessions": res}))
 
 
-@progress_api.get("scores_for_session/")
+@progress_api.get("scores_for_session")
 @use_kwargs(progress_request_schema, location="query")
 # @private_route
 def get_scores_for_session(session_id):
@@ -181,7 +181,7 @@ def get_scores_for_session(session_id):
     return jsonify(session_response_schema.dump(res))
 
 
-@progress_api.get("feature_per_session/")
+@progress_api.get("feature_per_session")
 @use_kwargs(progress_request_schema, location="query")
 @private_route
 def get_score_per_feature_per_session(session_id):
@@ -207,7 +207,7 @@ def get_score_per_feature_per_session(session_id):
     return jsonify(progress_response_schema.dump(res))
 
 
-@progress_api.get("overall_per_session/")
+@progress_api.get("overall_per_session")
 @use_kwargs(progress_request_schema, location="query")
 @private_route
 def get_overall_score_per_session(session_id):

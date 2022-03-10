@@ -18,7 +18,7 @@ from prephouse.utils.sql_utils import get_integral_numeric_range_bounds
 feedback_api = Blueprint("feedback_api", __name__, url_prefix="/feedback")
 
 
-@feedback_api.get("/")
+@feedback_api.get("")
 @use_kwargs(upload_request_schema, location="query")
 @private_route
 def get_uploads(page, per_page):
@@ -46,7 +46,7 @@ def get_uploads(page, per_page):
     return jsonify(upload_response_schema.dump(response))
 
 
-@feedback_api.get("<upload_id>/")
+@feedback_api.get("<upload_id>")
 @use_kwargs(feedback_request_schema, location="query")
 @private_route
 def get_feedback(time_start, time_end, category, upload_id):

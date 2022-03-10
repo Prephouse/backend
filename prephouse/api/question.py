@@ -18,7 +18,7 @@ from prephouse.schemas.question_schema import (
 question_api = Blueprint("question_api", __name__, url_prefix="/question")
 
 
-@question_api.get("/")
+@question_api.get("")
 @use_kwargs(question_request_schema, location="query")
 def get_question(categories, limit, randomize):
     query = Question.query
@@ -47,7 +47,7 @@ def get_question(categories, limit, randomize):
     return jsonify(question_response_schema.dump(response))
 
 
-@question_api.get("<upload_id>/")
+@question_api.get("<upload_id>")
 @use_kwargs(question_upload_request_schema, location="query")
 @private_route
 def get_questions_for_upload(upload_id):
@@ -71,7 +71,7 @@ def get_questions_for_upload(upload_id):
     return jsonify(question_upload_response_schema.dump(response))
 
 
-@question_api.get("/categories/")
+@question_api.get("/categories")
 @use_kwargs(question_categories_request_schema, location="query")
 def get_question_categories():
     response = {"categories": {c: c.get_category_name() for c in Question.QuestionCategory}}

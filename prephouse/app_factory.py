@@ -28,6 +28,7 @@ def create_app(_db: SQLAlchemy, with_internal: bool = True) -> Flask:
         "CSRF_COOKIE_HTTPONLY": True,
         "CSRF_COOKIE_SECURE": True,
     }
+    _app.url_map.strict_slashes = False
 
     # Set internal classes
     if with_internal:
@@ -38,7 +39,7 @@ def create_app(_db: SQLAlchemy, with_internal: bool = True) -> Flask:
     # Limit API call rates
     Limiter(_app, key_func=get_remote_address, default_limits=["5 per second", "1000 per day"])
 
-    # Configure web security measures such as CSP, CORS, HSTS and CSRF
+    # Configure web security measures such as CSP, XSS protections and HSTS
     Talisman(
         _app,
         frame_options=DENY,
@@ -48,7 +49,15 @@ def create_app(_db: SQLAlchemy, with_internal: bool = True) -> Flask:
             "require-trusted-types-for": "'script'",
         },
     )
-    CORS(_app, support_credentials=True, origins=["*" if _app.debug else "https://prephouse.io"])
+
+    # Configure CORS
+    if _app.debug:
+        origins = ["*"]
+    else:
+        origins = ["https://prephouse.io", "https://www.prephouse.io", "https://api.prephouse.io"]
+    CORS(_app, support_credentials=True, origins=origins)
+
+    # Configure CSRF
     if not _app.debug:
         SeaSurf().init_app(_app)
 

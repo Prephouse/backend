@@ -57,7 +57,7 @@ def analyze_callback(feedback_future: grpc.Future, channel: grpc.Channel, uq_id:
     return
 
 
-@analyze_api.post("/")
+@analyze_api.post("")
 @use_kwargs(analysis_request_schema, location="query")
 def analyze_upload(upload_question_id, audio_link, transcript_link, video_link):
     from prephouse_pb2 import MediaList
