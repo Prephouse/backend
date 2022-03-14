@@ -68,12 +68,12 @@ class Upload(db.Model):  # type: ignore
         INTERVIEW = 0
         PRESENTATION = 1
 
-        # TODO replace with match case once supported by mypy
         def get_category_name(self) -> str | None:
-            if self == self.INTERVIEW:
-                return "Interview"
-            elif self == self.PRESENTATION:
-                return "Presentation"
+            match self:
+                case self.INTERVIEW:
+                    return "Interview"
+                case self.PRESENTATION:
+                    return "Presentation"
             return None
 
     @enum.unique
@@ -122,18 +122,18 @@ class Question(db.Model):  # type: ignore
         DATA = 3
         BUSINESS = 4
 
-        # TODO replace with match case once supported by mypy
         def get_category_name(self) -> str | None:
-            if self == self.GENERAL:
-                return "General"
-            elif self == self.SOFTWARE:
-                return "Software"
-            elif self == self.PRODUCT:
-                return "Product"
-            elif self == self.DATA:
-                return "Data"
-            elif self == self.BUSINESS:
-                return "Business"
+            match self:
+                case self.GENERAL:
+                    return "General"
+                case self.SOFTWARE:
+                    return "Software"
+                case self.PRODUCT:
+                    return "Product"
+                case self.DATA:
+                    return "Data"
+                case self.BUSINESS:
+                    return "Business"
             return None
 
     id = db.Column(db.Integer, primary_key=True)
@@ -210,24 +210,24 @@ class Feedback(db.Model):  # type: ignore
         def get_video_only_features(cls) -> set["Feedback.FeedbackCategory"]:
             return {cls.LIGHT, cls.GAZE, cls.EMOTION}
 
-        # TODO replace with match case once supported by mypy
         def get_feature_name(self) -> str | None:
-            if self == self.PAUSE:
-                return "Silent Pauses"
-            elif self == self.VOLUME:
-                return "Volume"
-            elif self == self.LIGHT:
-                return "Background Light"
-            elif self == self.GAZE:
-                return "Gaze Direction"
-            elif self == self.EMOTION:
-                return "Emotion"
-            elif self == self.PITCH:
-                return "Pitch"
-            elif self == self.FILLER_WORD:
-                return "Filler Words"
-            elif self == self.TEXTUAL_SUMMARY:
-                return "Textual Summary"
+            match self:
+                case self.PAUSE:
+                    return "Silent Pauses"
+                case self.VOLUME:
+                    return "Volume"
+                case self.LIGHT:
+                    return "Background Light"
+                case self.GAZE:
+                    return "Gaze Direction"
+                case self.EMOTION:
+                    return "Emotion"
+                case self.PITCH:
+                    return "Pitch"
+                case self.FILLER_WORD:
+                    return "Filler Words"
+                case self.TEXTUAL_SUMMARY:
+                    return "Textual Summary"
             return None
 
         def get_api_safe_feature_name(self) -> str | None:

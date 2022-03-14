@@ -1,3 +1,5 @@
+from statistics import mean
+
 from flask import Blueprint, jsonify, request
 from sqlalchemy import desc, func
 from sqlalchemy.orm import load_only
@@ -11,6 +13,7 @@ from prephouse.schemas.leaderboard_schema import (
     leaderboard_request_schema,
     leaderboard_response_schema,
 )
+from prephouse.utils.string_utils import get_name_abbreviation
 
 leaderboard_api = Blueprint("leaderboard_api", __name__, url_prefix="/leaderboard")
 
@@ -43,7 +46,7 @@ def get_leaderboard(page, per_page):
             {
                 "standing": idx + 1,
                 "session_id": upload.id,
-                "username": upload.name,
+                "username": get_name_abbreviation(upload.name),
                 "category": upload.category,
                 "category_name": upload.category.get_category_name(),
                 "date_uploaded": upload.date_uploaded,
@@ -79,7 +82,7 @@ def get_leaderboard_overview():
     )
 
     latest_overall_score = user_scores[0] if user_scores else None
-    average_overall_score_user = sum(user_scores) / len(user_scores) if user_scores else None
+    average_overall_score_user = mean(user_scores) if user_scores else None
     response = {
         "latest_overall_score": latest_overall_score,
         "average_overall_score_user": average_overall_score_user,

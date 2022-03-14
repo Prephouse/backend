@@ -1,11 +1,11 @@
 import json
 import os
 import uuid
+from statistics import mean
 
 import grpc
 from flask import Blueprint
 from psycopg2.extras import NumericRange
-from statistics import mean
 from webargs.flaskparser import use_kwargs
 
 from prephouse.models import Engine, Feedback, Upload, UploadQuestion, db
@@ -55,8 +55,8 @@ def analyze_callback(feedback_future: grpc.Future, channel: grpc.Channel, uq_id:
             if feedback.subcategory == "score":
                 scores.append(feedback.result)
 
-        if len(scores):
-           upload.score = mean(scores)
+        if scores:
+            upload.score = mean(scores)
     except Exception:
         db.session.rollback()
         raise
