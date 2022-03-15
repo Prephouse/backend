@@ -29,6 +29,7 @@ def create_app(_db: SQLAlchemy, with_internal: bool = True) -> Flask:
         "CSRF_COOKIE_SECURE": True,
     }
     _app.url_map.strict_slashes = False
+    _app.url_map.redirect_defaults = False
 
     # Set internal classes
     if with_internal:
@@ -37,11 +38,17 @@ def create_app(_db: SQLAlchemy, with_internal: bool = True) -> Flask:
         _app.request_class = PrephouseRequest
 
     # Limit API call rates
-    Limiter(_app, key_func=get_remote_address, default_limits=["5 per second", "1000 per day"])
+    Limiter(
+        _app,
+        key_func=get_remote_address,
+        default_limits=["5 per second", "1000 per day"],
+        enabled=not _app.debug,
+    )
 
     # Configure web security measures such as CSP, XSS protections and HSTS
     Talisman(
         _app,
+        force_https=False,
         frame_options=DENY,
         content_security_policy={
             "default-src": "'none'",
@@ -59,13 +66,13 @@ def create_app(_db: SQLAlchemy, with_internal: bool = True) -> Flask:
 
     # Configure CSRF
     if not _app.debug:
-        SeaSurf().init_app(_app)
+        SeaSurf(_app)
 
     # Initialize PostgreSQL database
     _db.init_app(_app)
 
     # Set up database migrations
-    Migrate(compare_type=True).init_app(_app, _db)
+    Migrate(_app, _db, compare_type=True)
 
     # Bind app context
     _app.app_context().push()
