@@ -1,4 +1,5 @@
 import functools
+import random
 from typing import Callable, ParamSpec, TypeAlias, Union
 
 import rollbar
@@ -20,6 +21,64 @@ P = ParamSpec("P")
 ErrorResponse: TypeAlias = Union[tuple[dict[str, str], int], Response]
 
 
+ANIMALS = [
+    "Kangaroo",
+    "Monkey",
+    "Moose",
+    "Mosquito",
+    "Ostrich",
+    "Otter",
+    "Puffin",
+    "Python",
+    "Red Panda",
+    "Rooster",
+    "Scorpion",
+    "Seahorse",
+    "Sloth",
+    "Slug",
+    "Snail",
+    "Snake",
+    "Sparrow",
+    "Swordfish",
+    "Tarantula",
+    "Tiger",
+    "Tortoise",
+    "Turtle",
+    "Vampire Bat",
+    "Walrus",
+    "Whale",
+    "Wolf",
+    "Wolverine",
+    "Zebra",
+    "Alpaca",
+    "Cat",
+    "Chicken",
+    "Dog",
+    "Camel",
+    "Duck",
+    "Goat",
+    "Goose",
+    "Hedgehog",
+    "Pigeon",
+    "Rabbit",
+    "Silkmoth",
+    "Silver fox",
+    "Turkey",
+    "Donkey",
+    "Goldfish",
+    "Guinea Pig",
+    "Guppy",
+    "Horse",
+    "Koi",
+    "Llama",
+    "Ringneck Dove",
+    "Sheep",
+    "Siamese Fighting Fish",
+    "Yak",
+    "Water Buffalo",
+]
+
+
 def private_route(f: Callable[P, ErrorResponse]) -> Callable[P, ErrorResponse]:
     @functools.wraps(f)
     def wrap(*args: P.args, **kwargs: P.kwargs) -> ErrorResponse:
@@ -34,7 +93,7 @@ def private_route(f: Callable[P, ErrorResponse]) -> Callable[P, ErrorResponse]:
                 app_user = User.query.get(firebase_user["uid"])
                 if not app_user:
                     app_user = User(
-                        name=firebase_user.get("name", firebase_user.get("display_name", "")),
+                        name=f"Anonymous {random.choice(ANIMALS)}",
                         email=firebase_user["email"],
                         id=firebase_user["uid"],
                     )

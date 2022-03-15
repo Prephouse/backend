@@ -20,7 +20,10 @@ leaderboard_api = Blueprint("leaderboard_api", __name__, url_prefix="/leaderboar
 
 @leaderboard_api.get("")
 @use_kwargs(leaderboard_request_schema, location="query")
+@private_route
 def get_leaderboard(page, per_page):
+    user_id = request.user.id
+
     upload_page = (
         Upload.query.join(Engine, Engine.id == Upload.engine_id)
         .join(User, User.id == Upload.user_id)
@@ -46,7 +49,7 @@ def get_leaderboard(page, per_page):
             {
                 "standing": idx + 1,
                 "session_id": upload.id,
-                "username": get_name_abbreviation(upload.name),
+                "username": upload.name if user_id != upload.user_id else "You",
                 "category": upload.category,
                 "category_name": upload.category.get_category_name(),
                 "date_uploaded": upload.date_uploaded,
