@@ -5,7 +5,8 @@ from flask_cors import CORS
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 from flask_migrate import Migrate
-from flask_seasurf import SeaSurf
+
+# from flask_seasurf import SeaSurf
 from flask_sqlalchemy import SQLAlchemy
 from flask_talisman import DENY, Talisman
 
@@ -65,8 +66,8 @@ def create_app(_db: SQLAlchemy, with_internal: bool = True) -> Flask:
     CORS(_app, support_credentials=True, origins=origins)
 
     # Configure CSRF
-    if not _app.debug:
-        SeaSurf(_app)
+    # if not _app.debug:
+    #     SeaSurf(_app)
 
     # Initialize PostgreSQL database
     _db.init_app(_app)
