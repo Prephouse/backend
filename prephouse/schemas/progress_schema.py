@@ -21,8 +21,8 @@ class SessionResponseSchema(Schema):
         comment = fields.String(required=True)
         category = fields.String(required=True)
         subcategory = fields.String(required=True)
-        time_start = fields.Int(required=True)
-        time_end = fields.Int(required=True)
+        time_start = fields.Float(required=True)
+        time_end = fields.Float(required=True)
 
     class TextSchema(Schema):
         comment = fields.String(required=True)

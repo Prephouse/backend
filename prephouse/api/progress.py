@@ -1,7 +1,7 @@
 from collections import defaultdict
 
 from flask import Blueprint, jsonify, request
-from sqlalchemy import asc, desc, func, not_, or_
+from sqlalchemy import asc, desc, func, or_
 from webargs.flaskparser import use_kwargs
 
 from prephouse.decorators.authentication import private_route
@@ -159,7 +159,7 @@ def get_scores_for_session(session_id):
     )
 
     time_query = (
-        base_query.filter(not_(Feedback.category == Feedback.FeedbackCategory.LIGHT))
+        base_query.filter(Feedback.category == Feedback.FeedbackCategory.PAUSE)
         .add_columns(
             Feedback.id.label("feedback_id"),
             Feedback.category,
@@ -189,8 +189,8 @@ def get_scores_for_session(session_id):
             "category": feedback.category.get_feature_name(),
             "subcategory": feedback.category.get_feature_name(),
             "comment": feedback.comment,
-            "time_start": feedback.time_range.lower,
-            "time_end": feedback.time_range.upper,
+            "time_start": round(feedback.time_range.lower / 1000, 1),
+            "time_end": round(feedback.time_range.upper / 1000, 1),
         }
         for feedback in time_query
     ]
