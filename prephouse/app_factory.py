@@ -25,8 +25,11 @@ def create_app(_db: SQLAlchemy, with_internal: bool = True) -> Flask:
         "SECRET_KEY": os.environ["FLASK_SECRET_KEY"],
         "SQLALCHEMY_DATABASE_URI": os.environ["SQLALCHEMY_DATABASE_URI"],
         "SQLALCHEMY_TRACK_MODIFICATIONS": False,
+        "CSRF_COOKIE_DOMAIN": ".prephouse.io",
         "CSRF_COOKIE_HTTPONLY": True,
+        "CSRF_COOKIE_SAMESITE": "Strict",
         "CSRF_COOKIE_SECURE": True,
+        "CSRF_DISABLE": True,
     }
     _app.url_map.strict_slashes = False
     _app.url_map.redirect_defaults = False
@@ -65,8 +68,7 @@ def create_app(_db: SQLAlchemy, with_internal: bool = True) -> Flask:
     CORS(_app, supports_credentials=True, origins=origins)
 
     # Configure CSRF
-    if not _app.debug:
-        SeaSurf(_app)
+    SeaSurf(_app)
 
     # Initialize PostgreSQL database
     _db.init_app(_app)
