@@ -13,7 +13,6 @@ from prephouse.schemas.leaderboard_schema import (
     leaderboard_request_schema,
     leaderboard_response_schema,
 )
-from prephouse.utils.string_utils import get_name_abbreviation
 
 leaderboard_api = Blueprint("leaderboard_api", __name__, url_prefix="/leaderboard")
 
@@ -32,6 +31,7 @@ def get_leaderboard(page, per_page):
             Engine.version,
             User.name,
             Upload.id,
+            Upload.user_id,
             Upload.category,
             Upload.date_uploaded,
             Upload.score,
