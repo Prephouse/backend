@@ -21,9 +21,9 @@
 2. Run `docker compose up` to start the local database session and local development server
 3. Navigate to <http://localhost:3001> on your web browser
 
-> We have separate services for the PSQL database, the database migration and the Flask app.
-> Docker will run each service in a particular order such that the database should be up
-> and ready by the time that the Flask app starts accepting HTTP requests.
+We have separate services for the PSQL database, the database migration and the Flask app.
+Docker will run each service in a particular order such that the database should be up
+and ready by the time that the Flask app starts accepting HTTP requests.
 
 ### Development
 
@@ -59,15 +59,12 @@ container via `docker compose up`.
 
 ### Deployment
 
-1. Install AWS [Elastic Beanstalk CLI](https://github.com/aws/aws-elastic-beanstalk-cli-setup) using
-   `pip install awsebcli --upgrade` in a new virtual environment
-2. Before deploying to AWS, ensure that the prod docker compose file `docker-compose.production.yml`
-   is set as the main `docker-compose.yml`. To do this, rename  `docker-compose.production.yml` to
-   `docker-compose.yml`.
-3. Run `.awsbeanstalk.sh` to deploy any env variable and recent commit changes. If you want to deploy
-   uncommitted/staged changes, stage the files and edit the `.awsbeanstalk.sh` to use `eb deploy --staged`.
-4. If you run into access issues, use the `--profile` flag to use the AWS backend user `louis` who has
-   Beanstalk permissions
+1. Run `pip install awsebcli --upgrade` to install the [Elastic Beanstalk CLI][eb-cli]
+2. Run `eb init` and, when prompted, select `ca-central-1` as the region and `Prephousebe-env` as the environment name.
+3. Merge your changes to the release branch on git
+4. Run `./deploy.sh` on the release branch
+
+[eb-cli]: https://github.com/aws/aws-elastic-beanstalk-cli-setup
 
 ## Developer Tools
 

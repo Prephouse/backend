@@ -1,0 +1,17 @@
+# caches
+__pycache__/
+.mypy_cache/
+.pytest_cache/
+
+# environment variables
+.env
+.env.local
+.env.development
+.env.development.local
+.env.test
+.env.test.local
+.env.production
+.env.production.local
+
+# misc
+.DS_STORE
