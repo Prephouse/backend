@@ -118,7 +118,7 @@ def get_scores_by_session():
 
 @progress_api.get("scores_for_session")
 @use_kwargs(progress_request_schema, location="query")
-# @private_route
+@private_route
 def get_scores_for_session(session_id):
     """
     Get the score for all features for all questions for a given session.
@@ -130,7 +130,7 @@ def get_scores_for_session(session_id):
     base_query = (
         Upload.query.join(UploadQuestion, UploadQuestion.upload_id == Upload.id, isouter=True)
         .join(Feedback, Feedback.uq_id == UploadQuestion.id, isouter=True)
-        .filter(Upload.id == session_id)
+        .filter(Upload.id == session_id, Upload.user_id == request.user.id)
     )
 
     score_query = (
@@ -176,33 +176,36 @@ def get_scores_for_session(session_id):
     for feedback in score_query:
         scores_dict[feedback.feedback_category] = float(feedback.avg_score or 0)
 
-    res = {"scores": {"overall_score": 0}}
-
-    res["text_feedback"] = [
-        {"category": feedback.category.get_feature_name(), "comment": feedback.comment}
-        for feedback in text_query
-    ]
-
-    res["timestamp_feedback"] = [
-        {
-            "feedback_id": feedback.feedback_id,
-            "category": feedback.category.get_feature_name(),
-            "subcategory": feedback.category.get_feature_name(),
-            "comment": feedback.comment,
-            "time_start": round(feedback.time_range.lower / 1000, 1),
-            "time_end": round(feedback.time_range.upper / 1000, 1),
-        }
-        for feedback in time_query
-    ]
+    res = {
+        "scores": {"overall_score": 0},
+        "text_feedback": [
+            {
+                "category": feedback.category.get_feature_name(),
+                "comment": feedback.comment,
+            }
+            for feedback in text_query
+        ],
+        "timestamp_feedback": [
+            {
+                "feedback_id": feedback.feedback_id,
+                "category": feedback.category.get_feature_name(),
+                "subcategory": feedback.category.get_feature_name(),
+                "comment": feedback.comment,
+                "time_start": round(feedback.time_range.lower / 1000, 1),
+                "time_end": round(feedback.time_range.upper / 1000, 1),
+            }
+            for feedback in time_query
+        ],
+    }
 
     if len(score_query) > 0:
         res |= {
             "session_category": score_query[0].upload_category.get_category_name(),
             "date": score_query[0].date_uploaded,
+            "cloudfront_url": score_query[0].cloudfront_url,
+            "text_summary": score_query[0].textual_summary,
         }
         res["scores"]["overall_score"] = score_query[0].upload_score
-        res["cloudfront_url"] = score_query[0].cloudfront_url
-        res["text_summary"] = score_query[0].textual_summary
 
     for f in Feedback.FeedbackCategory:
         res["scores"][f"{f.get_api_safe_feature_name()}_score"] = scores_dict[f]

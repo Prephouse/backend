@@ -93,7 +93,7 @@ def private_route(f: Callable[P, ErrorResponse]) -> Callable[P, ErrorResponse]:
                 app_user = User.query.get(firebase_user["uid"])
                 if not app_user:
                     app_user = User(
-                        name=f"Anonymous {random.choice(ANIMALS)}",
+                        name=f"Anonymous {random.choice(ANIMALS)}",  # nosec
                         email=firebase_user["email"],
                         id=firebase_user["uid"],
                     )

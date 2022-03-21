@@ -10,14 +10,12 @@ import prephouse.errorhandlers.validation_error_handler  # noqa: E402
 import prephouse.interceptors.firebase_interceptor  # noqa: E402
 import prephouse.interceptors.rollbar_interceptor  # noqa: E402, F401
 from prephouse.api.analyze import analyze_api  # noqa: E402
-from prephouse.api.feedback import feedback_api  # noqa: E402
 from prephouse.api.leaderboard import leaderboard_api  # noqa: E402
 from prephouse.api.progress import progress_api  # noqa: E402
 from prephouse.api.question import question_api  # noqa: E402
 from prephouse.api.upload import upload_api  # noqa: E402
 
 blueprints: tuple[Blueprint, ...] = (
-    feedback_api,
     analyze_api,
     question_api,
     progress_api,
