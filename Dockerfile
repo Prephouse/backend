@@ -1,4 +1,4 @@
-FROM python:3.10
+FROM python:3.11.0
 
 LABEL version="1.0" \
       description="Run the Prephouse backend server that includes the Flask application and a PostgreSQL DB session"
